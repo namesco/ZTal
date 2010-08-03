@@ -16,11 +16,11 @@
   <email>amace@names.co.uk</email>
   <active>yes</active>
  </lead>
- <date>2010-07-27</date>
- <time>17:03:52</time>
+ <date>2010-08-03</date>
+ <time>14:52:46</time>
  <version>
-  <release>0.9.1</release>
-  <api>0.9.0</api>
+  <release>0.9.2</release>
+  <api>0.9.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -33,9 +33,14 @@ None
  <contents>
   <dir baseinstalldir="Ztal" name="/">
    <file baseinstalldir="Ztal" md5sum="bed6ed4c90de1e77a9b8acd51d67a471" name="Controller/Action/Helper/View.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="083907dd3dba1a1d4c9297178c8b8aa2" name="Resource/View.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="eb4566eb6fe12c6530cb77f0b3b8a66b" name="Macros/global/form.xhtml" role="data" />
+   <file baseinstalldir="Ztal" md5sum="f496b32fc6aa0da9d4a0fc4084bbadce" name="Resource/View.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="980790142ec7289cdeccfed4d988073d" name="Tal/View.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="15ca7518bb1bef300606a12034d0d564" name="Tal/ZendTranslateTranslator.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="ee2549d721877e24c40b8aa4060aba0a" name="Tal/ZendTranslateTranslator.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="221d5163fdcd2cdb776e08d798dd4f5f" name="Tales/Form.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="73c7939edb5e0b63c0f013cefe367ba8" name="Tales/Generic.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="a5c14b5d59d717f6ac86786e3e71e64b" name="Tales/Translation.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="README" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -90,6 +95,21 @@ None
     <api>stable</api>
    </stability>
    <date>2010-07-27</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.2</release>
+    <api>0.9.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-08-03</date>
    <license uri="http://www.apache.org/licenses/">Apache</license>
    <notes>
 None
