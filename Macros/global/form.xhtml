@@ -1,0 +1,166 @@
+<tal:block
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:tal="http://xml.zope.org/namespaces/tal"
+	xmlns:metal="http://xml.zope.org/namespaces/metal"
+	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	xmlns:phptal="http://phptal.org/ns/phptal"
+>
+
+	<!-- Form Fragment, expects an instance of Zend_Form, or something that
+		 extends it-->
+	<form tal:attributes="action form/getAction;
+						  class php:form.getAttrib('class') ? form.getAttrib('class') : 'talForm';
+						  id form/getId;
+						  method form/getMethod"
+		  metal:define-macro="centralForm" 
+	>
+
+		<!-- Error Messages -->
+		<div tal:condition="form/isErrors" class="errors">
+			<h3 i18n:translate="string:error" />
+			<ul>
+				<tal:block tal:repeat="elementErrors form/getErrors">
+					<li tal:define="element Ztal_Tales_Form.getElement:form,repeat/elementErrors/key"
+						tal:repeat="error elementErrors"
+						i18n:translate="error"
+					>
+						<tal:inline i18n:name="field">
+							<tal:inline i18n:translate="element/getLabel" />
+						</tal:inline>
+						<tal:inline i18n:name="value" tal:content="element/getValue" />
+					</li>
+				</tal:block>
+			</ul>
+		</div>
+
+		<!-- Iterate over the contents of the form and render everything
+			 appropriately -->
+		<ul>
+			<li tal:repeat="element form">
+
+				<!-- Is this element a display group? -->
+				<tal:block tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
+						   tal:define="displayGroupElement element"
+						   metal:use-macro="global/form.xhtml/displayGroup" />
+
+				<!-- Is this an element? -->
+				<tal:block tal:condition="Ztal_Tales_Form.isFormElement:element"
+						   tal:define="macro Ztal_Tales_Form.getElementMacro:element"
+						   metal:use-macro="${macro}" />
+
+			</li>
+		</ul>
+
+	</form>
+
+	<!-- Display Group Fragment, expects an instance of Zend_Form_DisplayGroup,
+		 will render it into a fieldset -->
+	<fieldset metal:define-macro="displayGroup">
+		<legend tal:condition="not:Ztal_Tales_Generic.equal:element/getLegend,string:">
+			<span i18n:translate="element/getLegend" />
+		</legend>
+		<ul>
+			<tal:block tal:define="elements displayGroupElement/getElements"
+					   metal:use-macro="global/form.xhtml/fields" />
+		</ul>
+	</fieldset>
+
+	<!-- Fragment to display the fields held in a display group -->
+	<tal:block metal:define-macro="fields">
+		<li tal:attributes="id string:${element/getId}-field"
+			tal:repeat="element elements">
+			<tal:block tal:define="macro Ztal_Tales_Form.getElementMacro:element"
+					   metal:use-macro="${macro}" /> 
+		</li>
+	</tal:block>
+
+	<!-- Will display an <input> element -->
+	<input metal:define-macro="inputElement"
+		   tal:attributes="type Ztal_Tales_Form.inputType:element;
+						   name name | element/getName;
+						   id element/getId;
+						   value value | nothing;
+						   maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength;
+						   checked checked | nothing"
+	/>
+
+	<!-- Will display a single form element along with a label -->
+	<tal:block metal:define-macro="singleElement">
+
+		<label tal:condition="Ztal_Tales_Form.showLabel:element"
+				   i18n:translate="element/getLabel"
+		/>
+
+		<!-- If it is an input, render it using the inputElement fragment -->
+		<tal:block tal:condition="Ztal_Tales_Form.isInput:element"
+				   tal:define="value element/getValue"
+				   metal:use-macro="global/form.xhtml/inputElement" />
+
+		<!-- If it is a radio element, then iterate over the different options
+			 and render each one as an input element. -->
+		<tal:block tal:condition="Ztal_Tales_Form.isRadio:element"
+				   tal:repeat="option element/getMultiOptions">
+			<label class="radioOption">
+				<tal:block tal:define="value repeat/option/key; checked Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
+						   metal:use-macro="global/form.xhtml/inputElement" />
+				<tal:block i18n:translate="option" />
+			</label>
+		</tal:block>
+
+		<!-- If it is a multiple checkbox element, then iterate over the
+			 different options and render each one as an input element. -->
+		<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
+				   tal:repeat="option element/getMultiOptions">
+			<label class="checkboxOption"> 
+				<tal:block tal:define="name string:${element/getName}[];
+									   value repeat/option/key;
+									   checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
+						   metal:use-macro="global/form.xhtml/inputElement" 
+			    />
+				<tal:block i18n:translate="option" />
+			</label>
+		</tal:block>
+
+		<!-- If it is a select, then create a <select> and then populate it with
+			 options based on the multiOptions in the element -->
+		<select tal:condition="Ztal_Tales_Form.isSelect:element"
+				tal:attributes="name element/getName; id element/getId">
+
+			<option tal:repeat="option element/getMultiOptions"
+					tal:attributes="value repeat/option/key;
+									selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
+					i18n:translate="option"
+			/>
+
+		</select>
+
+		<!-- If it is a button, then render it out -->
+		<button tal:condition="Ztal_Tales_Form.isButton:element"
+				tal:attributes="name element/getName;
+								type Ztal_Tales_Form.getAttrib:element,string:type;
+								value element/getValue"
+				i18n:translate="element/getLabel" />
+
+		<!-- If it is a captcha, display the image along with the instructions
+			 for completing it -->
+		<div tal:condition="Ztal_Tales_Form.isCaptcha:element"
+			 class="captcha">
+			<img tal:define="captcha element/getCaptcha;
+							 captchaId Ztal_Tales_Form.getAttrib:element,string:captchaId"
+				 tal:attributes="src string:${captcha/getImgUrl}${captchaId}.png"
+				 alt="Captcha Image"
+			 />
+			<input type="hidden"
+				   tal:attributes="name string:${element/getName}[id];
+								   value Ztal_Tales_Form.getAttrib:element,string:captchaId"
+			/>
+			<div class="captchaInstructions"
+				 i18n:translate="string:captchaInstructions" />
+			<label i18n:translate="string:captcha" />
+			<input type="text"
+				   tal:attributes="name string:${element/getName}[input]"
+				   value="" />
+		</div>
+	</tal:block>
+
+</tal:block>

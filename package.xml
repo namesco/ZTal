@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+ <name>ZTal</name>
+ <channel>pear.names.co.uk</channel>
+ <summary>ZTal integrates PHPTal and Zend Framework</summary>
+ <description>PHPTal is a PHP implementation of the Zope Template Attribute Language. ZTal allows you to use this templating system as the view component of the Zend Framework MVC stack.</description>
+ <lead>
+  <name>Rob Goldsmith</name>
+  <user>rgoldsmith</user>
+  <email>rgoldsmith@names.co.uk</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Alex Mace</name>
+  <user>amace</user>
+  <email>amace@names.co.uk</email>
+  <active>yes</active>
+ </lead>
+ <date>2010-07-27</date>
+ <time>17:03:52</time>
+ <version>
+  <release>0.9.1</release>
+  <api>0.9.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.apache.org/licenses/">Apache</license>
+ <notes>
+None
+ </notes>
+ <contents>
+  <dir baseinstalldir="Ztal" name="/">
+   <file baseinstalldir="Ztal" md5sum="bed6ed4c90de1e77a9b8acd51d67a471" name="Controller/Action/Helper/View.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="083907dd3dba1a1d4c9297178c8b8aa2" name="Resource/View.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="980790142ec7289cdeccfed4d988073d" name="Tal/View.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="15ca7518bb1bef300606a12034d0d564" name="Tal/ZendTranslateTranslator.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.2</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>0.9.0</release>
+    <api>0.9.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-07-27</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.1</release>
+    <api>0.9.0</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-07-27</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2010-07-27</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+ </changelog>
+</package>
