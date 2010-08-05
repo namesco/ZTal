@@ -157,9 +157,9 @@
 			<div class="captchaInstructions"
 				 i18n:translate="string:captchaInstructions" />
 			<label i18n:translate="string:captcha" />
-			<input type="text"
+			<input autocomplete="off" type="text" value=""
 				   tal:attributes="name string:${element/getName}[input]"
-				   value="" />
+			/>
 		</div>
 	</tal:block>
 
