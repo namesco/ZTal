@@ -12,7 +12,7 @@
 						  class php:form.getAttrib('class') ? form.getAttrib('class') : 'talForm';
 						  id form/getId;
 						  method form/getMethod"
-		  metal:define-macro="centralForm" 
+		  metal:define-macro="talForm"
 	>
 
 		<!-- Error Messages -->
@@ -36,19 +36,24 @@
 		<!-- Iterate over the contents of the form and render everything
 			 appropriately -->
 		<ul>
-			<li tal:repeat="element form">
+			<tal:block tal:repeat="element form">
 
 				<!-- Is this element a display group? -->
-				<tal:block tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
-						   tal:define="displayGroupElement element"
-						   metal:use-macro="global/form.xhtml/displayGroup" />
+				<li tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
+					tal:define="displayGroupElement element">
+					<tal:block metal:use-macro="global/form.xhtml/displayGroup" />
+				</li>
 
 				<!-- Is this an element? -->
-				<tal:block tal:condition="Ztal_Tales_Form.isFormElement:element"
-						   tal:define="macro Ztal_Tales_Form.getElementMacro:element"
-						   metal:use-macro="${macro}" />
+				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
+                    tal:define="macro Ztal_Tales_Form.getElementMacro:element"
+					tal:attributes="class string:${Ztal_Tales_Form.inputType:element}-element;
+									id string:${element/getId}-field"
+				>
+					<tal:block metal:use-macro="${macro}" />
+				</li>
 
-			</li>
+			</tal:block>
 		</ul>
 
 	</form>
@@ -66,12 +71,9 @@
 	</fieldset>
 
 	<!-- Fragment to display the fields held in a display group -->
-	<tal:block metal:define-macro="fields">
-		<li tal:attributes="id string:${element/getId}-field"
-			tal:repeat="element elements">
-			<tal:block tal:define="macro Ztal_Tales_Form.getElementMacro:element"
-					   metal:use-macro="${macro}" /> 
-		</li>
+	<tal:block metal:define-macro="fields" tal:repeat="element elements">
+		<tal:block tal:define="macro Ztal_Tales_Form.getElementMacro:element"
+				   metal:use-macro="${macro}" />
 	</tal:block>
 
 	<!-- Will display an <input> element -->

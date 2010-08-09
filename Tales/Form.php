@@ -324,7 +324,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return 'in_array(Ztal_Tales_Form::calculateType('
 			   . phptal_tale($src, $nothrow) . "->getType()), "
-			   . "array('text', 'password', 'date', 'email'))";
+			   . "array('text', 'hidden', 'password', 'date', 'email'))";
 
 	}
 
