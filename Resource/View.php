@@ -128,18 +128,8 @@ class Ztal_Resource_View extends Zend_Application_Resource_ResourceAbstract
 		}
 		$this->setCachePurgeMode($this->_cachePurgeMode);
 
-		// Attempt the get the layout directory from the application
-		// configuration, otherwise fall back to a sensible default
-		$this->getBootstrap()->bootstrap('layout');
-		$layout = $this->getBootstrap()->getResource('layout');
 
-		if (!is_null($layout)) {
-			$this->addTemplateRepositoryPath($layout->getLayoutPath());
-		} else {
-			$templateDirectories = array(APPLICATION_PATH . DIRECTORY_SEPARATOR
-				. 'layouts' . DIRECTORY_SEPARATOR . 'scripts');
-			$this->addTemplateRepositoryPath($templateDirectories);
-		}
+		$this->addTemplateRepositoryPath(Zend_Layout::getMvcInstance()->getLayoutPath());
 
 		// Set the remaining template repository directories;
 		if ($options != null && array_key_exists('globalTemplatesDirectory', $options)) {
