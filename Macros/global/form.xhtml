@@ -97,7 +97,7 @@
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
 		   tal:attributes="type Ztal_Tales_Form.inputType:element;
-						   name name | element/getName;
+						   name name | element/getFullyQualifiedName;
 						   id element/getId;
 						   value value | nothing;
 						   maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength;
@@ -132,7 +132,7 @@
 		<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
 				   tal:repeat="option element/getMultiOptions">
 			<label class="checkboxOption"> 
-				<tal:block tal:define="name string:${element/getName}[];
+				<tal:block tal:define="name element/getFullyQualifiedName;
 									   value repeat/option/key;
 									   checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
 						   metal:use-macro="global/form.xhtml/inputElement" 
@@ -144,7 +144,7 @@
 		<!-- If it is a select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal_Tales_Form.isSelect:element"
-				tal:attributes="name element/getName; id element/getId">
+				tal:attributes="name element/getFullyQualifiedName; id element/getId">
 
 			<option tal:repeat="option element/getMultiOptions"
 					tal:attributes="value repeat/option/key;
@@ -156,7 +156,7 @@
 
 		<!-- If it is a button, then render it out -->
 		<button tal:condition="Ztal_Tales_Form.isButton:element"
-				tal:attributes="name element/getName;
+				tal:attributes="name element/getFullyQualifiedName;
 								type Ztal_Tales_Form.getAttrib:element,string:type;
 								value element/getValue"
 				i18n:translate="element/getLabel" />
