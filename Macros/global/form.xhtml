@@ -70,6 +70,24 @@
 		</ul>
 	</fieldset>
 
+	<!-- Date selection macro, for displaying date drop downs.
+	This macro expects the element responds to getSeparator and getElements.
+
+	getSeparator should return the seperator you wish to use between select
+	boxes.
+
+	getElements should return an array of Zend_Form_Element_Selects.
+	-->
+	<tal:block metal:define-macro="dateSelect">
+		<label tal:condition="Ztal_Tales_Form.showLabel:element"
+				   i18n:translate="element/getLabel"
+		/>
+		<tal:block  tal:repeat="dateElement element/getElements">
+			<tal:block tal:define="element dateElement" metal:use-macro="singleElement" />
+			<tal:inline tal:condition="not: repeat/dateElement/end" tal:content="element/getSeparator|string:/" />
+		</tal:block>
+   </tal:block>
+
 	<!-- Fragment to display the fields held in a display group -->
 	<tal:block metal:define-macro="fields" tal:repeat="element elements">
 		<tal:block tal:define="macro Ztal_Tales_Form.getElementMacro:element"
