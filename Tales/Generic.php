@@ -57,7 +57,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		switch ($command) {
 				
 			case 'word':
-				return 'ucword(' . phptal_tale($src, $nothrow) . ')';
+				return 'ucwords(' . phptal_tale($src, $nothrow) . ')';
 				break;
 				
 			case 'all':
