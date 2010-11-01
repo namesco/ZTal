@@ -423,11 +423,10 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-
 		return 'in_array(Ztal_Tales_Form::calculateType('
-			   . phptal_tale($src, $nothrow) . "->getType()), "
-			   . "array('checkbox', 'date', 'email', 'password', 'radio', 'select', 'text'))";
-			   
+			   . phptal_tale($src, $nothrow) . '->getType()), '
+			   . "array('checkbox', 'date', 'email', 'password', 'radio', 'select', 'text')) && "
+			   . phptal_tale($src, $nothrow) . "->getLabel()";
 	}
 
 
