@@ -405,6 +405,30 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	}
 
 	/**
+	 * Tal extension to determine whether or not the current element is a textarea input.
+	 *
+	 * Example use within template:
+	 * <textarea tal:condition="Ztal_Tales_Form.isTextarea:element" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function isTextarea($src, $nothrow)
+	{
+
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+
+		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+			   . "->getType()) == 'textarea'";
+
+	}
+
+	/**
 	 * Tal extension to determine whether or not the current element should have a label displayed with it.
 	 *
 	 * Example use within template:
@@ -425,7 +449,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		}
 		return 'in_array(Ztal_Tales_Form::calculateType('
 			   . phptal_tale($src, $nothrow) . '->getType()), '
-			   . "array('checkbox', 'date', 'email', 'password', 'radio', 'select', 'text')) && "
+			   . "array('checkbox', 'date', 'email', 'password', 'radio', 'select', 'text', 'textarea')) && "
 			   . phptal_tale($src, $nothrow) . "->getLabel()";
 	}
 
