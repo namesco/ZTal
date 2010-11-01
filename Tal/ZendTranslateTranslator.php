@@ -37,6 +37,20 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	 */	 
 	protected $_highlightFailedTranslations;
 
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array $options Configuration options.
+	 */
+	public function __construct($options = array())
+	{
+		// if specified, set to highlight failed translations
+		if (isset($options['highlightFailedTranslations'])) {
+			$this->setHighlightFailedTranslations(($options['highlightFailedTranslations'] == '1'));
+		}
+	}
+
 	
 	/**
 	 * Set whether failed translation strings should be prefixed with a '**'.
