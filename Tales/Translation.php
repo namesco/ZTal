@@ -8,6 +8,8 @@
  * @copyright 2009-2010 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
+ 
+require_once 'PHPTAL/Tales.php';
 
 /**
  * Tales namespace handler to allow definition of plurals in a translation.
