@@ -70,10 +70,12 @@ class Ztal_Tal_View extends Zend_View
 
 
 	/**
-	 * Constructor
+	 * Constructor.
+	 *
+	 * @param array $options Configuration options.
 	 */
-	 public function __construct($options = array())
-	 {
+	public function __construct($options = array())
+	{
 		parent::__construct($options);
 		
 		$this->setEngine(new PHPTAL());
@@ -140,7 +142,7 @@ class Ztal_Tal_View extends Zend_View
 	 *
 	 * @param string $customModifiersPath Path to scan for php files to load.
 	 *
-	 * @return Ztal_Resource_View
+	 * @return void
 	 */		
 	public function addCustomModifiersPath($customModifiersPath)
 	{

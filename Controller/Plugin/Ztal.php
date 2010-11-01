@@ -52,7 +52,9 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 	 
 	 
 	/**
-	 * constructor.
+	 * Constructor.
+	 *
+	 * @param array $options Configuration options.
 	 */
 	public function __construct($options)
 	{
@@ -60,7 +62,11 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 	}
 	
 	/**
-	 * pre-dispatch hook to create and install a replacement View object
+	 * Pre-dispatch hook to create and install a replacement View object.
+	 *
+	 * @param Zend_Controller_Request_Abstract $request The requst object.
+	 *
+	 * @return void
 	 */
 	public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
 	{						
