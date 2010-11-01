@@ -70,6 +70,101 @@ class Ztal_Tal_View extends Zend_View
 
 
 	/**
+	 * Constructor
+	 */
+	 public function __construct($options = array())
+	 {
+		parent::__construct($options);
+		
+		$this->setEngine(new PHPTAL());
+		
+		// configure the encoding
+		if (isset($options->encoding) && $options->encoding != '') {
+			$this->setEncoding((string)$options->encoding);
+		} else {
+			$this->setEncoding('UTF-8');
+		}
+
+		// change the compiled code destination if set in the config
+		if (isset($options->cacheDirectory) && $options->cacheDirectory != '') {
+			$this->setCacheDirectory((string)$options->cacheDirectory);
+		}
+
+		// configure the caching mode
+		if (isset($options->cachePurgeMode) && $options->cachePurgeMode == true) {
+			$this->setCachePurgeMode(true);
+		} else {
+			$this->setCachePurgeMode(false);
+		}
+		
+		// set the layout template path
+		$this->addTemplateRepositoryPath(Zend_Layout::getMvcInstance()->getLayoutPath());
+
+		// Set the remaining template repository directories;
+		if (isset($options->globalTemplatesDirectory)) {
+			$directories = $options->globalTemplatesDirectory;
+			if (!is_array($directories)) {
+				$directories = array($directories);
+			}
+			foreach ($directories as $currentDirectory) {
+				$this->addTemplateRepositoryPath($currentDirectory);
+			}
+		}
+
+		$ztalBasePath = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+		
+		// Add ZTal's macro repository as a final default.
+		$ztalMacroPath = $ztalBasePath . DIRECTORY_SEPARATOR . 'Macros';
+		$this->addTemplateRepositoryPath($ztalMacroPath);
+		
+		
+		//load in all php files that exist in the custom modifiers directory
+		if (isset($options->customModifiersDirectory)) {
+			$customModifiers = $options->customModifiersDirectory;
+			if (!is_array($customModifiers)) {
+				$customModifiers = array($customModifiers);
+			}
+			foreach ($customModifiers as $currentPath) {
+				$this->addCustomModifiersPath($currentPath);
+			}
+		}
+
+		// Add ZTal's tales repository as a final default.
+		$ztalTalesPath = $ztalBasePath . DIRECTORY_SEPARATOR . 'Tales';
+		$this->addCustomModifiersPath($ztalTalesPath);
+	}
+	 
+	
+	/**
+	 * Load in all php files in the specified directory.
+	 *
+	 * @param string $customModifiersPath Path to scan for php files to load.
+	 *
+	 * @return Ztal_Resource_View
+	 */		
+	public function addCustomModifiersPath($customModifiersPath)
+	{
+		if (is_dir($customModifiersPath)) {
+			foreach (new DirectoryIterator($customModifiersPath) as $modifierFile) {
+				if ($modifierFile->isDot()) {
+					continue;
+				}
+				if ($modifierFile->isDir()) {
+					$this->addCustomModifiersPath($modifierFile->getPathname());
+					continue;
+				} else {
+					if (!preg_match('/^[^.].+\.php$/', $modifierFile->getFilename())) {
+						continue;
+					}
+					include_once $modifierFile->getPathname();
+				}
+			}
+		}
+	}
+	  
+		  
+
+	/**
 	 * Changes the current PHPTAL instance.
 	 *
 	 * @param mixed $tal The engine to use (supplied to the Zend system by the Resource View).
@@ -181,9 +276,10 @@ class Ztal_Tal_View extends Zend_View
 	 *
 	 * @return void
 	 */
-	public function setEngineEncoding($encoding)
+	public function setEncoding($encoding)
 	{
-		$this->_engine->setEncoding($encoding);
+		parent::setEncoding($encoding);
+		$this->_engine->setEncoding(parent::getEncoding());
 	}
 	
 	/**

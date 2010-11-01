@@ -235,7 +235,6 @@ class Ztal_Resource_View extends Zend_Application_Resource_ResourceAbstract
 		$this->_encoding = $encoding;
 		if (! is_null($this->_view)) {
 			$this->_view->setEncoding($encoding);
-			$this->_view->setEngineEncoding($encoding);
 		}
 		return $this;
 	}
