@@ -12,8 +12,6 @@
  * @license   http://names.co.uk/license Namesco
  */
 
-require_once 'PHPTAL/Tales.php';
-
 /**
  * Form Tale Modifiers.
  *
@@ -101,8 +99,11 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return phptal_tale($a, $nothrow) . '->getAttrib(' .
-			   phptal_tale($b, $nothrow) . ')';
+		return '(' . phptal_tale($a, $nothrow) . '->getAttrib(' 
+			. phptal_tale($b, $nothrow) . ') != null ? '
+			. phptal_tale($a, $nothrow) . '->getAttrib('
+			. phptal_tale($b, $nothrow) . ') : '
+			. phptal_tales($rest, $nothrow) . ')';
 	}
 
 	/**
@@ -401,7 +402,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'select'";
-
 	}
 
 	/**
@@ -418,7 +418,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 */
 	public static function showLabel($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -426,7 +425,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return 'in_array(Ztal_Tales_Form::calculateType('
 			   . phptal_tale($src, $nothrow) . '->getType()), '
 			   . "array('checkbox', 'date', 'email', 'password', 'radio', 'select', 'text')) && "
-			   . phptal_tale($src, $nothrow) . "->getLabel()";
+			   . phptal_tale($src, $nothrow) . '->getLabel()';
 	}
 
 

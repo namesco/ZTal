@@ -9,9 +9,6 @@
  * @license   http://names.co.uk/license Namesco
  */
 
-require_once 'PHPTAL/TranslationService.php';
-require_once 'PHPTAL/Tales.php';
-
 /**
  * PHPTal Zend_Translate translation plugin.
  *

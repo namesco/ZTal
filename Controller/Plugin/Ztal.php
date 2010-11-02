@@ -10,8 +10,6 @@
  */
 
 require_once 'PHPTAL.php';
-require_once 'PHPTAL/PreFilter.php';
-require_once 'PHPTAL/PreFilter/StripComments.php';
 
 /**
  * Overrides the default Zend View to provide Tal templating support through PHPTal
@@ -28,10 +26,6 @@ require_once 'PHPTAL/PreFilter/StripComments.php';
  * highlightFailedTranslations - if a translator is installed, set whether failed transaction keys
  *						show up with a prepended '**'
  */
-
-require_once 'PHPTAL.php';
-require_once 'PHPTAL/PreFilter.php';
-require_once 'PHPTAL/PreFilter/StripComments.php';
 
 /**
  * PHPTal view subclass plugin to provide PHPTal support in Zend.
@@ -69,7 +63,14 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 	 * @return void
 	 */
 	public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
-	{						
+	{
+		// Unregister the built-in autoloader
+		spl_autoload_unregister(array('PHPTAL','autoload'));
+		
+		// Register the autoloader through Zend
+		Zend_Loader_Autoloader::getInstance()->pushAutoloader(
+			array('PHPTAL','autoload'), 'PHPTAL');
+		
 		// We create an instance of our view wrapper and configure it
 		// It extends Zend_View so we can configure it the same way
 		$view = new Ztal_Tal_View($this->_options);

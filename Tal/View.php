@@ -68,6 +68,12 @@ class Ztal_Tal_View extends Zend_View
 	 */
 	protected $_cacheResult = false;
 
+	/**
+	 * Whether to turn on the whitespace compression filter.
+	 *
+	 * @var bool
+	 */
+	protected $_compressWhitespace = false;
 
 	/**
 	 * Constructor.
@@ -81,30 +87,33 @@ class Ztal_Tal_View extends Zend_View
 		$this->setEngine(new PHPTAL());
 		
 		// configure the encoding
-		if (isset($options->encoding) && $options->encoding != '') {
-			$this->setEncoding((string)$options->encoding);
+		if (isset($options['encoding']) && $options['encoding'] != '') {
+			$this->setEncoding((string)$options['encoding']);
 		} else {
 			$this->setEncoding('UTF-8');
 		}
 
 		// change the compiled code destination if set in the config
-		if (isset($options->cacheDirectory) && $options->cacheDirectory != '') {
-			$this->setCacheDirectory((string)$options->cacheDirectory);
+		if (isset($options['cacheDirectory']) && $options['cacheDirectory'] != '') {
+			$this->setCacheDirectory((string)$options['cacheDirectory']);
 		}
 
 		// configure the caching mode
-		if (isset($options->cachePurgeMode) && $options->cachePurgeMode == true) {
-			$this->setCachePurgeMode(true);
-		} else {
-			$this->setCachePurgeMode(false);
+		if (isset($options['cachePurgeMode'])) {
+			$this->setCachePurgeMode($options['cachePurgeMode'] == '1');
+		}
+		
+		// configure the whitespace compression mode
+		if (isset($options['compressWhitespace'])) {
+			$this->setCompressWhitespace($options['compressWhitespace'] == '1');
 		}
 		
 		// set the layout template path
 		$this->addTemplateRepositoryPath(Zend_Layout::getMvcInstance()->getLayoutPath());
 
 		// Set the remaining template repository directories;
-		if (isset($options->globalTemplatesDirectory)) {
-			$directories = $options->globalTemplatesDirectory;
+		if (isset($options['globalTemplatesDirectory'])) {
+			$directories = $options['globalTemplatesDirectory'];
 			if (!is_array($directories)) {
 				$directories = array($directories);
 			}
@@ -121,8 +130,8 @@ class Ztal_Tal_View extends Zend_View
 		
 		
 		//load in all php files that exist in the custom modifiers directory
-		if (isset($options->customModifiersDirectory)) {
-			$customModifiers = $options->customModifiersDirectory;
+		if (isset($options['customModifiersDirectory'])) {
+			$customModifiers = $options['customModifiersDirectory'];
 			if (!is_array($customModifiers)) {
 				$customModifiers = array($customModifiers);
 			}
@@ -283,6 +292,32 @@ class Ztal_Tal_View extends Zend_View
 		parent::setEncoding($encoding);
 		$this->_engine->setEncoding(parent::getEncoding());
 	}
+
+
+	/**
+	 * Sets whether whitespace compression should be performed.
+	 *
+	 * @param bool $flag Whether to compress whitespace.
+	 *
+	 * @return void
+	 */
+	public function setCompressWhitespace($flag)
+	{
+		$this->_compressWhitespace = (bool)$flag;
+	}
+
+
+	/**
+	 * Gets whether whitespace compression is currently turned on.
+	 *
+	 * @return bool
+	 */
+	public function getCompressWhitespace()
+	{
+		return $this->_compressWhitespace;
+	}
+
+
 	
 	/**
 	 * Either append or overwrite the paths used to find a template.
@@ -403,7 +438,7 @@ class Ztal_Tal_View extends Zend_View
 	 * @return string
 	 */
 	public function render($template)
-	{
+	{		
 		if ($this->_useCachedVersion && !$this->_cacheResult) {
 			$result = $this->_zendPageCache->load($this->_zendPageCacheKey);
 			if ($result !== false ) {
@@ -453,17 +488,39 @@ class Ztal_Tal_View extends Zend_View
 			}
 		}
 		
+		// Strip html comments and compress un-needed whitespace
 		$this->_engine->addPreFilter(new PHPTAL_PreFilter_StripComments());
-		$result = $this->_engine->execute();
 		
-		if ($this->_cacheResult
-			&& $this->_zendPageCache != null
-			&& $this->_zendPageCacheKey != null
-			&& $this->_zendPageCacheDuration > 0
-		) {
-			$this->_zendPageCache->save($result, $this->_zendPageCacheKey,
-				array('PHPTALPage'), $this->_zendPageCacheDuration);
-				
+		if ($this->_compressWhitespace == true) {
+			$this->_engine->addPreFilter(new PHPTAL_PreFilter_Compress());
+		}
+		
+		try {
+			$result = $this->_engine->execute();
+			if ($this->_cacheResult
+				&& $this->_zendPageCache != null
+				&& $this->_zendPageCacheKey != null
+				&& $this->_zendPageCacheDuration > 0
+			) {
+				$this->_zendPageCache->save($result, $this->_zendPageCacheKey,
+					array('PHPTALPage'), $this->_zendPageCacheDuration);
+					
+			}
+		} catch(PHPTAL_TemplateException $e) {
+			// If the exception is a root PHPTAL_TemplateException
+			// rather than a subclass of this exception and xdebug is enabled,
+			// it will have already been picked up by xdebug, if enabled, and
+			// should be shown like any other php error.
+			// Any subclass of PHPTAL_TemplateException can be handled by
+			// the phptal internal exception handler as it gives a useful
+			// error output
+			if (get_class($e) == 'PHPTAL_TemplateException'
+				&& function_exists('xdebug_is_enabled')
+				&& xdebug_is_enabled()
+			) {
+				exit();
+			}
+			throw $e;
 		}
 		return $result;
 	}

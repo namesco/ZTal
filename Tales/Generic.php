@@ -11,8 +11,6 @@
  * @license   http://names.co.uk/license Namesco
  */
 
-require_once 'PHPTAL/Tales.php';
-
 /**
  * Creates a namespace for the tales extensions by clustering them as static methods on the class.
  *
@@ -325,5 +323,84 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$currency = substr($src, 0, $break);
 		}
 		return phptal_tale($currency, $nothrow) . '->toCurrency(' . phptal_tale($variable, $nothrow) . ')';
+	}
+	
+	
+	/**
+	 * Tal to support sorting of an array.
+	 *
+	 * Example usage:
+	 * <span tal:define="sortedArray Ztal_Tales_Generic.arraySort:sortMode,array" />
+	 *
+	 * sortMode may be:
+	 *    regular      - standard sort with no type conversion during value comparison
+	 *    string       - sort by comparing values as strings
+	 *    numeric      - sort by comparing values as numbers
+	 *    localeString - string sort using the current locale
+	 *    natural      - sort using a natural sorting algorithm (see natsort())
+	 *    none         - don't sort, just pass back the array
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string	 
+	 */
+	public static function arraySort($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$command = strtolower(substr($src, 0, $break));
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$variable = $src;
+			$rest = 'NULL';
+		} else {
+			$variable = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+		
+		return 'Ztal_Tales_Generic::arraySortHelper('
+			. phptal_tale($variable, $nothrow) . ', '
+			. phptal_tale($command, $nothrow) . ')';
+	}
+	
+	/**
+	 * Tal helper method for creating a sorted copy of the supplied array.
+	 *
+	 * @param array  $array    The array to copy and sort.
+	 * @param string $sortMode The sort method to use.
+	 *
+	 * @return array
+	 */
+	public static function arraySortHelper($array, $sortMode)
+	{
+		if ($sortMode == 'none') {
+			return $array;
+		}
+		
+		$resultArray = $array;
+		switch (strtolower($sortMode)) {
+			case 'string':
+				asort($resultArray, SORT_STRING);
+				break;
+				
+			case 'numeric':
+				asort($resultArray, SORT_NUMERIC);
+				break;
+			
+			case 'localestring':
+				asort($resultArray, SORT_LOCALE_STRING);
+				break;
+			
+			case 'natural':
+				natsort($resultArray);
+				break;
+			
+			case 'regular':
+			default:
+				asort($resultArray, SORT_REGULAR);
+				break;
+		}
+		return $resultArray;
 	}
 }

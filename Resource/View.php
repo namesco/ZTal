@@ -12,6 +12,8 @@
 require_once 'PHPTAL.php';
 require_once 'PHPTAL/PreFilter.php';
 require_once 'PHPTAL/PreFilter/StripComments.php';
+require_once 'PHPTAL/Tales.php';
+require_once 'PHPTAL/TranslationService.php';
 
 /**
  * Overrides the default Zend View to provide Tal templating support through PHPTal
