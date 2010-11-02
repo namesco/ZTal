@@ -47,8 +47,10 @@
 				<!-- Is this an element? -->
 				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
                     tal:define="macro Ztal_Tales_Form.getElementMacro:element"
-					tal:attributes="class string:${Ztal_Tales_Form.inputType:element}-element;
-									id string:${element/getId}-field"
+					tal:attributes="class string:
+									    ${Ztal_Tales_Form.getAttrib:element,string:contextClass}
+									    ${Ztal_Tales_Form.inputType:element}-element;
+								    id string:${element/getId}-field"
 				>
 					<tal:block metal:use-macro="${macro}" />
 				</li>
@@ -60,7 +62,10 @@
 
 	<!-- Display Group Fragment, expects an instance of Zend_Form_DisplayGroup,
 		 will render it into a fieldset -->
-	<fieldset metal:define-macro="displayGroup">
+	<fieldset metal:define-macro="displayGroup"
+			  tal:attributes="class Ztal_Tales_Form.getAttrib:element,string:class;
+							  id Ztal_Tales_Form.getAttrib:element,string:id"
+	>
 		<legend tal:condition="not:Ztal_Tales_Generic.equal:element/getLegend,string:">
 			<span i18n:translate="element/getLegend" />
 		</legend>
@@ -80,7 +85,7 @@
 	-->
 	<tal:block metal:define-macro="dateSelect">
 		<label tal:condition="Ztal_Tales_Form.showLabel:element"
-				   i18n:translate="element/getLabel"
+			   i18n:translate="element/getLabel"
 		/>
 		<tal:block  tal:repeat="dateElement element/getElements">
 			<tal:block tal:define="element dateElement" metal:use-macro="singleElement" />
@@ -90,8 +95,15 @@
 
 	<!-- Fragment to display the fields held in a display group -->
 	<tal:block metal:define-macro="fields" tal:repeat="element elements">
-		<tal:block tal:define="macro Ztal_Tales_Form.getElementMacro:element"
-				   metal:use-macro="${macro}" />
+		<li tal:condition="Ztal_Tales_Form.isFormElement:element"
+			tal:define="macro Ztal_Tales_Form.getElementMacro:element"
+			tal:attributes="class string:
+							    ${Ztal_Tales_Form.getAttrib:element,string:contextClass}
+							    ${Ztal_Tales_Form.inputType:element}-element;
+							id string:${element/getId}-field"
+		>
+			<tal:block metal:use-macro="${macro}" />
+		</li>
 	</tal:block>
 
 	<!-- Will display an <input> element -->
@@ -99,9 +111,20 @@
 		   tal:attributes="type Ztal_Tales_Form.inputType:element;
 						   name name | element/getFullyQualifiedName;
 						   id element/getId;
+						   class Ztal_Tales_Form.getAttrib:element,string:class;
 						   value value | nothing;
 						   maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength;
 						   checked checked | nothing"
+	/>
+
+	<!-- Will display a <textarea> element -->
+	<textarea metal:define-macro="textareaElement"
+		      tal:attributes="name name | element/getFullyQualifiedName;
+							  id element/getId;
+							  class Ztal_Tales_Form.getAttrib:element,string:class;
+							  rows Ztal_Tales_Form.getAttrib:element,string:rows;
+							  cols Ztal_Tales_Form.getAttrib:element,string:cols;"
+			  tal:content="value"
 	/>
 
 	<!-- Will display a single form element along with a label -->
@@ -115,6 +138,11 @@
 		<tal:block tal:condition="Ztal_Tales_Form.isInput:element"
 				   tal:define="value element/getValue"
 				   metal:use-macro="global/form.xhtml/inputElement" />
+
+		<!-- If it is a textarea, render it using the textareaElement fragment -->
+		<tal:block tal:condition="Ztal_Tales_Form.isTextarea:element"
+				   tal:define="value element/getValue"
+				   metal:use-macro="global/form.xhtml/textareaElement" />
 
 		<!-- If it is a radio element, then iterate over the different options
 			 and render each one as an input element. -->
@@ -157,6 +185,8 @@
 		<!-- If it is a button, then render it out -->
 		<button tal:condition="Ztal_Tales_Form.isButton:element"
 				tal:attributes="name element/getFullyQualifiedName;
+								id Ztal_Tales_Form.getAttrib:element,string:id;
+								class Ztal_Tales_Form.getAttrib:element,string:class;
 								type Ztal_Tales_Form.getAttrib:element,string:type;
 								value element/getValue"
 				i18n:translate="element/getLabel" />
