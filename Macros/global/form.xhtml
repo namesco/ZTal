@@ -32,11 +32,18 @@
 				</tal:block>
 			</ul>
 		</div>
+		
+		<tal:block metal:use-macro="fields" tal:define="elements form" />
+	</form>
 
+
+
+	<!-- Fragment to display the fields held in a form or display group -->
+	<tal:block metal:define-macro="fields">
 		<!-- Iterate over the contents of the form and render everything
-			 appropriately -->
+			 except hidden elements appropriately -->
 		<ul>
-			<tal:block tal:repeat="element form">
+			<tal:block tal:repeat="element elements">
 
 				<!-- Is this element a display group? -->
 				<li tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
@@ -44,35 +51,48 @@
 					<tal:block metal:use-macro="global/form.xhtml/displayGroup" />
 				</li>
 
-				<!-- Is this an element? -->
+				<!-- Is this an element (but not a hidden element)? -->
 				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
-                    tal:define="macro Ztal_Tales_Form.getElementMacro:element"
-					tal:attributes="class string:
-									    ${Ztal_Tales_Form.getAttrib:element,string:contextClass}
-									    ${Ztal_Tales_Form.inputType:element}-element;
-								    id string:${element/getId}-field"
+					tal:define="macro Ztal_Tales_Form.getElementMacro:element"
+					tal:attributes="
+						class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
+						id string:${element/getId}-field"
 				>
 					<tal:block metal:use-macro="${macro}" />
 				</li>
 
 			</tal:block>
 		</ul>
+		
+		<!-- Iterate over the hidden elements, if any -->
+		<tal:block tal:repeat="element elements">
 
-	</form>
+			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element"
+				tal:attributes="
+					class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
+					id string:${element/getId}-field"
+			>
+				<tal:block metal:use-macro="inputElement" />
+			</tal:block>
+
+		</tal:block>
+	</tal:block>
+
+
+
+
 
 	<!-- Display Group Fragment, expects an instance of Zend_Form_DisplayGroup,
 		 will render it into a fieldset -->
 	<fieldset metal:define-macro="displayGroup"
 			  tal:attributes="class Ztal_Tales_Form.getAttrib:element,string:class;
-							  id Ztal_Tales_Form.getAttrib:element,string:id"
-	>
+					id Ztal_Tales_Form.getAttrib:element,string:id | repeat/element/key">
 		<legend tal:condition="not:Ztal_Tales_Generic.equal:element/getLegend,string:">
 			<span i18n:translate="element/getLegend" />
 		</legend>
-		<ul>
-			<tal:block tal:define="elements displayGroupElement/getElements"
-					   metal:use-macro="global/form.xhtml/fields" />
-		</ul>
+		<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:${repeat/element/key}-preSlot" />
+		<tal:block tal:define="elements displayGroupElement/getElements" metal:use-macro="fields" />
+		<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:${repeat/element/key}-postSlot" />
 	</fieldset>
 
 	<!-- Date selection macro, for displaying date drop downs.
@@ -84,7 +104,7 @@
 	getElements should return an array of Zend_Form_Element_Selects.
 	-->
 	<tal:block metal:define-macro="dateSelect">
-		<label tal:condition="Ztal_Tales_Form.showLabel:element"
+		<label tal:condition="Ztal_Tales_Form.showLabelBefore:element"
 			   i18n:translate="element/getLabel"
 		/>
 		<tal:block  tal:repeat="dateElement element/getElements">
@@ -93,18 +113,6 @@
 		</tal:block>
    </tal:block>
 
-	<!-- Fragment to display the fields held in a display group -->
-	<tal:block metal:define-macro="fields" tal:repeat="element elements">
-		<li tal:condition="Ztal_Tales_Form.isFormElement:element"
-			tal:define="macro Ztal_Tales_Form.getElementMacro:element"
-			tal:attributes="class string:
-							    ${Ztal_Tales_Form.getAttrib:element,string:contextClass}
-							    ${Ztal_Tales_Form.inputType:element}-element;
-							id string:${element/getId}-field"
-		>
-			<tal:block metal:use-macro="${macro}" />
-		</li>
-	</tal:block>
 
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
@@ -130,7 +138,7 @@
 	<!-- Will display a single form element along with a label -->
 	<tal:block metal:define-macro="singleElement">
 
-		<label tal:condition="Ztal_Tales_Form.showLabel:element"
+		<label tal:condition="Ztal_Tales_Form.showLabelBefore:element"
 				   i18n:translate="element/getLabel"
 		/>
 
@@ -138,6 +146,12 @@
 		<tal:block tal:condition="Ztal_Tales_Form.isInput:element"
 				   tal:define="value element/getValue"
 				   metal:use-macro="global/form.xhtml/inputElement" />
+
+		<!-- If it is a checkbox, render it using the inputElement fragment -->
+		<tal:block tal:condition="Ztal_Tales_Form.isCheckbox:element">
+			<tal:block tal:define="value element/getCheckedValue; checked element/isChecked"
+				   metal:use-macro="global/form.xhtml/inputElement" />
+		</tal:block>
 
 		<!-- If it is a textarea, render it using the textareaElement fragment -->
 		<tal:block tal:condition="Ztal_Tales_Form.isTextarea:element"
@@ -172,14 +186,13 @@
 		<!-- If it is a select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal_Tales_Form.isSelect:element"
-				tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;"
 				tal:attributes="name element/getFullyQualifiedName; id element/getId;">
-				
-			<option tal:repeat="option Ztal_Tales_Generic.arraySort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
-					tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
-					tal:content="option"
-			/>
-
+			<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
+				<option tal:repeat="option Ztal_Tales_Generic.arraySort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
+						tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
+						tal:content="option"
+				/>
+			</tal:block>
 		</select>
 
 		<!-- If it is a button, then render it out -->
@@ -211,6 +224,10 @@
 				   tal:attributes="name string:${element/getName}[input]"
 			/>
 		</div>
+		<label tal:condition="Ztal_Tales_Form.showLabelAfter:element"
+				   i18n:translate="element/getLabel"
+		/>
+
 	</tal:block>
 
 </tal:block>

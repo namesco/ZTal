@@ -217,9 +217,37 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return phptal_tale($src, $nothrow)
-			   . ' instanceof Zend_Form_Element';
+		return '((' . phptal_tale($src, $nothrow)
+			. ' instanceof Zend_Form_Element) && (Ztal_Tales_Form::calculateType('
+			. phptal_tale($src, $nothrow) . '->getType()) != "hidden"))';
 	}
+
+	/**
+	 * Is the current element a hidden element?.
+	 *
+	 * Tal extension to determine whether or not the current element is a
+	 * hidden form element.
+	 *
+	 * Example use within template:
+	 * <input tal:condition="Ztal_Tales_Form.isHiddenElement:element" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function isHiddenElement($src, $nothrow)
+	{
+
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+		return '((' . phptal_tale($src, $nothrow)
+			. ' instanceof Zend_Form_Element) && (Ztal_Tales_Form::calculateType('
+			. phptal_tale($src, $nothrow) . '->getType()) == "hidden"))';
+	}
+
 
 	/**
 	 * Tal extension to determine whether or not the current element is a button input.
@@ -381,6 +409,32 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 	}
 
+
+	/**
+	 * Tal extension to determine whether or not the current element is a checkbox.
+	 *
+	 * Example use within template:
+	 * <input tal:condition="Ztal_Tales_Form.isCheckbox:element" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function isCheckbox($src, $nothrow)
+	{
+
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+
+		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+			   . "->getType()) == 'checkbox'";
+
+	}
+
+
 	/**
 	 * Tal extension to determine whether or not the current element is a select.
 	 *
@@ -429,10 +483,10 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	}
 
 	/**
-	 * Tal extension to determine whether or not the current element should have a label displayed with it.
+	 * Tal extension to determine whether or not the current element should have a label displayed before it.
 	 *
 	 * Example use within template:
-	 * <label tal:condition="Ztal_Tales_Form.showLabel:element"
+	 * <label tal:condition="Ztal_Tales_Form.showLabelBefore:element"
 	 *  	  i18n:translate="element/getLabel" />
 	 *
 	 * @param string $src     The original template string.
@@ -440,7 +494,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function showLabel($src, $nothrow)
+	public static function showLabelBefore($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -448,10 +502,65 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		}
 		return 'in_array(Ztal_Tales_Form::calculateType('
 			   . phptal_tale($src, $nothrow) . '->getType()), '
-			   . "array('checkbox', 'date', 'email', 'password', 'radio', 'select', 'text', 'textarea')) && "
+			   . "array('date', 'email', 'password', 'select', 'text', 'textarea')) && "
 			   . phptal_tale($src, $nothrow) . '->getLabel()';
 	}
 
 
+
+	/**
+	 * Tal extension to determine whether or not the current element should have a label displayed after it.
+	 *
+	 * Example use within template:
+	 * <label tal:condition="Ztal_Tales_Form.showLabelAfter:element"
+	 *  	  i18n:translate="element/getLabel" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function showLabelAfter($src, $nothrow)
+	{
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+		return 'in_array(Ztal_Tales_Form::calculateType('
+			   . phptal_tale($src, $nothrow) . '->getType()), '
+			   . "array('checkbox', 'radio')) && "
+			   . phptal_tale($src, $nothrow) . '->getLabel()';
+	}
+
+
+	/**
+	 * Tal extension to inject slot content into a variable.
+	 *
+	 * Slot names cannot (currently) be dynamic in phptal so this tale
+	 * allows us to grab the content of a slot with a dynamic name and
+	 * assign it to a variable which we can then output.
+	 *
+	 * Example use within template:
+	 * <tal:block tal:define="slotContent Ztal_Tales_Form.getSlotContent:slotName" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function getSlotContent($src, $nothrow)
+	{
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$slotName = $src;
+			$notTrue = 'NULL';
+		} else {
+			$slotName = substr($src, 0, $break);
+			$notTrue = phptal_tales(substr($src, $break + 1), $nothrow);
+		}
+		return '($ctx->hasSlot(' . phptal_tale($slotName, $nothrow)
+			. ')?$ctx->getSlot(' . phptal_tale($slotName, $nothrow)
+			. '):' . $notTrue . ')';
+	}
 	
 }
