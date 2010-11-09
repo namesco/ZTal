@@ -1,0 +1,16 @@
+SetEnv APPLICATION_ENV development
+php_value include_path ".:/Users/robertgoldsmith/Development/Third Party/ztal/0.9.4:/Users/robertgoldsmith/Development/Third Party/zend/1.10.4:/Users/robertgoldsmith/Development/Third Party/phptal/1.2.2:/usr/lib/php"
+
+RewriteEngine On
+
+#ignore .ico files
+RewriteRule ^.*\.ico / [G]
+
+#if the file exists, allow it
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*) - [L]
+
+#if we get to this point, the file could not be found
+#so assume it is a zend rewrite and map it to /index.php
+RewriteCond %{REQUEST_URI} !^/index.php$
+RewriteRule ^.* /index.php [L]
