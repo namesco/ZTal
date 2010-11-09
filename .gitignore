@@ -1,3 +1,4 @@
 *.swp
 *.swo
 *.xcodeproj
+example/tal/cache/tpl_*
