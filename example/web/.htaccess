@@ -1,5 +1,4 @@
 SetEnv APPLICATION_ENV development
-php_value include_path ".:/Users/robertgoldsmith/Development/Third Party/ztal/0.9.4:/Users/robertgoldsmith/Development/Third Party/zend/1.10.4:/Users/robertgoldsmith/Development/Third Party/phptal/1.2.2:/usr/lib/php"
 
 RewriteEngine On
 
