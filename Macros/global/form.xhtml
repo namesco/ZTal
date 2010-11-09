@@ -55,7 +55,9 @@
 				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
 					tal:define="macro Ztal_Tales_Form.getElementMacro:element"
 					tal:attributes="
-						class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
+						class string:
+							${Ztal_Tales_Form.getAttrib:element,string:contextClass}
+							${Ztal_Tales_Form.inputType:element}-element;
 						id string:${element/getId}-field"
 				>
 					<tal:block metal:use-macro="${macro}" />
@@ -69,7 +71,9 @@
 
 			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element"
 				tal:attributes="
-					class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
+					class string:
+						${Ztal_Tales_Form.getAttrib:element,string:contextClass}
+						${Ztal_Tales_Form.inputType:element}-element;
 					id string:${element/getId}-field"
 			>
 				<tal:block metal:use-macro="inputElement" />
