@@ -130,9 +130,45 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return phptal_tale($a, $nothrow) . '->getElement(' .
-			   phptal_tale($b, $nothrow) . ')';
+		return '(' . phptal_tale($a, $nothrow) . '->getElement(' 
+			. phptal_tale($b, $nothrow) . ') != null ? '
+			. phptal_tale($a, $nothrow) . '->getElement('
+			. phptal_tale($b, $nothrow) . ') : '
+			. phptal_tales($rest, $nothrow) . ')';
 	}
+
+
+	/**
+	 * Gets the errors for a named element.
+	 *
+	 * Example used within template:
+	 * <tal:block tal:define="element Ztal_Tales_Form.getErrors:form,elementName" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function getErrors($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$a = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$b = $src;
+			$rest = 'NULL';
+		} else {
+			$b = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+		return '(count(' . phptal_tale($a, $nothrow) . '->getErrors(' 
+			. phptal_tale($b, $nothrow) . ')) > 0 ? '
+			. phptal_tale($a, $nothrow) . '->getErrors('
+			. phptal_tale($b, $nothrow) . ') : '
+			. phptal_tales($rest, $nothrow) . ')';
+	}
+
 
 	/**
 	 * Tal extension to determine the macro to use for output.

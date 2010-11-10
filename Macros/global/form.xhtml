@@ -9,31 +9,46 @@
 	<!-- Form Fragment, expects an instance of Zend_Form, or something that
 		 extends it-->
 	<form tal:attributes="action form/getAction;
-						  class php:form.getAttrib('class') ? form.getAttrib('class') : 'talForm';
+						  class Ztal_Tales_Form.getElement:form,string:class | string:talForm;
 						  id form/getId;
 						  method form/getMethod"
 		  metal:define-macro="talForm"
 	>
+		<tal:block tal:define="errorMode errorDisplayMode | string:header;">
 
-		<!-- Error Messages -->
-		<div tal:condition="form/isErrors" class="errors">
-			<h3 i18n:translate="string:error" />
-			<ul>
-				<tal:block tal:repeat="elementErrors form/getErrors">
-					<li tal:define="element Ztal_Tales_Form.getElement:form,repeat/elementErrors/key"
-						tal:repeat="error elementErrors"
-						i18n:translate="error"
-					>
-						<tal:inline i18n:name="field">
-							<tal:inline i18n:translate="element/getLabel" />
-						</tal:inline>
-						<tal:inline i18n:name="value" tal:content="element/getValue" />
-					</li>
-				</tal:block>
-			</ul>
-		</div>
-		
-		<tal:block metal:use-macro="fields" tal:define="elements form" />
+			<!--
+				Error Messages, if they should be displayed grouped
+				at the top of the form
+			-->
+			<tal:block
+				tal:condition="
+					Ztal_Tales_Generic.equal:errorMode,string:header
+					| Ztal_Tales_Generic.equal:errorMode,string:both"
+			>
+				<!-- If any errors exist, create a div for them -->
+				<div tal:condition="form/isErrors" class="errors">
+					<h3 i18n:translate="string:error" />
+					
+					<!-- loop through all the elements with errors -->
+					<tal:block tal:repeat="elementErrors form/getErrors">
+						<ul tal:condition="elementErrors">
+							<!--
+								For each element with errors, show the element
+								name and a ul list of errors
+							-->
+							<li tal:define="element Ztal_Tales_Form.getElement:form,repeat/elementErrors/key">
+								<tal:inline i18n:translate="element/getLabel" />
+								<ul>
+									<li tal:repeat="error elementErrors" i18n:translate="error" />
+								</ul>
+							</li>
+						</ul>
+					</tal:block>
+				</div>
+			</tal:block>
+			
+			<tal:block metal:use-macro="fields" tal:define="elements form" />
+		</tal:block>
 	</form>
 
 
@@ -43,25 +58,46 @@
 		<!-- Iterate over the contents of the form and render everything
 			 except hidden elements appropriately -->
 		<ul>
-			<tal:block tal:repeat="element elements">
+			<li tal:repeat="element elements">
+				<!-- is there an error to display? -->
+				<tal:block
+					tal:condition="
+						Ztal_Tales_Generic.equal:errorMode,string:inline
+						| Ztal_Tales_Generic.equal:errorMode,string:both"
+				>
+					<!--
+						Fetch the errors for the current element.
+						If there are any errors to show, create a ul list to
+						display them
+					-->
+					<ul
+						tal:define="elementErrors Ztal_Tales_Form.getErrors:form,repeat/element/key"
+						tal:condition="not:Ztal_Tales_Generic.equal:elementErrors,null"
+						class="elementErrors"
+					>
+						<li tal:repeat="error elementErrors" i18n:translate="error" />
+					</ul>
+						
+					
+				</tal:block>
 
+				
 				<!-- Is this element a display group? -->
-				<li tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
+				<tal:block tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
 					tal:define="displayGroupElement element">
 					<tal:block metal:use-macro="global/form.xhtml/displayGroup" />
-				</li>
+				</tal:block>
 
 				<!-- Is this an element (but not a hidden element)? -->
-				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
+				<tal:block tal:condition="Ztal_Tales_Form.isFormElement:element"
 					tal:define="macro Ztal_Tales_Form.getElementMacro:element"
 					tal:attributes="
 						class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
 						id string:${element/getId}-field"
 				>
 					<tal:block metal:use-macro="${macro}" />
-				</li>
-
-			</tal:block>
+				</tal:block>
+			</li>
 		</ul>
 		
 		<!-- Iterate over the hidden elements, if any -->
