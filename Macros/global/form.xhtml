@@ -92,7 +92,7 @@
 				<tal:block tal:condition="Ztal_Tales_Form.isFormElement:element"
 					tal:define="macro Ztal_Tales_Form.getElementMacro:element"
 					tal:attributes="
-						class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
+						class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass} ${Ztal_Tales_Form.inputType:element}-element;
 						id string:${element/getId}-field"
 				>
 					<tal:block metal:use-macro="${macro}" />
@@ -102,16 +102,11 @@
 		
 		<!-- Iterate over the hidden elements, if any -->
 		<tal:block tal:repeat="element elements">
-
-			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element"
-				tal:attributes="
-					class string:${Ztal_Tales_Form.getAttrib:element,string:contextClass}${Ztal_Tales_Form.inputType:element}-element;
-					id string:${element/getId}-field"
-			>
-				<tal:block metal:use-macro="inputElement" />
+			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element">
+				<tal:block tal:define="value element/getValue" metal:use-macro="inputElement" />
 			</tal:block>
-
 		</tal:block>
+
 	</tal:block>
 
 
