@@ -28,30 +28,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 {
 
 	/**
-	 * Find which macro to use for an element.
-	 *
-	 * Will get the macro to use for outputting the element from the element. If
-	 * it is not set then it will default to the global singleElement macro.
-	 *
-	 * @param Zend_Form_Element $element The element for which a macro is needed.
-	 *
-	 * @return string
-	 */
-	public static function calculateMacro($element)
-	{
-		// Get the macro from the element.
-		$macro = $element->getAttrib('macro');
-
-		// If no macro is defined, default to the standard singleElement macro.
-		if (is_null($macro)) {
-			$macro = 'global/form.xhtml/singleElement';
-		}
-
-		return $macro;
-
-	}
-
-	/**
 	 * Figures out the simple element type from the one passed in, which may be a full class name of an element.
 	 *
 	 * @param string $type The type to check.
@@ -103,7 +79,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			. phptal_tale($b, $nothrow) . ') != null ? '
 			. phptal_tale($a, $nothrow) . '->getAttrib('
 			. phptal_tale($b, $nothrow) . ') : '
-			. phptal_tales($rest, $nothrow) . ')';
+			. phptal_tale($rest, $nothrow) . ')';
 	}
 
 	/**
@@ -134,7 +110,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			. phptal_tale($b, $nothrow) . ') != null ? '
 			. phptal_tale($a, $nothrow) . '->getElement('
 			. phptal_tale($b, $nothrow) . ') : '
-			. phptal_tales($rest, $nothrow) . ')';
+			. phptal_tale($rest, $nothrow) . ')';
 	}
 
 
@@ -166,27 +142,9 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			. phptal_tale($b, $nothrow) . ')) > 0 ? '
 			. phptal_tale($a, $nothrow) . '->getErrors('
 			. phptal_tale($b, $nothrow) . ') : '
-			. phptal_tales($rest, $nothrow) . ')';
+			. phptal_tale($rest, $nothrow) . ')';
 	}
 
-
-	/**
-	 * Tal extension to determine the macro to use for output.
-	 *
-	 * @param string $src     The original template string.
-	 * @param bool   $nothrow Whether to throw an exception on error.
-	 *
-	 * @return string
-	 */
-	public static function getElementMacro($src, $nothrow)
-	{
-		$break = strpos($src, '|');
-		if ($break !== false) {
-			$src = substr($src, 0, $break);
-		}
-		return 'Ztal_Tales_Form::calculateMacro(' . phptal_tale($src, $nothrow)
-			   . ')';
-	}
 
 	/**
 	 * Tal extension to determine the input field type of a variable.
@@ -592,11 +550,11 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$notTrue = 'NULL';
 		} else {
 			$slotName = substr($src, 0, $break);
-			$notTrue = phptal_tales(substr($src, $break + 1), $nothrow);
+			$notTrue = substr($src, $break + 1);
 		}
 		return '($ctx->hasSlot(' . phptal_tale($slotName, $nothrow)
 			. ')?$ctx->getSlot(' . phptal_tale($slotName, $nothrow)
-			. '):' . $notTrue . ')';
+			. '):' . phptal_tale($notTrue, $nothrow) . ')';
 	}
 	
 }

@@ -216,7 +216,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$rest = substr($src, $break + 1);
 		}
 		return '(' . phptal_tale($a, $nothrow) . '==' . phptal_tale($b, $nothrow) . '?1:' 
-			. phptal_tales($rest, $nothrow) . ')';
+			. phptal_tale($rest, $nothrow) . ')';
 	}
 
 
@@ -242,7 +242,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$notTrue = 'NULL';
 		} else {
 			$string = substr($src, 0, $break);
-			$notTrue = phptal_tales(substr($src, $break + 1), $nothrow);
+			$notTrue = phptal_tale(substr($src, $break + 1), $nothrow);
 		}
 		return '(' . phptal_tale($variable, $nothrow) . '==true?' . phptal_tale($string, $nothrow)
 			. ':' . $notTrue . ')';

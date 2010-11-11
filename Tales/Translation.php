@@ -43,7 +43,7 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 			$outputParts[] = str_replace("'", '', phptal_tale($currentPart, $nothrow));
 		}
 		return 'array(\'pluralKeys\'=>array(\'' . implode('\',\'', $outputParts) . '\'), \'count\'=>'
-			. phptal_tales($count, $nothrow) . ', \'ctx\'=>$ctx)';
+			. phptal_tale($count, $nothrow) . ', \'ctx\'=>$ctx)';
 	}
 	
 	
