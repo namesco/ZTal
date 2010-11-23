@@ -122,7 +122,7 @@ class Ztal_Tal_View extends Zend_View
 			}
 		}
 
-		$ztalBasePath = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+		$ztalBasePath = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..');
 		
 		// Add ZTal's macro repository as a final default.
 		$ztalMacroPath = $ztalBasePath . DIRECTORY_SEPARATOR . 'Macros';
