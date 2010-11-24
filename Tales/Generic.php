@@ -20,7 +20,7 @@
  * @package  PHPTal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-	
+
 final class Ztal_Tales_Generic implements PHPTAL_Tales
 {
 
@@ -53,19 +53,19 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$rest = substr($src, $break + 1);
 		}
 		switch ($command) {
-				
+
 			case 'word':
 				return 'ucwords(' . phptal_tale($src, $nothrow) . ')';
 				break;
-				
+
 			case 'all':
 				return 'strtoupper(' . phptal_tale($src, $nothrow) . ')';
 				break;
-				
+
 			case 'none':
 				return 'strtolower(' . phptal_tale($src, $nothrow) . ')';
 				break;
-			
+
 			case 'first':
 			default:
 				return 'ucfirst(' . phptal_tale($src, $nothrow) . ')';
@@ -93,7 +93,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$src = substr($src, 0, $break);
 		}
 		$parts = explode(',', $src);
-		return 'str_replace(' . phptal_tale($parts[1], $nothrow) . ', ' . phptal_tale($parts[2], $nothrow) 
+		return 'str_replace(' . phptal_tale($parts[1], $nothrow) . ', ' . phptal_tale($parts[2], $nothrow)
 			. ', ' . phptal_tale($parts[0], $nothrow) . ')';
 	}
 
@@ -146,8 +146,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		}
 		return 'Ztal_Tales_Generic::runtimeCalculateType(' . phptal_tale($src, $nothrow) . ')';
 	}
-	
-	
+
+
 	/**
 	 * Used by the phpType tal extension, returns a string of the type of the supplied variable.
 	 *
@@ -215,7 +215,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '(' . phptal_tale($a, $nothrow) . '==' . phptal_tale($b, $nothrow) . '?1:' 
+		return '(' . phptal_tale($a, $nothrow) . '==' . phptal_tale($b, $nothrow) . '?1:'
 			. phptal_tale($rest, $nothrow) . ')';
 	}
 
@@ -283,7 +283,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
-	 * @return string	 
+	 * @return string
 	 */
 	public static function zendLocaleNumber($src, $nothrow)
 	{
@@ -296,7 +296,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		} else {
 			$locale = substr($src, 0, $break);
 		}
-		return 'Zend_Locale_Format::toNumber((' . phptal_tale($variable, $nothrow) . '==\'\'?0:' 
+		return 'Zend_Locale_Format::toNumber((' . phptal_tale($variable, $nothrow) . '==\'\'?0:'
 			. phptal_tale($variable, $nothrow) . '), array(\'locale\' => ' . phptal_tale($locale, $nothrow) . '))';
 	}
 
@@ -324,8 +324,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		}
 		return phptal_tale($currency, $nothrow) . '->toCurrency(' . phptal_tale($variable, $nothrow) . ')';
 	}
-	
-	
+
+
 	/**
 	 * Tal to support sorting of an array.
 	 *
@@ -343,7 +343,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
-	 * @return string	 
+	 * @return string
 	 */
 	public static function arraySort($src, $nothrow)
 	{
@@ -358,12 +358,12 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$variable = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		
+
 		return 'Ztal_Tales_Generic::arraySortHelper('
 			. phptal_tale($variable, $nothrow) . ', '
 			. phptal_tale($command, $nothrow) . ')';
 	}
-	
+
 	/**
 	 * Tal helper method for creating a sorted copy of the supplied array.
 	 *
@@ -377,25 +377,25 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		if ($sortMode == 'none') {
 			return $array;
 		}
-		
+
 		$resultArray = $array;
 		switch (strtolower($sortMode)) {
 			case 'string':
 				asort($resultArray, SORT_STRING);
 				break;
-				
+
 			case 'numeric':
 				asort($resultArray, SORT_NUMERIC);
 				break;
-			
+
 			case 'localestring':
 				asort($resultArray, SORT_LOCALE_STRING);
 				break;
-			
+
 			case 'natural':
 				natsort($resultArray);
 				break;
-			
+
 			case 'regular':
 			default:
 				asort($resultArray, SORT_REGULAR);
