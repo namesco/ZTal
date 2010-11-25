@@ -219,6 +219,33 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			. phptal_tale($rest, $nothrow) . ')';
 	}
 
+	/**
+	 * Tal extension to return true when the first argument is greater.
+	 *
+	 * Example use within template:
+	 *	<span tal:content="Ztal_Tales_Generic.greaterThan:a,b" />.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function greaterThan($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$a = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$b = $src;
+			$rest = 'NULL';
+		} else {
+			$b = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+		return '(' . phptal_tale($a, $nothrow) . '>'
+			. phptal_tale($b, $nothrow) . ' ? true : false)';
+	}
 
 
 	/**
