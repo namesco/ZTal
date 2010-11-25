@@ -354,6 +354,38 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 
 
 	/**
+	 * Formats a number to a certain decimal place.
+	 *
+	 * Formats the number to the provided decimal place - that's numberwang!
+	 * Example use within template:
+	 *
+	 * <span
+	 *   tal:content="Ztal_Tales_Generic.numberFormatDecimal:numberVar,string:2"
+	 * />.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function numberFormatDecimal($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$variable = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$decimal = $src;
+		} else {
+			$decimal = substr($src, 0, $break);
+		}
+
+		return 'number_format(' . phptal_tale($variable, $nothrow)
+			. ', ' . phptal_tale($decimal, $nothrow) . ')';
+	}
+
+
+	/**
 	 * Tal to support sorting of an array.
 	 *
 	 * Example usage:
