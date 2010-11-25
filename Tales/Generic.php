@@ -470,14 +470,13 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 * Example usage:
 	 *
 	 * <span
-	 *	tal:repeat="arr Ztal_Tales_Generic.arrayFilter:mode,"key1,key2",array />
+	 *  tal:define="keys string:key1,key2"
+	 *  tal:repeat="arr Ztal_Tales_Generic.arrayExclude:string:mode,keys,array
+	 * />
 	 *
 	 * mode may be:
 	 *    key   - Filter items by the array key.
 	 *    value - Filter items by the array value.
-	 *
-	 * You must pass either a single or double quoted string of keys or values
-	 * to filter by, for example "key1, key2, key3" or 'key1, key2, key3'
 	 *
 	 * The last parameter is the original array to filter, this should be a
 	 * PHPTAL variable.
@@ -489,7 +488,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 */
 	public static function arrayExclude($src, $nothrow)
 	{
-		$regex = "/([a-zA-Z]+),\s*?[\"']{1}(.+)[\"']{1},\s*?([^|$]+)$/";
+		$regex = "/([a-zA-Z:]+)\s*?,\s*?([a-zA-Z0-9:]+)\s*?,\s*?([^|$]+)$/";
 		$src = trim($src);
 
 		// If we can't find a match for our parameters simply return NULL.
@@ -497,23 +496,17 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			return phptal_tales('NULL', $nothrow);
 		}
 
-		// Quote each item in the needle array so it can be passed to the
-		// helper.
-		$needle = explode(',', $items[2]);
-		$needle = array_map('Ztal_Tales_Generic::arrayMapStrQuote', $needle);
-
 		// Call the array filtering helper with:
 		//
 		// $items[1] = Type of filtering (e.g. key or value).
-		// $needle = Array of values or keys to filter on.
+		// $items[2] = PHPTAL variable (array) of items to filter with, or a
+		//             string of comma seperated items,
 		// $items[3] = PHPTAL variable of haystack array.
 		// true = Exclude rather than filter.
 		return "Ztal_Tales_Generic::arrayFilterHelper(
 
-			'" . $items[1] . "',
-
-			array(" . implode(',', $needle) . "),
-
+			" . phptal_tale($items[1], $nothrow) . ",
+			" . phptal_tale($items[2], $nothrow) . ",
 			" . phptal_tale($items[3], $nothrow) . ",
 
 			true)";
@@ -527,14 +520,13 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 * Example usage:
 	 *
 	 * <span
-	 *	tal:repeat="arr Ztal_Tales_Generic.arrayFilter:mode,"key1,key2",array />
+	 *  tal:define="keys string:key1,key2"
+	 *  tal:repeat="arr Ztal_Tales_Generic.arrayFilter:string:mode,keys,array
+	 * />
 	 *
 	 * mode may be:
 	 *    key   - Filter items by the array key.
 	 *    value - Filter items by the array value.
-	 *
-	 * You must pass either a single or double quoted string of keys or values
-	 * to filter by, for example "key1, key2, key3" or 'key1, key2, key3'
 	 *
 	 * The last parameter is the original array to filter, this should be a
 	 * PHPTAL variable.
@@ -546,7 +538,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 */
 	public static function arrayFilter($src, $nothrow)
 	{
-		$regex = "/([a-zA-Z]+),\s*?[\"']{1}(.+)[\"']{1},\s*?([^|$]+)$/";
+		$regex = "/([a-zA-Z:]+)\s*?,\s*?([a-zA-Z0-9:]+)\s*?,\s*?([^|$]+)$/";
 		$src = trim($src);
 
 		// If we can't find a match for our parameters simply return NULL.
@@ -554,40 +546,19 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			return phptal_tales('NULL', $nothrow);
 		}
 
-		// Quote each item in the needle array so it can be passed to the
-		// helper.
-		$needle = explode(',', $items[2]);
-		$needle = array_map('Ztal_Tales_Generic::arrayMapStrQuote', $needle);
-
-		/*
-		 * Call the array filtering helper with:
-		 *
-		 * $items[1] = Type of filtering (e.g. key or value).
-		 * $needle = Array of values or keys to filter on.
-		 * $items[3] = PHPTAL variable of haystack array.
-         */
+		// Call the array filtering helper with:
+		//
+		// $items[1] = Type of filtering (e.g. key or value).
+		// $items[2] = PHPTAL variable (array) of items to filter with, or a
+		//             string of comma seperated items,
+		// $items[3] = PHPTAL variable of haystack array.
+		// true = Exclude rather than filter.
 		return "Ztal_Tales_Generic::arrayFilterHelper(
 
-			'" . $items[1] . "',
-
-			array(" . implode(',', $needle) . "),
-
+			" . phptal_tale($items[1], $nothrow) . ",
+			" . phptal_tale($items[2], $nothrow) . ",
 			" . phptal_tale($items[3], $nothrow) . ")";
 
-	}
-
-	/**
-	 * Helper for the array_map used in the filter functions.
-	 *
-	 * This helper method simply quotes the array item and trims it.
-	 *
-	 * @param mixed $item The item to quote and trim.
-	 *
-	 * @return string
-	 */
-	public static function arrayMapStrQuote($item)
-	{
-		return trim("'" . $item . "'");
 	}
 
 	/**
@@ -607,7 +578,14 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	public static function arrayFilterHelper(
 		$for, $filter, $original, $exclude=false
 	) {
+		$for = strtolower($for);
 		$newArray = array();
+
+
+		if (!is_array($filter)) {
+			// Explode the filters by command.
+			$filter = array_map('trim', explode(',', $filter));
+		}
 
 		if ($for == 'key') {
 			foreach ($original as $k => $v) {
@@ -622,7 +600,6 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 				}
 			}
 		}
-
 
 		// If we're excluding then we need to return the original array with the
 		// newArray keys taken away.
