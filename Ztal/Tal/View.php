@@ -174,6 +174,17 @@ class Ztal_Tal_View extends Zend_View
 			}
 		}
 	}
+
+
+	/**
+	 * Handle cloning of the view by cloning the PHPTAL object correctly.
+	 *
+	 * @return void
+	 */
+	public function __clone()
+	{
+		$this->_engine = clone $this->_engine;
+	}
 	  
 		  
 
@@ -391,20 +402,6 @@ class Ztal_Tal_View extends Zend_View
 
 
 	/**
-	 * Sets which template to render.
-	 *
-	 * @param string $template The name of the template to render.
-	 *
-	 * @return bool
-	 */
-	public function setTemplate($template)
-	{
-		$this->_checkLoaded();
-		return $this->_engine->setTemplate($template);
-	}
-
-
-	/**
 	 * Retrieves a value from the view.
 	 *
 	 * @param string $key The member variable to access.
@@ -435,12 +432,17 @@ class Ztal_Tal_View extends Zend_View
 	/**
 	 * Returns PHPTAL output - either from a render or from the cache.
 	 *
-	 * @param string $template The name of the template to render.
+	 * @param string|array $template The name of the template to render or
+	 *                                an array with the ('src') src for a template
+	 *                                and a ('name') name to help identify the
+	 *                                template in error messages.
 	 *
 	 * @return string
 	 */
 	public function render($template)
 	{		
+		$this->_checkLoaded();
+		
 		if ($this->_useCachedVersion && !$this->_cacheResult) {
 			$result = $this->_zendPageCache->load($this->_zendPageCacheKey);
 			if ($result !== false ) {
@@ -448,16 +450,18 @@ class Ztal_Tal_View extends Zend_View
 			}
 		}
 		
-		//conversion of template names from '-' split to camel-case 
-		$templateParts = explode('-', $template);
-		$firstPart = array_shift($templateParts);
-		foreach ($templateParts as &$currentPart) {
-			$currentPart = ucfirst($currentPart);
+		if (!is_array($template)) {
+			//conversion of template names from '-' split to camel-case 
+			$templateParts = explode('-', $template);
+			$firstPart = array_shift($templateParts);
+			foreach ($templateParts as &$currentPart) {
+				$currentPart = ucfirst($currentPart);
+			}
+			$template = $firstPart . implode('', $templateParts);
+			$this->_engine->setTemplate($template);
+		} else {
+			$this->_engine->setSource($template['src'], $template['name']);
 		}
-		$template = $firstPart . implode('', $templateParts);
-
-		$this->_checkLoaded();
-		$this->_engine->setTemplate($template);
 		$this->productionMode = ('production' == APPLICATION_ENV);
 		$this->_engine->set('doctype', $this->doctype());
 		$this->_engine->set('headTitle', $this->headTitle());
