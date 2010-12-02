@@ -33,40 +33,6 @@ class Ztal_Tal_View extends Zend_View
 	 */
 	protected $_purgeCacheBeforeRender = false;
 
-	/**
-	 * The Zend_Cache object to use in page render caching operations.
-	 *
-	 * @var Zend_Cache
-	 */
-	protected $_zendPageCache = null;
-
-	/**
-	 * The page render cache key to use in page render cache operations.
-	 *
-	 * @var string
-	 */
-	protected $_zendPageCacheKey = null;
-
-	/**
-	 * How long to cache, in seconds, a new page prender.
-	 *
-	 * @var int
-	 */
-	protected $_zendPageCacheDuration = null;
-
-	/**
-	 * Whether to use a cached page render if one exists.
-	 *
-	 * @var bool
-	 */
-	protected $_useCachedVersion = false;
-
-	/**
-	 * Whether to cache the result of a page render.
-	 *
-	 * @var bool
-	 */
-	protected $_cacheResult = false;
 
 	/**
 	 * Whether to turn on the whitespace compression filter.
@@ -74,6 +40,43 @@ class Ztal_Tal_View extends Zend_View
 	 * @var bool
 	 */
 	protected $_compressWhitespace = false;
+
+
+
+
+
+
+	/**
+	 * A Zend_Cache instance.
+	 *
+	 * @var Zend_Cache|false
+	 */
+	protected $_zendPageCache = false;
+
+	/**
+	 * The cache content from a zendCache instance.
+	 *
+	 * @var string|false
+	 */
+	protected $_zendPageCacheContent = false;
+
+	/**
+	 * How long the rendered page should be cached for.
+	 *
+	 * @var int|false
+	 */
+	protected $_zendPageCacheDuration = false;
+
+	/**
+	 * The key to use for the cache item.
+	 *
+	 * @var string|false
+	 */
+	protected $_zendPageCacheKey = false;
+
+
+
+
 
 	/**
 	 * Constructor.
@@ -211,74 +214,6 @@ class Ztal_Tal_View extends Zend_View
 		return $this->_engine;
 	}
 
-	
-	/**
-	 * Configures the Zend_Cache support for capturing render output and retrieving cached pages.
-	 *
-	 * @param Zend_Cache $cache    The cache instance to use.
-	 * @param string     $key      The key to use to reference the page.
-	 * @param int        $duration How long to cache the page for.
-	 *
-	 * @return void
-	 */
-	public function setZendPageCache($cache, $key, $duration)
-	{
-		$this->_zendPageCache = $cache;
-		$this->_zendPageCacheKey = $key;
-		$this->_zendPageCacheDuration = $duration;
-	}
-	
-	
-	/**
-	 * Use the cached version of a page if it exists (using the cache and key configured in setZendPageCache).
-	 *
-	 * @return bool Whether a cached version of the page can be used.
-	 */
-	public function useZendCachedPage()
-	{
-		$this->_useCachedVersion = false;
-		if ($this->_zendPageCache == null || $this->_zendPageCacheKey == null) {
-			return false;
-		}
-		if (!$this->_zendPageCache->test($this->_zendPageCacheKey)) {
-			return false;
-		}
-		$this->_useCachedVersion = true;
-		return true;
-	}
-	
-
-	/**
-	 * Cache the render as well as output it. Uses the details configured in setZendPageCache.
-	 *
-	 * @return bool Whether it will be possible to cache the render.
-	 */
-	public function zendCache()
-	{
-		if ($this->_zendPageCache == null
-			|| $this->_zendPageCacheKey == null 
-			|| $this->_zendPageCacheDuration == null
-		) {
-			return false;
-		}
-		$this->_cacheResult = true;
-		return true;
-	}
-
-
-	
-	/**
-	 * Flush the page cache. Uses the details configured in setZendPageCache.
-	 *
-	 * @return bool Whether it was possible to flush the cache.
-	 */
-	public function flushZendCache()
-	{
-		if ($this->_zendPageCache == null) {
-			return false;
-		}
-		return $cache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('PHPTALPage'));			
-	}
 	
 	
 	/**
@@ -428,6 +363,48 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 	
+	
+	
+	public function cacheRenderedPage($cache, $options)
+	{
+		// If the options are a Zend_Config object, convert to an array
+		if ($options instanceof Zend_Config) {
+			$options = $options->toArray();
+		}
+		
+		// If the lifetime has been configured use it else default it.
+		if (isset($options['lifetime'])) {
+			$this->_zendPageCacheDuration = $options['lifetime'];
+		} else {
+			$this->_zendPageCacheDuration = 1800; // half an hour
+		}
+		
+		
+		// If the key has been configured use it else default it.
+		if (isset($options['key'])) {
+			$this->_zendPageCacheKey = $options['key'];
+		} else {
+			$this->_zendPageCacheKey = $_SERVER['REQUEST_URI'];
+		}
+		
+		// Prepend the key to prevent namespace collisions and
+		// remove unsupported chars
+		$this->_zendPageCacheKey = 'ZtalPage'
+			. str_replace('/', '', $this->_zendPageCacheKey);
+		
+		// Store the cache object
+		$this->_zendPageCache = $cache;
+		
+		// Check if the cache item exists and, if it does, fetch it
+		$this->_zendPageCacheContent = $this->_zendPageCache->load(
+			$this->_zendPageCacheKey);
+		
+		// return whether a valid cache item could be fetched.
+		return ($this->_zendPageCacheContent != false);
+	}
+	
+
+	
 
 	/**
 	 * Returns PHPTAL output - either from a render or from the cache.
@@ -443,11 +420,8 @@ class Ztal_Tal_View extends Zend_View
 	{		
 		$this->_checkLoaded();
 		
-		if ($this->_useCachedVersion && !$this->_cacheResult) {
-			$result = $this->_zendPageCache->load($this->_zendPageCacheKey);
-			if ($result !== false ) {
-				return $result;
-			}
+		if ($this->_zendPageCacheContent != false) {
+			return $this->_zendPageCacheContent;
 		}
 		
 		if (!is_array($template)) {
@@ -502,16 +476,7 @@ class Ztal_Tal_View extends Zend_View
 		}
 		
 		try {
-			$result = $this->_engine->execute();
-			if ($this->_cacheResult
-				&& $this->_zendPageCache != null
-				&& $this->_zendPageCacheKey != null
-				&& $this->_zendPageCacheDuration > 0
-			) {
-				$this->_zendPageCache->save($result, $this->_zendPageCacheKey,
-					array('PHPTALPage'), $this->_zendPageCacheDuration);
-					
-			}
+			$result = $this->_engine->execute();					
 		} catch(PHPTAL_TemplateException $e) {
 			// If the exception is a root PHPTAL_TemplateException
 			// rather than a subclass of this exception and xdebug is enabled,
@@ -528,6 +493,13 @@ class Ztal_Tal_View extends Zend_View
 			}
 			throw $e;
 		}
+		
+
+		if (($this->_zendPageCache instanceof Zend_Cache_Core)) {
+			$this->_zendPageCache->save($result, $this->_zendPageCacheKey,
+				array(), $this->_zendPageCacheDuration);
+		}
+		
 		return $result;
 	}
 
@@ -536,7 +508,7 @@ class Ztal_Tal_View extends Zend_View
 	 *
 	 * @return void
 	 */
-	protected function _run ()
+	protected function _run()
 	{
 	}
 

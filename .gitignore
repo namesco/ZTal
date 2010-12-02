@@ -2,3 +2,4 @@
 *.swo
 *.xcodeproj
 example/tal/cache/tpl_*
+example/zendCache/*
