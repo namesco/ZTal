@@ -46,7 +46,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		if ($type == 'multicheckbox') {
 			$type = 'checkbox';
 		}
-
+		
 		return $type;
 
 	}
@@ -268,10 +268,35 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	}
 
 	/**
+	 * Tal extension to determine whether or not the current element is an image captcha input.
+	 *
+	 * Example use within template:
+	 * <button tal:condition="Ztal_Tales_Form.isImageCaptcha:element" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function isImageCaptcha($src, $nothrow)
+	{
+
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+
+		return '(Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+			   . "->getType()) == 'captcha' && method_exists("
+				. phptal_tale($src, $nothrow) . ', "getImgUrl"))';
+	}
+
+
+	/**
 	 * Tal extension to determine whether or not the current element is a captcha input.
 	 *
 	 * Example use within template:
-	 * <button tal:condition="Ztal_Tales_Form.isButton:element" />
+	 * <button tal:condition="Ztal_Tales_Form.isCaptcha:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -286,10 +311,12 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
-			   . "->getType()) == 'captcha'";
-
+		return '(Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+			   . "->getType()) == 'captcha' && !method_exists("
+				. phptal_tale($src, $nothrow) . ', "getImgUrl"))';
 	}
+
+
 
 	/**
 	 * Should the current option in a multi check box be checked or not.

@@ -79,6 +79,8 @@ class Ztal_Mail extends Zend_Mail
 		
 		$this->view = clone Zend_Registry::get('Ztal_View');
 		$this->view->layout()->disableLayout();
+		$this->view->setCompressWhitespace(true);
+
 		
 		parent::__construct($charset);
 	}
