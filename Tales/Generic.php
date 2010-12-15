@@ -463,6 +463,43 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		return $resultArray;
 	}
 
+	/**
+	 * Tal for doing PHP's in_array.
+	 *
+	 * Example usage:
+	 *
+	 * <span
+	 *  tal:define="haystack string:val1,val2,val3"
+	 *  tal:condition="Ztal_Tales_Generic.inArray:needle,haystack
+	 *  tal:content="MATCH"
+	 * />
+	 *
+	 * The heystack can be an existing array passed to the view from Zend, or it
+	 * can be defined inline; if defining inline there is currently a limitation
+	 * in that the values cannot contain a comma (currently used to explode).
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function inArray($src, $nothrow)
+	{
+		$regex = "/([a-zA-Z:]+)\s*,\s*([a-zA-Z:]+)$/";
+		if (!preg_match($regex, $src, $items)) {
+			return phptal_tales('NULL', $nothrow);
+		}
+
+		$heystack = phptal_tale($items[2], $nothrow);
+
+		return "in_array(
+			" . phptal_tale($items[1], $nothrow) . ",
+			(is_array(" . $heystack . ") ? " . $heystack . " : array_map(
+				'trim', explode(',', " . $heystack . ")
+			))
+		)";
+	}
+
 
 	/**
 	 * Tal to support exclude filtering of an array.
