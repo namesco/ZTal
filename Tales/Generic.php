@@ -219,6 +219,33 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			. phptal_tale($rest, $nothrow) . ')';
 	}
 
+	/**
+	 * Tal extension to return true when the first argument is greater.
+	 *
+	 * Example use within template:
+	 *	<span tal:content="Ztal_Tales_Generic.greaterThan:a,b" />.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function greaterThan($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$a = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$b = $src;
+			$rest = 'NULL';
+		} else {
+			$b = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+		return '(' . phptal_tale($a, $nothrow) . '>'
+			. phptal_tale($b, $nothrow) . ' ? true : false)';
+	}
 
 
 	/**
@@ -327,6 +354,38 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 
 
 	/**
+	 * Formats a number to a certain decimal place.
+	 *
+	 * Formats the number to the provided decimal place - that's numberwang!
+	 * Example use within template:
+	 *
+	 * <span
+	 *   tal:content="Ztal_Tales_Generic.numberFormatDecimal:numberVar,string:2"
+	 * />.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function numberFormatDecimal($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$variable = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$decimal = $src;
+		} else {
+			$decimal = substr($src, 0, $break);
+		}
+
+		return 'number_format(' . phptal_tale($variable, $nothrow)
+			. ', ' . phptal_tale($decimal, $nothrow) . ')';
+	}
+
+
+	/**
 	 * Tal to support sorting of an array.
 	 *
 	 * Example usage:
@@ -402,5 +461,195 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 				break;
 		}
 		return $resultArray;
+	}
+
+	/**
+	 * Tal for doing PHP's in_array.
+	 *
+	 * Example usage:
+	 *
+	 * <span
+	 *  tal:define="haystack string:val1,val2,val3"
+	 *  tal:condition="Ztal_Tales_Generic.inArray:needle,haystack
+	 *  tal:content="MATCH"
+	 * />
+	 *
+	 * The heystack can be an existing array passed to the view from Zend, or it
+	 * can be defined inline; if defining inline there is currently a limitation
+	 * in that the values cannot contain a comma (currently used to explode).
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function inArray($src, $nothrow)
+	{
+		$regex = "/([a-zA-Z:]+)\s*,\s*([a-zA-Z:]+)$/";
+		if (!preg_match($regex, $src, $items)) {
+			return phptal_tales('NULL', $nothrow);
+		}
+
+		$heystack = phptal_tale($items[2], $nothrow);
+
+		return "in_array(
+			" . phptal_tale($items[1], $nothrow) . ",
+			(is_array(" . $heystack . ") ? " . $heystack . " : array_map(
+				'trim', explode(',', " . $heystack . ")
+			))
+		)";
+	}
+
+
+	/**
+	 * Tal to support exclude filtering of an array.
+	 *
+	 * Example usage:
+	 *
+	 * <span
+	 *  tal:define="keys string:key1,key2"
+	 *  tal:repeat="arr Ztal_Tales_Generic.arrayExclude:string:mode,keys,array
+	 * />
+	 *
+	 * mode may be:
+	 *    key   - Filter items by the array key.
+	 *    value - Filter items by the array value.
+	 *
+	 * The last parameter is the original array to filter, this should be a
+	 * PHPTAL variable.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function arrayExclude($src, $nothrow)
+	{
+		$regex = "/([a-zA-Z:]+)\s*?,\s*?([a-zA-Z0-9:]+)\s*?,\s*?([^|$]+)$/";
+		$src = trim($src);
+
+		// If we can't find a match for our parameters simply return NULL.
+		if (!preg_match($regex, $src, $items)) {
+			return phptal_tales('NULL', $nothrow);
+		}
+
+		// Call the array filtering helper with:
+		//
+		// $items[1] = Type of filtering (e.g. key or value).
+		// $items[2] = PHPTAL variable (array) of items to filter with, or a
+		//             string of comma seperated items,
+		// $items[3] = PHPTAL variable of haystack array.
+		// true = Exclude rather than filter.
+		return "Ztal_Tales_Generic::arrayFilterHelper(
+
+			" . phptal_tale($items[1], $nothrow) . ",
+			" . phptal_tale($items[2], $nothrow) . ",
+			" . phptal_tale($items[3], $nothrow) . ",
+
+			true)";
+
+	}
+
+
+	/**
+	 * Tal to support filtering of an array.
+	 *
+	 * Example usage:
+	 *
+	 * <span
+	 *  tal:define="keys string:key1,key2"
+	 *  tal:repeat="arr Ztal_Tales_Generic.arrayFilter:string:mode,keys,array
+	 * />
+	 *
+	 * mode may be:
+	 *    key   - Filter items by the array key.
+	 *    value - Filter items by the array value.
+	 *
+	 * The last parameter is the original array to filter, this should be a
+	 * PHPTAL variable.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function arrayFilter($src, $nothrow)
+	{
+		$regex = "/([a-zA-Z:]+)\s*?,\s*?([a-zA-Z0-9:]+)\s*?,\s*?([^|$]+)$/";
+		$src = trim($src);
+
+		// If we can't find a match for our parameters simply return NULL.
+		if (!preg_match($regex, $src, $items)) {
+			return phptal_tales('NULL', $nothrow);
+		}
+
+		// Call the array filtering helper with:
+		//
+		// $items[1] = Type of filtering (e.g. key or value).
+		// $items[2] = PHPTAL variable (array) of items to filter with, or a
+		//             string of comma seperated items,
+		// $items[3] = PHPTAL variable of haystack array.
+		// true = Exclude rather than filter.
+		return "Ztal_Tales_Generic::arrayFilterHelper(
+
+			" . phptal_tale($items[1], $nothrow) . ",
+			" . phptal_tale($items[2], $nothrow) . ",
+			" . phptal_tale($items[3], $nothrow) . ")";
+
+	}
+
+	/**
+	 * Helper for array filtering.
+	 *
+	 * This method filters the array by the filter array, based on either a key
+	 * filter or value. If the exclude option is true it'll return the original
+	 * array with the filtered items removed.
+	 *
+	 * @param string  $for      The mode to use, key or value.
+	 * @param array   $filter   The array of keys, or values, to filter with.
+	 * @param array   $original The original array to filter.
+	 * @param boolean $exclude  Excludes the filtered results.
+	 *
+	 * @return array
+	 */
+	public static function arrayFilterHelper(
+		$for, $filter, $original, $exclude=false
+	) {
+		$for = strtolower($for);
+		$newArray = array();
+
+
+		if (!is_array($filter)) {
+			// Explode the filters by command.
+			$filter = array_map('trim', explode(',', $filter));
+		}
+
+		if ($for == 'key') {
+			foreach ($original as $k => $v) {
+				if (in_array($k, $filter)) {
+					$newArray[$k] = $v;
+				}
+			}
+		} else {
+			foreach ($original as $k => $v) {
+				if (in_array($v, $filter)) {
+					$newArray[$k] = $v;
+				}
+			}
+		}
+
+		// If we're excluding then we need to return the original array with the
+		// newArray keys taken away.
+		if ($exclude) {
+			$keys = array_keys($newArray);
+			$newArray = array();
+			foreach ($original as $k => $v) {
+				if (!in_array($k, $keys)) {
+					$newArray[$k] = $v;
+				}
+			}
+		}
+
+		return $newArray;
 	}
 }

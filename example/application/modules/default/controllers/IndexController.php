@@ -24,6 +24,11 @@
  */
 class IndexController extends Zend_Controller_Action
 {
+	/**
+	 * The index action.
+	 *
+	 * @return void
+	 */
 	public function indexAction()
 	{
 		// Create the form
@@ -50,7 +55,6 @@ class IndexController extends Zend_Controller_Action
 		$defaults['checkBox2'] = 0;
 		$defaults['selectList'] = 'wibble';
 		$defaults['textBox'] = 'Hello';
-//		$defaults['hiddenItem'] = 'poop';
 		$exampleForm->setDefaults($defaults);
 		
 		// Add the form object to the view

@@ -82,7 +82,7 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 			$view->getEngine()->setTranslator($translator);
 		}
 		
-		// Call out to an overloadable mthod to pickup the paths for
+		// Call out to an overloadable method to pickup the paths for
 		// templates for the current module
 		foreach ($this->_currentModuleTemplatePaths($request) as $currentPath) {
 			$view->addTemplateRepositoryPath($currentPath);
@@ -93,6 +93,7 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 		$viewRenderer->setViewSuffix('xhtml');
 		$view->layout()->setViewSuffix('xhtml');
 		$viewRenderer->setView($view);
+		Zend_Registry::set('Ztal_View', $view);
 	}
 	
 	
@@ -106,8 +107,9 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 	protected function _currentModuleTemplatePaths(Zend_Controller_Request_Abstract $request)
 	{
 		$modulePath = Zend_Controller_Front::getInstance()->getModuleDirectory();
-		return array($modulePath . DIRECTORY_SEPARATOR . 'views'
-			. DIRECTORY_SEPARATOR . 'scripts');
+		return array(
+			$modulePath . DIRECTORY_SEPARATOR . 'views',
+			$modulePath . DIRECTORY_SEPARATOR . 'views'. DIRECTORY_SEPARATOR . 'scripts');
 	}
 	
 }
