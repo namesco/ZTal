@@ -3,3 +3,4 @@
 *.xcodeproj
 example/tal/cache/tpl_*
 example/zendCache/*
+ZTal-*.tgz
