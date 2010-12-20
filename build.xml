@@ -3,7 +3,7 @@
 
 	<!-- Setup the set of files that we want processed and what we want ignored
 		 by the various tasks -->
-	<fileset dir="${project.basedir}/source" id="sources">
+	<fileset dir="${project.basedir}/Ztal" id="sources">
 		<include name="**/*.php" />
 	</fileset>
 
@@ -32,7 +32,7 @@
 							   --coverage-clover ${project.basedir}/build/logs/coverage/clover.xml
 							   --coverage-html ${project.basedir}/build/logs/coverage/
 							   AllTests"
-			  dir="${project.basedir}/source/tests" checkreturn="true" />
+			  dir="${project.basedir}/Ztal/tests" checkreturn="true" />
     </target>
 
 	<target name="codeSniffer" depends="php-codesniffer" />
@@ -80,7 +80,7 @@
 							  --defaultpackagename ZTal
 							  --output HTML:Smarty:PHP
 							  --directory ."
-			  dir="${project.basedir}/source" checkreturn="true" />
+			  dir="${project.basedir}/Ztal" checkreturn="true" />
 	</target>
 
 </project>
