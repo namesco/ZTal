@@ -74,6 +74,19 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		return phptal_tales($rest, $nothrow);
 	}
 
+	/**
+	 * Tal extension to convert new lines to <br> and any text to htmlentities.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function toHTML($src, $nothrow)
+	{
+		return 'nl2br(htmlspecialchars(' . phptal_tales($src, $nothrow) . '))';
+	}
+
 
 	/**
 	 * Tal extension to allow string replacement.
