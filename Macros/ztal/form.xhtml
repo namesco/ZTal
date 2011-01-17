@@ -253,8 +253,10 @@
 		<!-- If it is a select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal_Tales_Form.isSelect:element"
-				tal:attributes="name element/getFullyQualifiedName; id element/getId;">
-			<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
+				tal:attributes="name element/getFullyQualifiedName;
+								id element/getId;
+								disabled Ztal_Tales_Form.isDisabled:element">
+				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
 				<option tal:repeat="option Ztal_Tales_Generic.arraySort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
 						tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
 						tal:content="option"
