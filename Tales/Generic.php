@@ -498,15 +498,15 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 */
 	public static function inArray($src, $nothrow)
 	{
-		$regex = "/([a-zA-Z:]+)\s*,\s*([a-zA-Z:]+)$/";
-		if (!preg_match($regex, $src, $items)) {
+		$items = explode(',', $src);
+		if (count($items) <2) {
 			return phptal_tales('NULL', $nothrow);
 		}
-
-		$heystack = phptal_tale($items[2], $nothrow);
+		
+		$heystack = phptal_tale($items[1], $nothrow);
 
 		return "in_array(
-			" . phptal_tale($items[1], $nothrow) . ",
+			" . phptal_tale($items[0], $nothrow) . ",
 			(is_array(" . $heystack . ") ? " . $heystack . " : array_map(
 				'trim', explode(',', " . $heystack . ")
 			))
