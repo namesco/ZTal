@@ -330,6 +330,7 @@ class Ztal_Tal_View extends Zend_View
 	 */
 	public function __set($key, $value)
 	{
+		parent::__set($key, $value);
 		$this->_checkLoaded();
 		$this->_engine->set($key, $value);
 	}
