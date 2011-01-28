@@ -10,7 +10,7 @@
  */
 
 /**
- * Subclass of Zend View that replaces the standard functionality with PHPTal template rendering.
+ * Subclass of Zend View that replaces the standard functionality with PHPTal.
  *
  * @category Namesco
  * @package  Ztal
@@ -33,18 +33,12 @@ class Ztal_Tal_View extends Zend_View
 	 */
 	protected $_purgeCacheBeforeRender = false;
 
-
 	/**
 	 * Whether to turn on the whitespace compression filter.
 	 *
 	 * @var bool
 	 */
 	protected $_compressWhitespace = false;
-
-
-
-
-
 
 	/**
 	 * A Zend_Cache instance.
@@ -73,10 +67,6 @@ class Ztal_Tal_View extends Zend_View
 	 * @var string|false
 	 */
 	protected $_zendPageCacheKey = false;
-
-
-
-
 
 	/**
 	 * Constructor.
@@ -149,7 +139,6 @@ class Ztal_Tal_View extends Zend_View
 		$this->addCustomModifiersPath($ztalTalesPath);
 	}
 	 
-	
 	/**
 	 * Load in all php files in the specified directory.
 	 *
@@ -177,7 +166,6 @@ class Ztal_Tal_View extends Zend_View
 		}
 	}
 
-
 	/**
 	 * Handle cloning of the view by cloning the PHPTAL object correctly.
 	 *
@@ -187,8 +175,6 @@ class Ztal_Tal_View extends Zend_View
 	{
 		$this->_engine = clone $this->_engine;
 	}
-	  
-		  
 
 	/**
 	 * Changes the current PHPTAL instance.
@@ -213,8 +199,6 @@ class Ztal_Tal_View extends Zend_View
 		return $this->_engine;
 	}
 
-	
-	
 	/**
 	 * Changes the cache purge mode.
 	 *
@@ -240,7 +224,6 @@ class Ztal_Tal_View extends Zend_View
 		$this->_engine->setEncoding(parent::getEncoding());
 	}
 
-
 	/**
 	 * Sets whether whitespace compression should be performed.
 	 *
@@ -253,7 +236,6 @@ class Ztal_Tal_View extends Zend_View
 		$this->_compressWhitespace = (bool)$flag;
 	}
 
-
 	/**
 	 * Gets whether whitespace compression is currently turned on.
 	 *
@@ -264,8 +246,6 @@ class Ztal_Tal_View extends Zend_View
 		return $this->_compressWhitespace;
 	}
 
-
-	
 	/**
 	 * Either append or overwrite the paths used to find a template.
 	 *
@@ -314,57 +294,11 @@ class Ztal_Tal_View extends Zend_View
 	 *
 	 * @return bool
 	 */
-	
 	public function getCachePurgeMode()
 	{
 		return $this->_purgeCacheBeforeRender;
 	}
-	
-	/**
-	 * Sets a value to the view.
-	 *
-	 * @param string $key   The member variable to set.
-	 * @param mixed  $value The value to set the variable to.
-	 *
-	 * @return void
-	 */
-	public function __set($key, $value)
-	{
-		parent::__set($key, $value);
-		$this->_checkLoaded();
-		$this->_engine->set($key, $value);
-	}
 
-
-	/**
-	 * Retrieves a value from the view.
-	 *
-	 * @param string $key The member variable to access.
-	 *
-	 * @return mixed
-	 */
-	public function __get($key)
-	{
-		$context = $this->_engine->getContext();
-		return $context->$key;
-	}
-	
-	/**
-	 * Checks whether a value in the view has been set.
-	 *
-	 * @param string $key The member variable to check.
-	 *
-	 * @return bool
-	 */
-	
-	public function __isset($key)
-	{
-		return isset($this->_engine->getContext()->$key);
-	}
-
-	
-	
-	
 	public function cacheRenderedPage($cache, $options)
 	{
 		// If the options are a Zend_Config object, convert to an array
@@ -403,9 +337,6 @@ class Ztal_Tal_View extends Zend_View
 		return ($this->_zendPageCacheContent != false);
 	}
 	
-
-	
-
 	/**
 	 * Returns PHPTAL output - either from a render or from the cache.
 	 *
@@ -419,6 +350,13 @@ class Ztal_Tal_View extends Zend_View
 	public function render($template)
 	{		
 		$this->_checkLoaded();
+
+		// Assign all the variables set here through to the PHPTAL engine. Doing
+		// this here so the view works more as Zend Framework expects and to
+		// save double storage of variables.
+		foreach ($this->getVars() as $key => $value) {
+			$this->_engine->set($key, $value);
+		}
 		
 		if ($this->_zendPageCacheContent != false) {
 			return $this->_zendPageCacheContent;
