@@ -78,9 +78,11 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 		if (Zend_Registry::isRegistered('Zend_Translate')) {
 			//setup the translation facilities in PHPTal
 			$translator = new Ztal_Tal_ZendTranslateTranslator($this->_options);
-			$translator->useDomain($request->getControllerName());
-			$view->getEngine()->setTranslator($translator);
+		} else {
+			$translator = new Ztal_Tal_MockTranslator($this->_options);
 		}
+		$translator->useDomain($request->getControllerName());
+		$view->getEngine()->setTranslator($translator);
 		
 		// We configure the view renderer in order to use our PHPTAL view
 		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
