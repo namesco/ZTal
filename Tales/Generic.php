@@ -112,6 +112,75 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 
 
 	/**
+	 * Tal extension to allow counting of items.
+	 *
+	 * Example use within template:
+	 *  <span class="item" tal:content="Ztal_Tales_Generic.count:array,ticket/posts">1</span>
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function count($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$command = strtolower(substr($src, 0, $break));
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$string = $src;
+			$rest = 'NULL';
+		} else {
+			$string = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+		switch ($command) {
+
+			case 'string':
+				return 'strlen(' . phptal_tale($src, $nothrow) . ')';
+				break;
+
+			default:
+			case 'array':
+				return 'count(' . phptal_tale($src, $nothrow) . ')';
+				break;
+
+		}
+		return phptal_tales($rest, $nothrow);
+	}
+
+
+	/**
+	 * Tal extension: Adds ellipsis to strings when it's over a given length.
+	 *
+	 * Example use within template:
+	 *  <td tal:content="Ztal_Tales_Generic.ellipsis:ticket/posts/0/body,string:100" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function ellipsis($src, $nothrow)
+	{
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+		$parts = explode(',', $src);
+
+		return 'substr(' . phptal_tale($parts[0], $nothrow) . ', 0, ' . phptal_tale($parts[1], $nothrow) . ') . (strlen(' . phptal_tale($parts[0], $nothrow) . ') > ' . phptal_tale($parts[1], $nothrow) . ' ? "..." : "")'; 
+	}
+
+
+
+
+
+
+	/**
 	 * Tal extension to build a data structure out of a json string.
 	 *
 	 * Example use within template: <span tal:define=" myVar Ztal_Tales_Generic.fromJsonString:
