@@ -189,7 +189,9 @@
 						   class Ztal_Tales_Form.getAttrib:element,string:class;
 						   value value | nothing;
 						   maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength;
-						   checked checked | nothing"
+						   checked checked | nothing;
+						   autocomplete Ztal_Tales_Form.getAttrib:element,string:autocomplete;
+						   disabled Ztal_Tales_Form.isDisabled:element"
 	/>
 
 	<!-- Will display a <textarea> element -->
@@ -198,7 +200,8 @@
 							  id element/getId;
 							  class Ztal_Tales_Form.getAttrib:element,string:class;
 							  rows Ztal_Tales_Form.getAttrib:element,string:rows;
-							  cols Ztal_Tales_Form.getAttrib:element,string:cols;"
+							  cols Ztal_Tales_Form.getAttrib:element,string:cols;
+							  disabled Ztal_Tales_Form.isDisabled:element;"
 			  tal:content="value"
 	/>
 
