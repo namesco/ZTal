@@ -209,7 +209,9 @@
 	<tal:block metal:define-macro="singleElement">
 
 		<label tal:condition="Ztal_Tales_Form.showLabelBefore:element"
-				   i18n:translate="element/getLabel"
+				i18n:translate="element/getLabel"
+				tal:attributes="for element/getId"
+
 		/>
 
 		<!-- If it is an input, render it using the inputElement fragment -->
@@ -336,6 +338,7 @@
 		</div>
 		<label tal:condition="Ztal_Tales_Form.showLabelAfter:element"
 				   i18n:translate="element/getLabel"
+				   tal:attributes="for element/getId"
 		/>
 
 
