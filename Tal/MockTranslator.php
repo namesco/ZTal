@@ -37,7 +37,7 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	 *
 	 * Only the first passed language is actually used due to Zend's locale support
 	 *
-	 * @return string - chosen language
+	 * @return void
 	 */
 	public function setLanguage(/*...*/)
 	{

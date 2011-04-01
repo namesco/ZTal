@@ -447,7 +447,7 @@ class Ztal_Tal_View extends Zend_View
 		}
 		
 		try {
-			$result = $this->_engine->execute();					
+			$result = $this->_engine->execute();
 		} catch(PHPTAL_TemplateException $e) {
 			// If the exception is a root PHPTAL_TemplateException
 			// rather than a subclass of this exception and xdebug is enabled,

@@ -70,6 +70,11 @@
 		<div tal:condition="form/isErrors" class="errors">
 			<h3 i18n:translate="string:error" />
 			
+			<!-- loop through all the global error messages -->
+			<ul tal:condition="globalErrors" tal:define="globalErrors form/getErrorMessages">
+				<li tal:repeat="error globalErrors" i18n:translate="error" />
+			</ul>
+
 			<!-- loop through all the elements with errors -->
 			<tal:block tal:repeat="elementErrors form/getErrors">
 				<ul tal:condition="elementErrors">
@@ -262,7 +267,7 @@
 								id element/getId;
 								disabled Ztal_Tales_Form.isDisabled:element">
 				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
-				<option tal:repeat="option Ztal_Tales_Generic.arraySort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
+				<option tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
 						tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
 						tal:content="option"
 				/>
@@ -277,10 +282,10 @@
 								disabled Ztal_Tales_Form.isDisabled:element;
 								multiple string:multiple">
 				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
-				<tal:block tal:repeat="option Ztal_Tales_Generic.arraySort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions">
+				<tal:block tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions">
 					<option
 						tal:define="keyName repeat/option/key"
-						tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.inArray:repeat/option/key,element/getValue"
+						tal:attributes="value repeat/option/key; selected Ztal_Tales_Array.in:repeat/option/key,element/getValue"
 						tal:content="option"
 					/>
 				</tal:block>

@@ -61,8 +61,7 @@ class Ztal_Mail extends Zend_Mail
 	 */
 	protected function _calculateTemplatePath($template)
 	{
-		$frontController = Zend_Controller_Front::getInstance();
-		return 'emails/' . $template . '.email';
+		return '../emails/' . $template . '.email';
 	}
 	
 	
