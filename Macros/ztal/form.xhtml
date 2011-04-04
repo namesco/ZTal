@@ -111,9 +111,10 @@
 				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
 					tal:define="
 						elementErrors Ztal_Tales_Form.getErrors:form,repeat/element/key;
-						errorClass Ztal_Tales_Generic.isTrue:exists:elementErrors,string:hasError;"
+						errorClass Ztal_Tales_Generic.isTrue:exists:elementErrors,string:hasError;
+						requiredClass Ztal_Tales_Generic.isTrue:element/isRequired,string:required-element | string:optional-element;"
 					tal:attributes="
-						class string:${errorClass} ${Ztal_Tales_Form.getAttrib:element,string:contextClass} ${Ztal_Tales_Form.inputType:element}-element;
+						class string:${errorClass} ${requiredClass} ${Ztal_Tales_Form.getAttrib:element,string:contextClass} ${Ztal_Tales_Form.inputType:element}-element;
 						id string:${element/getId}-field"
 				>
 					<!-- display the element -->
