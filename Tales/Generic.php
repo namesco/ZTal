@@ -74,6 +74,19 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		return phptal_tales($rest, $nothrow);
 	}
 
+	/**
+	 * Tal extension to convert new lines to <br> and any text to htmlentities.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function toHTML($src, $nothrow)
+	{
+		return 'nl2br(htmlspecialchars(' . phptal_tales($src, $nothrow) . '))';
+	}
+
 
 	/**
 	 * Tal extension to allow string replacement.
@@ -96,6 +109,77 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		return 'str_replace(' . phptal_tale($parts[1], $nothrow) . ', ' . phptal_tale($parts[2], $nothrow)
 			. ', ' . phptal_tale($parts[0], $nothrow) . ')';
 	}
+
+
+	/**
+	 * Tal extension to allow counting of items.
+	 *
+	 * Example use within template:
+	 *  <span class="item" tal:content="Ztal_Tales_Generic.count:array,ticket/posts">1</span>
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function count($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$command = strtolower(substr($src, 0, $break));
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$string = $src;
+			$rest = 'NULL';
+		} else {
+			$string = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+		switch ($command) {
+
+			case 'string':
+				return 'strlen(' . phptal_tale($src, $nothrow) . ')';
+				break;
+
+			default:
+			case 'array':
+				return 'count(' . phptal_tale($src, $nothrow) . ')';
+				break;
+		}
+		return phptal_tales($rest, $nothrow);
+	}
+
+
+	/**
+	 * Tal extension: Adds ellipsis to strings when it's over a given length.
+	 *
+	 * Example use within template:
+	 *  <td tal:content="Ztal_Tales_Generic.ellipsis:ticket/posts/0/body,string:100" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function ellipsis($src, $nothrow)
+	{
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+		$parts = explode(',', $src);
+
+		return 'substr(' . phptal_tale($parts[0], $nothrow) . ', 0, '
+			. phptal_tale($parts[1], $nothrow) . ') . (strlen('
+			. phptal_tale($parts[0], $nothrow) . ') > '
+			. phptal_tale($parts[1], $nothrow) . ' ? "..." : "")'; 
+	}
+
+
+
+
 
 
 	/**
@@ -382,274 +466,5 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 
 		return 'number_format(' . phptal_tale($variable, $nothrow)
 			. ', ' . phptal_tale($decimal, $nothrow) . ')';
-	}
-
-
-	/**
-	 * Tal to support sorting of an array.
-	 *
-	 * Example usage:
-	 * <span tal:define="sortedArray Ztal_Tales_Generic.arraySort:sortMode,array" />
-	 *
-	 * sortMode may be:
-	 *    regular      - standard sort with no type conversion during value comparison
-	 *    string       - sort by comparing values as strings
-	 *    numeric      - sort by comparing values as numbers
-	 *    localeString - string sort using the current locale
-	 *    natural      - sort using a natural sorting algorithm (see natsort())
-	 *    none         - don't sort, just pass back the array
-	 *
-	 * @param string $src     The original template string.
-	 * @param bool   $nothrow Whether to throw an exception on error.
-	 *
-	 * @return string
-	 */
-	public static function arraySort($src, $nothrow)
-	{
-		$break = strpos($src, ',');
-		$command = strtolower(substr($src, 0, $break));
-		$src = substr($src, $break + 1);
-		$break = strpos($src, '|');
-		if ($break === false) {
-			$variable = $src;
-			$rest = 'NULL';
-		} else {
-			$variable = substr($src, 0, $break);
-			$rest = substr($src, $break + 1);
-		}
-
-		return 'Ztal_Tales_Generic::arraySortHelper('
-			. phptal_tale($variable, $nothrow) . ', '
-			. phptal_tale($command, $nothrow) . ')';
-	}
-
-	/**
-	 * Tal helper method for creating a sorted copy of the supplied array.
-	 *
-	 * @param array  $array    The array to copy and sort.
-	 * @param string $sortMode The sort method to use.
-	 *
-	 * @return array
-	 */
-	public static function arraySortHelper($array, $sortMode)
-	{
-		if ($sortMode == 'none') {
-			return $array;
-		}
-
-		$resultArray = $array;
-		switch (strtolower($sortMode)) {
-			case 'string':
-				asort($resultArray, SORT_STRING);
-				break;
-
-			case 'numeric':
-				asort($resultArray, SORT_NUMERIC);
-				break;
-
-			case 'localestring':
-				asort($resultArray, SORT_LOCALE_STRING);
-				break;
-
-			case 'natural':
-				natsort($resultArray);
-				break;
-
-			case 'regular':
-			default:
-				asort($resultArray, SORT_REGULAR);
-				break;
-		}
-		return $resultArray;
-	}
-
-	/**
-	 * Tal for doing PHP's in_array.
-	 *
-	 * Example usage:
-	 *
-	 * <span
-	 *  tal:define="haystack string:val1,val2,val3"
-	 *  tal:condition="Ztal_Tales_Generic.inArray:needle,haystack
-	 *  tal:content="MATCH"
-	 * />
-	 *
-	 * The heystack can be an existing array passed to the view from Zend, or it
-	 * can be defined inline; if defining inline there is currently a limitation
-	 * in that the values cannot contain a comma (currently used to explode).
-	 *
-	 * @param string $src     The original template string.
-	 * @param bool   $nothrow Whether to throw an exception on error.
-	 *
-	 * @return string
-	 */
-	public static function inArray($src, $nothrow)
-	{
-		$regex = "/([a-zA-Z:]+)\s*,\s*([a-zA-Z:]+)$/";
-		if (!preg_match($regex, $src, $items)) {
-			return phptal_tales('NULL', $nothrow);
-		}
-
-		$heystack = phptal_tale($items[2], $nothrow);
-
-		return "in_array(
-			" . phptal_tale($items[1], $nothrow) . ",
-			(is_array(" . $heystack . ") ? " . $heystack . " : array_map(
-				'trim', explode(',', " . $heystack . ")
-			))
-		)";
-	}
-
-
-	/**
-	 * Tal to support exclude filtering of an array.
-	 *
-	 * Example usage:
-	 *
-	 * <span
-	 *  tal:define="keys string:key1,key2"
-	 *  tal:repeat="arr Ztal_Tales_Generic.arrayExclude:string:mode,keys,array
-	 * />
-	 *
-	 * mode may be:
-	 *    key   - Filter items by the array key.
-	 *    value - Filter items by the array value.
-	 *
-	 * The last parameter is the original array to filter, this should be a
-	 * PHPTAL variable.
-	 *
-	 * @param string $src     The original template string.
-	 * @param bool   $nothrow Whether to throw an exception on error.
-	 *
-	 * @return string
-	 */
-	public static function arrayExclude($src, $nothrow)
-	{
-		$regex = "/([a-zA-Z:]+)\s*?,\s*?([a-zA-Z0-9:]+)\s*?,\s*?([^|$]+)$/";
-		$src = trim($src);
-
-		// If we can't find a match for our parameters simply return NULL.
-		if (!preg_match($regex, $src, $items)) {
-			return phptal_tales('NULL', $nothrow);
-		}
-
-		// Call the array filtering helper with:
-		//
-		// $items[1] = Type of filtering (e.g. key or value).
-		// $items[2] = PHPTAL variable (array) of items to filter with, or a
-		//             string of comma seperated items,
-		// $items[3] = PHPTAL variable of haystack array.
-		// true = Exclude rather than filter.
-		return "Ztal_Tales_Generic::arrayFilterHelper(
-
-			" . phptal_tale($items[1], $nothrow) . ",
-			" . phptal_tale($items[2], $nothrow) . ",
-			" . phptal_tale($items[3], $nothrow) . ",
-
-			true)";
-
-	}
-
-
-	/**
-	 * Tal to support filtering of an array.
-	 *
-	 * Example usage:
-	 *
-	 * <span
-	 *  tal:define="keys string:key1,key2"
-	 *  tal:repeat="arr Ztal_Tales_Generic.arrayFilter:string:mode,keys,array
-	 * />
-	 *
-	 * mode may be:
-	 *    key   - Filter items by the array key.
-	 *    value - Filter items by the array value.
-	 *
-	 * The last parameter is the original array to filter, this should be a
-	 * PHPTAL variable.
-	 *
-	 * @param string $src     The original template string.
-	 * @param bool   $nothrow Whether to throw an exception on error.
-	 *
-	 * @return string
-	 */
-	public static function arrayFilter($src, $nothrow)
-	{
-		$regex = "/([a-zA-Z:]+)\s*?,\s*?([a-zA-Z0-9:]+)\s*?,\s*?([^|$]+)$/";
-		$src = trim($src);
-
-		// If we can't find a match for our parameters simply return NULL.
-		if (!preg_match($regex, $src, $items)) {
-			return phptal_tales('NULL', $nothrow);
-		}
-
-		// Call the array filtering helper with:
-		//
-		// $items[1] = Type of filtering (e.g. key or value).
-		// $items[2] = PHPTAL variable (array) of items to filter with, or a
-		//             string of comma seperated items,
-		// $items[3] = PHPTAL variable of haystack array.
-		// true = Exclude rather than filter.
-		return "Ztal_Tales_Generic::arrayFilterHelper(
-
-			" . phptal_tale($items[1], $nothrow) . ",
-			" . phptal_tale($items[2], $nothrow) . ",
-			" . phptal_tale($items[3], $nothrow) . ")";
-
-	}
-
-	/**
-	 * Helper for array filtering.
-	 *
-	 * This method filters the array by the filter array, based on either a key
-	 * filter or value. If the exclude option is true it'll return the original
-	 * array with the filtered items removed.
-	 *
-	 * @param string  $for      The mode to use, key or value.
-	 * @param array   $filter   The array of keys, or values, to filter with.
-	 * @param array   $original The original array to filter.
-	 * @param boolean $exclude  Excludes the filtered results.
-	 *
-	 * @return array
-	 */
-	public static function arrayFilterHelper(
-		$for, $filter, $original, $exclude=false
-	) {
-		$for = strtolower($for);
-		$newArray = array();
-
-
-		if (!is_array($filter)) {
-			// Explode the filters by command.
-			$filter = array_map('trim', explode(',', $filter));
-		}
-
-		if ($for == 'key') {
-			foreach ($original as $k => $v) {
-				if (in_array($k, $filter)) {
-					$newArray[$k] = $v;
-				}
-			}
-		} else {
-			foreach ($original as $k => $v) {
-				if (in_array($v, $filter)) {
-					$newArray[$k] = $v;
-				}
-			}
-		}
-
-		// If we're excluding then we need to return the original array with the
-		// newArray keys taken away.
-		if ($exclude) {
-			$keys = array_keys($newArray);
-			$newArray = array();
-			foreach ($original as $k => $v) {
-				if (!in_array($k, $keys)) {
-					$newArray[$k] = $v;
-				}
-			}
-		}
-
-		return $newArray;
 	}
 }

@@ -1,0 +1,36 @@
+v1.1 - 08/04/2011
+Form additions:
+	Added support for multiselect
+	Added support for disabled state to form elements.
+	Added auto-complete attribute to form elements.
+	Added a new class to elements li containers to mark an element as required or optional.
+	Global errors (i.e. not attached to a form element) are now supported in form rendering.
+	Added 'for' attribute to some label elements in forms.
+
+Tale additions:
+	New count tale.
+	New ellipsis tale.
+	New tale to convert plaintext to html (handling special chars and newlines).
+	Array tales have now been moved into their own tale class.
+	New union, complement and difference tales on arrays.
+		- The new tales replace arrayExclude and arrayFilter which have been *removed*.
+
+Core Enhancements:
+	Refactored the storage of view vars to make better use of existing ZF structures.
+		- it is now much easier to get view variables back out and ZF's REST functionality is now supported.
+	Template path setup now makes much better use of existing ZF functionality.
+		- changing template extension and folder layout is now possible using existing ZF methods.
+	Added a new 'mock' translation class.
+		- allows the use of templates written for translation in a non-translated application.
+
+
+Bug fixes:
+	Missing closing '/' in the error template of the example application.
+	Translation keys are now trimmed of whitespace before matching.
+	Labels no longer show up both before and after checkbox form elements.
+	Setting the class on a form now works as expected.
+
+
+----------------
+v1.0 - 17/12/2010 
+	Initial release
