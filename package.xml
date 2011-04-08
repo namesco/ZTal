@@ -16,11 +16,11 @@
   <email>amace@names.co.uk</email>
   <active>yes</active>
  </lead>
- <date>2010-12-17</date>
- <time>15:43:22</time>
+ <date>2011-04-08</date>
+ <time>11:29:32</time>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>1.1.0</release>
+  <api>1.1.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -32,7 +32,7 @@ None
  </notes>
  <contents>
   <dir baseinstalldir="Ztal" name="/">
-   <file baseinstalldir="Ztal" md5sum="7bb04983b3e17adce408b36eba9cea5c" name="Controller/Plugin/Ztal.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="7c445bf85a57b03b942235519a5544b6" name="Controller/Plugin/Ztal.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="3cf4d668d749374445fd74dba398855a" name="example/application/Bootstrap.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="9ddb538c8a6617a936bc7bc84a7ff980" name="example/application/configs/application.xml" role="data" />
    <file baseinstalldir="Ztal" md5sum="5f3f137c1275dbb4e95599c30e0d0ae0" name="example/application/forms/Basic.php" role="php" />
@@ -43,24 +43,28 @@ None
    <file baseinstalldir="Ztal" md5sum="9decc0614c44f3677b6094db91c9c0bd" name="example/application/modules/default/controllers/ErrorController.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="492cf91ae1a02a6deefe0dd78e46527e" name="example/application/modules/default/controllers/IndexController.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/application/modules/default/views/helpers/placeholder" role="data" />
-   <file baseinstalldir="Ztal" md5sum="f6140e0afeae2c1836688d2175e2c79d" name="example/application/modules/default/views/scripts/error/error.xhtml" role="data" />
+   <file baseinstalldir="Ztal" md5sum="ccdeec6e010f30a24dc12ea6aa4ba7cb" name="example/application/modules/default/views/scripts/error/error.xhtml" role="data" />
    <file baseinstalldir="Ztal" md5sum="da3b3886c3f4852101928069f69d2c0a" name="example/application/modules/default/views/scripts/index/index.xhtml" role="data" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/tal/cache/placeholder" role="data" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/tal/customModifiers/placeholder" role="data" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/tal/templateFragments/placeholder" role="data" />
    <file baseinstalldir="Ztal" md5sum="5c0d1a44fb3275a2a98642684f5af986" name="example/web/index.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/zendCache/placeholder" role="data" />
-   <file baseinstalldir="Ztal" md5sum="c27b8a188774f647a97caaf738958834" name="Macros/ztal/form.xhtml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="8849f3d3807a5a252a6b4376c71e4bbb" name="Tal/View.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="f647239a98f077c43586071d439b54c5" name="Tal/ZendTranslateTranslator.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="b0af86b3102f6c85b9dfa296a67090f0" name="Tales/Form.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="8890bd56c5d151f4b423caad3aea6e29" name="Tales/Generic.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="1297384e19fca30fcca2883c83261924" name="Macros/ztal/form.xhtml" role="data" />
+   <file baseinstalldir="Ztal" md5sum="4120365c3097e4bbf2a37578d4074d97" name="Tal/MockTranslator.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="4967c8a7dcdb0c726c6749b398c1cb25" name="Tal/View.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="6c76eb2442bb97c3602e2c67fd5e504f" name="Tal/ZendTranslateTranslator.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="aafb3e6f09a01d8a1431885547c8ea78" name="Tales/Array.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="a7cdfca75bdb82413dfa341f9e2512d3" name="Tales/Form.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="7d00959a15c62214c69193dfbbe585c2" name="Tales/Generic.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="9a7c6e9887c6b4460648ec2538fde919" name="Tales/Translation.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="d3b709a3d5cec7929a73d3549596d077" name="build.xml" role="data" />
+   <file baseinstalldir="Ztal" md5sum="9cf98ccff328649860ae8813bbb405dc" name="build.xml" role="data" />
+   <file baseinstalldir="Ztal" md5sum="99214da74757a769af30b7a1a4933afc" name="CHANGELOG" role="data" />
    <file baseinstalldir="Ztal" md5sum="d9f9d37a57738c3793b4757b916c3dde" name="Form.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="da27ef050e61662df9807f9da3e8c172" name="LICENSE" role="data" />
-   <file baseinstalldir="Ztal" md5sum="1378722a387bfb3a9a15b58d40baf516" name="Mail.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="0a6fabc5aa63e7dd8cba219b9514f320" name="Mail.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="1451805b814db38702755c0114f52580" name="README.md" role="data" />
+   <file baseinstalldir="Ztal" md5sum="fba5c767c9c5fa8264845db14a1d69d3" name="ZTal-1.0.0.tgz" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -130,6 +134,21 @@ None
     <api>stable</api>
    </stability>
    <date>2010-12-17</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.1.0</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2011-04-08</date>
    <license uri="http://www.apache.org/licenses/">Apache</license>
    <notes>
 None
