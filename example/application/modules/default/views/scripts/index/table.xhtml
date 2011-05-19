@@ -1,0 +1,31 @@
+<tal:block
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:tal="http://xml.zope.org/namespaces/tal"
+	xmlns:metal="http://xml.zope.org/namespaces/metal"
+	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+	xmlns:phptal="http://phptal.org/ns/phptal"
+>
+
+	<!--
+		/**
+		 * Display the table.
+		 *
+		 * @param Ztal_Table_Abstract table The table to render
+		 */
+	-->
+	<tal:block
+		tal:condition="exists:table"
+		tal:define="paginatorLocation string:bottom;"
+		metal:use-macro="ztal/table.xhtml/table">
+			<tal:block metal:fill-slot="sortAscending">&nbsp;/\&nbsp;</tal:block>
+			<tal:block metal:fill-slot="sortDescending">&nbsp;\/&nbsp;</tal:block>		
+			<tal:block metal:fill-slot="previousPage">&nbsp;&lt;&lt;&nbsp;</tal:block>		
+			<tal:block metal:fill-slot="nextPage">&nbsp;&gt;&gt;&nbsp;</tal:block>		
+	</tal:block>
+
+	<div>
+		<a href="/default/index/index">Home</a>
+	</div>
+	
+</tal:block>
+

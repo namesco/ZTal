@@ -3,9 +3,9 @@
  * Global Despatch starting point for all Zend requests.
  *
  * @category  Namesco
- * @package   Global
+ * @package   ZtalExample
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
@@ -21,6 +21,7 @@ defined('APPLICATION_ENV') || define('APPLICATION_ENV',
 require_once 'Zend/Application.php';
 
 // Create application, bootstrap, and run
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.xml');
+$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH
+	. '/configs/application.xml');
 $application->setBootstrap(APPLICATION_PATH . '/Bootstrap.php', 'Bootstrap');
 $application->bootstrap()->run();

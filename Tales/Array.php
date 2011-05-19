@@ -2,22 +2,24 @@
 /**
  * PHPTal Tale Modifiers.
  *
- * A collection of extensions to PHPTal that provide useful array handling routines within a template.
+ * A collection of extensions to PHPTal that provide useful array handling
+ * routines within a template.
  *
  * @category  Namesco
- * @package   PHPTal
+ * @package   Ztal
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
 /**
- * Creates a namespace for the tales extensions by clustering them as static methods on the class.
+ * Creates a namespace for the tales extensions.
  *
- * This class should never be subclassed. It is simply a container for the various tales routines.
+ * This class should never be subclassed. It is simply a container for the
+ * various tales routines.
  *
  * @category Namesco
- * @package  PHPTal
+ * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
@@ -30,7 +32,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 * <span tal:define="sortedArray Ztal_Tales_Array.sort:sortMode,array" />
 	 *
 	 * sortMode may be:
-	 *    regular      - standard sort with no type conversion during value comparison
+	 *    regular      - standard sort with no type conversion
 	 *    string       - sort by comparing values as strings
 	 *    numeric      - sort by comparing values as numbers
 	 *    localeString - string sort using the current locale

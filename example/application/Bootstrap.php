@@ -3,21 +3,21 @@
  * Zend Bootstrap.
  *
  * @category  Namesco
- * @package   Global
+ * @package   ZtalExample
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
 /**
  * Bootstrap.
  *
- * Performs sitewide Zend configuration for ControlPanel. Anything that needs
+ * Performs site-wide Zend configuration. Anything that needs
  * configuring but which should not be tweaked from the application.ini file
  * should be setup here, where possible.
  *
  * @category Namesco
- * @package  Global
+ * @package  ZtalExample
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
@@ -43,13 +43,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->setAppNamespace('Application');
 
 		// create the app space autoloader
-		new Zend_Application_Module_Autoloader(array(
+		$autoloader = new Zend_Application_Module_Autoloader(array(
 			'basePath' => APPLICATION_PATH,
 			'namespace' => 'Application',));
 
-		
+		$autoloader->addResourceType('table', 'tables', 'Table');
+
 		//configure zend_layout
-		Zend_Layout::startMvc(array('layoutPath' => APPLICATION_PATH . '/layouts/scripts'));
+		Zend_Layout::startMvc(array('layoutPath' => APPLICATION_PATH
+			. '/layouts/scripts'));
 	}
 	
 
@@ -70,12 +72,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$frontendOptions['automatic_serialization'] = true;
 		$frontendOptions['lifetime'] = '604800';
 		$frontendOptions['write_control'] = false;
-		$frontendOptions['master_files'] = array($languagesPath . '/en/messages.mo');
+		$frontendOptions['master_files'] = array($languagesPath
+			. '/en/messages.mo');
 		
 		$backendOptions['cache_dir'] = APPLICATION_PATH . '/../zendCache';
 		$backendOptions['hashed_directory_level'] = 1;
 		
-		$cache = Zend_Cache::factory('File', 'File', $frontendOptions, $backendOptions);
+		$cache = Zend_Cache::factory('File', 'File', $frontendOptions,
+			$backendOptions);
 		
 		Zend_Translate::setCache($cache);
 		Zend_Locale::setCache($cache);

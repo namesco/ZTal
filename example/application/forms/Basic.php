@@ -3,9 +3,9 @@
  * Example Form.
  *
  * @category  Namesco
- * @package   Account
+ * @package   ZtalExample
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
@@ -13,7 +13,7 @@
  * Example Form.
  *
  * @category Namesco
- * @package  Account
+ * @package  ZtalExample
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
@@ -35,7 +35,7 @@ class Application_Form_Basic extends Ztal_Form
 		);
 		
 		// Set the attributes of the form
-		$this->setAction('/default/index/index');
+		$this->setAction('/default/index/form');
 		
 		// Add a select box based on the array above,
 		// of type 'select' and name 'selectList'

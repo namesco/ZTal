@@ -2,22 +2,23 @@
 /**
  * PHPTal Tale Modifiers.
  *
- * A collection of extensions to PHPTal that provide useful additional variable handling routines within a template.
+ * Useful additional variable handling routines within a template.
  *
  * @category  Namesco
- * @package   PHPTal
+ * @package   Ztal
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
 /**
- * Creates a namespace for the tales extensions by clustering them as static methods on the class.
+ * Creates a namespace for the tales extensions.
  *
- * This class should never be subclassed. It is simply a container for the various tales routines.
+ * This class should never be subclassed. It is simply a container for the
+ * various tales routines.
  *
  * @category Namesco
- * @package  PHPTal
+ * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
@@ -106,8 +107,9 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$src = substr($src, 0, $break);
 		}
 		$parts = explode(',', $src);
-		return 'str_replace(' . phptal_tale($parts[1], $nothrow) . ', ' . phptal_tale($parts[2], $nothrow)
-			. ', ' . phptal_tale($parts[0], $nothrow) . ')';
+		return 'str_replace(' . phptal_tale($parts[1], $nothrow) . ', '
+			. phptal_tale($parts[2], $nothrow) . ', '
+			. phptal_tale($parts[0], $nothrow) . ')';
 	}
 
 
@@ -185,10 +187,12 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	/**
 	 * Tal extension to build a data structure out of a json string.
 	 *
-	 * Example use within template: <span tal:define=" myVar Ztal_Tales_Generic.fromJsonString:
-	 * {'name':'robert','gender':'male'}" />
-	 * Note that single rather than double quotes are used to wrap strings and these are auto-converted.
-	 * In order to insert a single quote into the string content, use 2 single quotes together ('').
+	 * Example use within template:
+	 * <span tal:define=" myVar Ztal_Tales_Generic.fromJsonString:{'name':'robert','gender':'male'}" />
+	 *
+	 * Note that single rather than double quotes are used to wrap strings and
+	 * these are auto-converted. In order to insert a single quote into the
+	 * string content, use 2 single quotes together ('').
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -228,17 +232,19 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return 'Ztal_Tales_Generic::runtimeCalculateType(' . phptal_tale($src, $nothrow) . ')';
+		return 'Ztal_Tales_Generic::runtimeCalculateType('
+			. phptal_tale($src, $nothrow) . ')';
 	}
 
 
 	/**
-	 * Used by the phpType tal extension, returns a string of the type of the supplied variable.
+	 * Used by the phpType tal, returns the type of the supplied variable.
 	 *
 	 * Should NEVER be called directly.
 	 *
-	 * This method is used rather than gettype directly because gettype is not guaranteed to return the
-	 * same string values in future. This function can be updated to handle that possibility.
+	 * This method is used rather than gettype directly because gettype is not
+	 * guaranteed to return the same string values in future. This function can
+	 * be updated to handle that possibility.
 	 *
 	 * @param mixed $var The var to calculate the type for.
 	 *
@@ -299,8 +305,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '(' . phptal_tale($a, $nothrow) . '==' . phptal_tale($b, $nothrow) . '?1:'
-			. phptal_tale($rest, $nothrow) . ')';
+		return '(' . phptal_tale($a, $nothrow) . '==' . phptal_tale($b, $nothrow)
+			. '?1:' . phptal_tale($rest, $nothrow) . ')';
 	}
 
 	/**
@@ -355,8 +361,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$string = substr($src, 0, $break);
 			$notTrue = phptal_tale(substr($src, $break + 1), $nothrow);
 		}
-		return '(' . phptal_tale($variable, $nothrow) . '==true?' . phptal_tale($string, $nothrow)
-			. ':' . $notTrue . ')';
+		return '(' . phptal_tale($variable, $nothrow) . '==true?'
+			. phptal_tale($string, $nothrow) . ':' . $notTrue . ')';
 	}
 
 
@@ -387,7 +393,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 
 
 	/**
-	 * Tal extension to handle formatting of numbers using a supplied Zend_Locale object.
+	 * Tal to handle formatting of numbers using a supplied Zend_Locale object.
 	 *
 	 * Example use within template: <span tal:content="Ztal_Tales_Generic.zendLocaleNumber:variable,localeObject" />.
 	 *
@@ -407,13 +413,14 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		} else {
 			$locale = substr($src, 0, $break);
 		}
-		return 'Zend_Locale_Format::toNumber((' . phptal_tale($variable, $nothrow) . '==\'\'?0:'
-			. phptal_tale($variable, $nothrow) . '), array(\'locale\' => ' . phptal_tale($locale, $nothrow) . '))';
+		return 'Zend_Locale_Format::toNumber((' . phptal_tale($variable, $nothrow)
+			. '==\'\'?0:' . phptal_tale($variable, $nothrow)
+			. '), array(\'locale\' => ' . phptal_tale($locale, $nothrow) . '))';
 	}
 
 
 	/**
-	 * Tal extension to handle formatting of numbers using a supplied Zend_Currency object.
+	 * Tal to handle formatting of numbers using a supplied Zend_Currency object.
 	 *
 	 * Example use within template: <span tal:content="Ztal_Tales_Generic.zendCurrency:variable,currencyObject" />.
 	 *
@@ -433,7 +440,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		} else {
 			$currency = substr($src, 0, $break);
 		}
-		return phptal_tale($currency, $nothrow) . '->toCurrency(' . phptal_tale($variable, $nothrow) . ')';
+		return phptal_tale($currency, $nothrow) . '->toCurrency('
+			. phptal_tale($variable, $nothrow) . ')';
 	}
 
 

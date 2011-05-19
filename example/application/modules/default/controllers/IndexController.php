@@ -5,9 +5,9 @@
  * Controller to handle requests with no module, / and /index.php requests.
  *
  * @category  Namesco
- * @package   Default
+ * @package   ZtalExample
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
@@ -19,17 +19,27 @@
  * through the indexAction method
  *
  * @category Namesco
- * @package  Default
+ * @package  ZtalExample
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 class IndexController extends Zend_Controller_Action
 {
 	/**
-	 * The index action.
+	 * The index action
 	 *
 	 * @return void
 	 */
 	public function indexAction()
+	{
+		// Nothing to do here - all in the template.
+	}
+
+	/**
+	 * The form action.
+	 *
+	 * @return void
+	 */
+	public function formAction()
 	{
 		// Create the form
 		$exampleForm = new Application_Form_Basic();
@@ -63,5 +73,56 @@ class IndexController extends Zend_Controller_Action
 		// Set a title for the page
 		$this->view->headTitle('Communication Option Details');
 	}
+	
+	/**
+	 * The table action.
+	 *
+	 * A basic table built from an array structure. Has sorting and pagination.
+	 *
+	 * @return void
+	 */
+	public function tableAction()
+	{
+		$tableData = array(
+			array('col1' => 1, 'col2' => 'c'),
+			array('col1' => 10, 'col2' => 'a'),
+			array('col1' => 100, 'col2' => 'b'),
+			array('col1' => 1000, 'col2' => 'd'),
+			array('col1' => 10000, 'col2' => 'f'),
+			array('col1' => 100000, 'col2' => 'e')
+		);
+		
+		// Create a table instance
+		$this->view->table = new Application_Table_Basic(
+			$this->getRequest()->getUserParams());
+			
+		// set the data source for the table
+		$this->view->table->setDataSource($tableData);
+	}
+
+	/**
+	 * The object-table action
+	 *
+	 * @return void
+	 */
+	public function objectTableAction()
+	{
+		$tableData = array(
+			new Application_Model_Basic(1, 1.2),
+			new Application_Model_Basic(2, 1.7),
+			new Application_Model_Basic(3, 1.1),
+			new Application_Model_Basic(4, 1.5),
+			new Application_Model_Basic(5, 2.3),
+			new Application_Model_Basic(6, 0.6)
+		);
+		
+		// Create a table instance
+		$this->view->table = new Application_Table_Object(
+			$this->getRequest()->getUserParams());
+			
+		// set the data source for the table
+		$this->view->table->setDataSource($tableData);
+	}
+
 }
 

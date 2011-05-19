@@ -5,26 +5,25 @@
  * @category  Namesco
  * @package   Ztal
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
 require_once 'PHPTAL.php';
 
 /**
- * Overrides the default Zend View to provide Tal templating support through PHPTal
+ * Overrides the default Zend View to provide Tal templating through PHPTal.
  *
  * Configurable options available through application.[ini|xml] on the bootstrap:
  * globalTemplatesDirectory[] - locations to look for additional templates
- *						(other than in application/layouts/scripts and [modules]/views/scripts)
- * customModifiersDirectory[] - directories to scan and load php files from in order to bring in custom
- *						modifiers and other code
+ * customModifiersDirectory[] - directories to scan and load php files from to
+ *                               bring in custom modifiers and other code
  * encoding - the default encoding for template files (defaults to UTF-8)
  * cacheDirectory - the directory to use for caching compiled Tal templates
  *						(defaults to the systme tmp folder - usually /tmp/)
- * cachePurgeMode - sets whether to purge the cache after rendering (defaults to false)
- * highlightFailedTranslations - if a translator is installed, set whether failed transaction keys
- *						show up with a prepended '**'
+ * cachePurgeMode - whether to purge the cache after rendering (default: false)
+ * highlightFailedTranslations - if a translator is installed, set whether
+ *                        failed transaction keys show up with a prepended '**'
  */
 
 /**

@@ -5,9 +5,9 @@
  * Handles global errors across the application.
  *
  * @category  Namesco
- * @package   Default
+ * @package   ZtalExample
  * @author    Robert Goldsmith <rgoldsmith@names.co.uk>
- * @copyright 2009-2010 Namesco Limited
+ * @copyright 2009-2011 Namesco Limited
  * @license   http://names.co.uk/license Namesco
  */
 
@@ -18,7 +18,7 @@
  * redirecting un-caught error events across the application.
  *
  * @category Namesco
- * @package  Default
+ * @package  ZtalExample
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 class ErrorController extends Zend_Controller_Action

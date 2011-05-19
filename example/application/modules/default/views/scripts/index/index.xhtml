@@ -7,17 +7,9 @@
 >
 	<h1 i18n:translate="string:helloWorld" />
 
-	<tal:block
-		tal:condition="exists:exampleForm"
-		tal:define="form exampleForm"
-		metal:use-macro="ztal/form.xhtml/talForm"
-	 >
-	 
-		<tal:block metal:fill-slot="coolCheckboxGroup-preSlot">
-			<h2>Some cool checkboxes</h2>
-			<div>Please tick these if you want to!</div>
-		</tal:block>
-	 
-	 </tal:block>
-
+	<ul>
+		<li><a href="/default/index/form">Show the form example</a></li>
+		<li><a href="/default/index/table">Show the array table example</a></li>
+		<li><a href="/default/index/object-table">Show the object table example</a></li>
+	</ul>
 </tal:block>
