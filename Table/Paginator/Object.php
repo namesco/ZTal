@@ -30,7 +30,7 @@ class Ztal_Table_Paginator_Object extends Ztal_Table_Paginator_Abstract
 	protected function _sliceDataSource(&$dataSource, $start, $count)
 	{
 		if (method_exists($dataSource, 'slice')) {
-			$object = $dataSource->slice($start, $count);
+			$dataSource = $dataSource->slice($start, $count);
 		} else {
 			throw new Exception('Unable to paginate object: no slice method');
 		}
