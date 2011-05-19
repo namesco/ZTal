@@ -392,14 +392,7 @@ class Ztal_Tal_View extends Zend_View
 		
 		
 		if (!is_array($template)) {
-			//conversion of template names from '-' split to camel-case 
-			$templateParts = explode('-', $template);
-			$firstPart = array_shift($templateParts);
-			foreach ($templateParts as &$currentPart) {
-				$currentPart = ucfirst($currentPart);
-			}
-			$template = $firstPart . implode('', $templateParts);
-			$this->_engine->setTemplate($template);
+			$this->_engine->setTemplate($this->_convertTemplateName($template));
 		} else {
 			$this->_engine->setSource($template['src'], $template['name']);
 		}
@@ -487,4 +480,21 @@ class Ztal_Tal_View extends Zend_View
 	{
 	}
 
+
+	/**
+	 * Convert the template name formatting.
+	 *
+	 * @param string $templateName The template name to convert.
+	 *
+	 * @return string
+	 */
+	protected function _convertTemplateName($templateName)
+	{
+		$templateParts = explode('-', $templateName);
+		$firstPart = array_shift($templateParts);
+		foreach ($templateParts as &$currentPart) {
+			$currentPart = ucfirst($currentPart);
+		}
+		return $firstPart . implode('', $templateParts);
+	}
 }
