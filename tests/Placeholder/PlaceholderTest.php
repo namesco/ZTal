@@ -25,6 +25,6 @@ class Placeholder_PlaceholderTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testPlaceholder()
 	{
-        $this->markTestIncomplete('No unit tests exist yet.');
+        $this->assertTrue(true, 'No unit tests exist yet.');
 	}
 }
