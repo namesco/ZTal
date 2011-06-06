@@ -9,7 +9,7 @@
 
     <!-- unitTesting task is currently not performed because there are no unit
 		 tests available for ZTal -->
-	<target name="build" depends="initialise, codeSniffer, codeQuality, document" />
+	<target name="build" depends="initialise, unitTesting, codeSniffer, codeQuality, document" />
 
 	<target name="initialise" depends="clean, prepare" />
 
@@ -58,7 +58,7 @@
 	<target name="php-codesniffer">
 		<phpcodesniffer standard="Namesco">
 			<fileset refid="sources" />
-			<formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+			<formatter type="checkstyle" outfile="${project.basedir}/build/logs/codesniffer.xml"/>
 		</phpcodesniffer>
 	</target>
 
