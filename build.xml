@@ -18,14 +18,18 @@
 
 	<target name="clean">
         <delete dir="${buildDir}" />
+        <delete dir="${project.basedir}/Ztal" />
     </target>
 
-    <target name="prepare">
-        <mkdir dir="${buildDir}" />
-        <mkdir dir="${buildDir}/logs" />
-        <mkdir dir="${buildDir}/logs/coverage" />
-        <mkdir dir="${buildDir}/docs" />
-    </target>
+		<target name="prepare">
+			<mkdir dir="${buildDir}" />
+			<mkdir dir="${buildDir}/logs" />
+			<mkdir dir="${buildDir}/logs/coverage" />
+			<mkdir dir="${buildDir}/docs" />
+			<!-- this is needed because the source dir can't be renamed when copied
+				to /var/artifacts. Instead, we just copy the content via the symlink -->
+			<symlink target="${sourceDir}" link="${project.basedir}/Ztal" />
+		</target>
 
 	<target name="unitTesting" depends="phpunit:configure, phpunit:run" />
 
