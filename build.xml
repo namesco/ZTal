@@ -82,14 +82,24 @@
 		</phpmd>
 	</target>
 
+
 	<target name="phpcpd">
-		<phpcpd>
+		<!-- Disabling the built-in cpd as it is failing with weird errors -->
+		<!-- phpcpd>
 			<fileset refid="sources"/>
 			<fileset dir="${sourceDir}">
 				<exclude name="tests/" />
 			</fileset>
 			<formatter type="pmd" outfile="${buildDir}/logs/pmd-cpd.xml"/>
-		</phpcpd>
+		</phpcpd -->
+		<exec command="phpcpd
+							--min-tokens 70
+							--min-lines 5
+							--exclude tests/
+							--log-pmd ${buildDir}/logs/pmd-cpd.xml
+							/"
+			  dir="${sourceDir}" checkreturn="true" />
+		
 	</target>
 
 	<target name="document" depends="php-documentor" />
