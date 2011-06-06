@@ -10,10 +10,10 @@
  */
 
 //shared environment configuration
-require_once dirname(__FILE__) . '/sharedTestSetup.php';
+require_once dirname(__FILE__) . '/../sharedTestSetup.php';
 
 //Test classes
-require_once 'Placeholder/AllTests.php';
+require_once 'PlaceholderTest.php';
 
 /**
  * Top level config for all Ztal Unit Tests.
@@ -23,7 +23,7 @@ require_once 'Placeholder/AllTests.php';
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
-class AllTests
+class Placeholder_AllTests
 {
 	/**
 	 * Sets up the contents of this suite of tests.
@@ -33,8 +33,9 @@ class AllTests
 	static public function suite()
 	{
 		// Create an instance of a test suite
-		$suite = new PHPUnit_Framework_TestSuite('Ztal');
-		$suite->addTest(Placeholder_AllTests::suite());
+		$suite = new PHPUnit_Framework_TestSuite('Ztal_Placeholder');
+
+		$suite->addTestSuite('Placeholder_PlaceholderTest');
 
 		return $suite;
 	}

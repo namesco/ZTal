@@ -16,7 +16,7 @@
  * @package  UnitTesting
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class PlaceholderTest extends PHPUnit_Framework_TestCase
+class Placeholder_PlaceholderTest extends PHPUnit_Framework_TestCase
 {
 	/**
 	 * Placeholder test.
