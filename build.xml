@@ -97,7 +97,7 @@
 							--min-lines 5
 							--exclude tests/
 							--log-pmd ${buildDir}/logs/pmd-cpd.xml
-							/"
+							."
 			  dir="${sourceDir}" checkreturn="true" />
 		
 	</target>
