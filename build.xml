@@ -3,7 +3,7 @@
 
 	<!-- Setup the set of files that we want processed and what we want ignored
 		 by the various tasks -->
-	<fileset dir="${project.basedir}/Ztal" id="sources">
+	<fileset dir="${project.basedir}/source" id="sources">
 		<include name="**/*.php" />
 	</fileset>
 
