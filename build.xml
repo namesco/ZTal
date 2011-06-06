@@ -25,15 +25,33 @@
         <mkdir dir="${project.basedir}/build/docs" />
     </target>
 
-	<target name="unitTesting" depends="phpunit" />
+	<target name="unitTesting" depends="phpunit:configure, phpunit:run" />
 
-	<target name="phpunit">
-        <exec command="phpunit --log-junit ${project.basedir}/build/logs/phpunit.xml
-							   --coverage-clover ${project.basedir}/build/logs/coverage/clover.xml
+	<target name="phpunit:configure">
+		<echo file="${project.basedir}/source/tests/phpunit.xml" append="false"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+  <filter>
+  <blacklist>
+    <directory suffix=".php">${project.basedir}/source/tests</directory>
+    <directory suffix=".php">/namesco/third_party</directory>
+    <directory suffix=".php">/usr/share/php</directory>
+  </blacklist>
+</filter>
+</phpunit>]]></echo>
+	</target>
+
+	<!-- Not using the Phing PHPUnit task because it doesn't work properly with
+	     test suites and doesn't have the required formatters to get all of the
+		 output that we need. -->
+	<target name="phpunit:run">
+		<exec command="phpunit --log-junit ${project.basedir}/build/logs/phpunit.xml
+							   --coverage-clover ${project.basedir}/build/logs/phpunit.coverage.xml
 							   --coverage-html ${project.basedir}/build/logs/coverage/
+							   --configuration ${project.basedir}/source/tests/phpunit.xml
 							   AllTests"
 			  dir="${project.basedir}/source/tests" checkreturn="true" />
-    </target>
+	</target>
+
 
 	<target name="codeSniffer" depends="php-codesniffer" />
 
