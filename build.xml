@@ -32,7 +32,7 @@
 							   --coverage-clover ${project.basedir}/build/logs/coverage/clover.xml
 							   --coverage-html ${project.basedir}/build/logs/coverage/
 							   AllTests"
-			  dir="${project.basedir}/Ztal/tests" checkreturn="true" />
+			  dir="${project.basedir}/source/tests" checkreturn="true" />
     </target>
 
 	<target name="codeSniffer" depends="php-codesniffer" />
@@ -80,7 +80,7 @@
 							  --defaultpackagename ZTal
 							  --output HTML:Smarty:PHP
 							  --directory ."
-			  dir="${project.basedir}/Ztal" checkreturn="true" />
+			  dir="${project.basedir}/source" checkreturn="true" />
 	</target>
 
 </project>
