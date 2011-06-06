@@ -70,17 +70,21 @@
 
 	<target name="document" depends="php-documentor" />
 
-	<!-- Specifically excluding the web and templates directories because there
-	     is a lot of files in there and they don't describe the API. -->
 	<target name="php-documentor">
-		<exec command="phpdoc --title '${phing.project.name}'
+		<exec command="docblox run --title '${phing.project.name}'
 							  --target ${project.basedir}/build/docs
-							  --sourcecode on
-							  --undocumentedelements on
-							  --defaultpackagename ZTal
-							  --output HTML:Smarty:PHP
 							  --directory ."
 			  dir="${project.basedir}/source" checkreturn="true" />
+		<exec command="docblox transform --source ${project.basedir}/build/docs/structure.xml
+										 --target ${project.basedir}/build/docs
+										 --template default"
+			  dir="${project.basedir}/source" checkreturn="true" />
+			  <!-- 			  PHPDoc options not supported by DocBlox
+							  -\-sourcecode on
+							  -\-undocumentedelements on
+							  -\-defaultpackagename Namesco
+							   -->
+
 	</target>
 
 </project>
