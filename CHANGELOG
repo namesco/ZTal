@@ -1,3 +1,9 @@
+1.2 - 29/06/2011
+	Added overloading of template naming conversion, allows people to use different template names.
+	Added support for table rendering.
+	Fixed bug with isRequired.
+
+----------------
 v1.1 - 08/04/2011
 Form additions:
 	Added support for multiselect
