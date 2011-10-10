@@ -4,6 +4,7 @@
 	<property name="database.suffix" value="_ztal_tests" />
 	<property name="buildDir" value="${project.basedir}/build" />
 	<property name="sourceDir" value="${project.basedir}/source" />
+	<property name="ZEND_PATH" value="." />
 
 	<!-- Setup the set of files that we want processed and what we want
 		 ignored by the various tasks -->
@@ -37,10 +38,13 @@
 		<echo file="${sourceDir}/tests/phpunit.xml" append="false"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <phpunit>
   <filter>
-  <blacklist>
-    <directory suffix=".php">${sourceDir}/tests</directory>
-  </blacklist>
-</filter>
+    <blacklist>
+      <directory suffix=".php">${sourceDir}/tests</directory>
+    </blacklist>
+  </filter>
+  <php>
+    <includePath>${ZEND_PATH}</includePath>
+  </php>
 </phpunit>]]></echo>
 	</target>
 
