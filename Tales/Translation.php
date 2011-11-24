@@ -41,10 +41,14 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 		$count = array_pop($parts);
 		$outputParts = array();
 		foreach ($parts as $currentPart) {
-			$outputParts[] = str_replace("'", '', phptal_tale($currentPart, $nothrow));
+			$outputPart = str_replace("'", '', phptal_tale($currentPart, $nothrow));
+			if ($outputPart[0] != '$') {
+				$outputPart = "'" . $outputPart . "'";
+			}
+			$outputParts[] = $outputPart;
 		}
-		return 'array(\'pluralKeys\'=>array(\'' . implode('\',\'', $outputParts)
-			. '\'), \'count\'=>' . phptal_tale($count, $nothrow)
+		return 'array(\'pluralKeys\'=>array(' . implode(',', $outputParts)
+			. '), \'count\'=>' . phptal_tale($count, $nothrow)
 			. ', \'ctx\'=>$ctx)';
 	}
 	
