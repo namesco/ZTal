@@ -5,3 +5,4 @@ example/tal/cache/tpl_*
 example/zendCache/*
 ZTal-*.tgz
 .DS_Store
+/.settings/
