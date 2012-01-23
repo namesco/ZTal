@@ -1,42 +1,58 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Source Resolver for finding files in a Phar archive.
+ *
+ * @category  Namesco
+ * @package   Ztal
+ * @author    Alex Mace <amace@names.co.uk>
+ * @copyright 2009-2011 Namesco Limited
+ * @license   http://names.co.uk/license Namesco
  */
 
 /**
- * Description of PharResolver
+ * Source Resolver for finding files in a Phar archive.
  *
- * @author alex
+ * @category Namesco
+ * @package  Ztal
+ * @author   Alex Mace <amace@names.co.uk>
  */
 class Ztal_Tal_PharResolver implements PHPTAL_SourceResolver
 {
 
-    private $_repositories;
-    
-    public function __construct($repositories)
-    {
-        $this->_repositories = $repositories;
-    }
+	/**
+	 * Repositories that source can be found it.
+	 * 
+	 * @var array 
+	 */
+	private $_repositories;
 
-    public function resolve($path)
-    {
-        foreach ($this->_repositories as $repository) {
-            $file = $repository . DIRECTORY_SEPARATOR . $path;
-            if (strpos($file, 'phar://') === 0 && file_exists($file)) {
-                return new PHPTAL_StringSource(file_get_contents($file), $file);
-            }
-        }
+	/**
+	 * Class Constructor.
+	 * 
+	 * @param type $repositories Array of repositories source can be found in.
+	 */
+	public function __construct($repositories) 
+	{
+		$this->_repositories = $repositories;
+	}
 
-        return null;
-    }
-    /*
-    function resolve($path)
-    {
-        if (strpos($path, 'phar://') === 0) {
-            $source = file_get_contents($path);
-            return new PHPTAL_StringSource($source);
-        }
-    }*/
+	/**
+	 * Implementation of path resolving when Phars are in the list of repos.
+	 * 
+	 * @param type $path Path being looked for.
+	 * 
+	 * @return null|PHPTAL_StringSource 
+	 */
+	public function resolve($path) 
+	{
+		foreach ($this->_repositories as $repository) {
+			$file = $repository . DIRECTORY_SEPARATOR . $path;
+			if (strpos($file, 'phar://') === 0 && file_exists($file)) {
+				return new PHPTAL_StringSource(file_get_contents($file), $file);
+			}
+		}
+
+		return null;
+	}
+	
 }

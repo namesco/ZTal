@@ -382,11 +382,11 @@ class Ztal_Tal_View extends Zend_View
 		
 		// Setup the script locations based on the view's script paths
 		$this->_engine->setTemplateRepository($this->getScriptPaths());
-        
-        // Do this at this point rather than in the constructor because we don't 
-        // know what the template repositories are going to be at that point.
-        $this->_engine->addSourceResolver(
-            new Ztal_Tal_PharResolver($this->getScriptPaths()));
+
+		// Do this at this point rather than in the constructor because we don't
+		// know what the template repositories are going to be at that point.
+		$this->_engine->addSourceResolver(
+			new Ztal_Tal_PharResolver($this->getScriptPaths()));
 
 		// Assign all the variables set here through to the PHPTAL engine.
 		foreach ($this->getVars() as $key => $value) {
