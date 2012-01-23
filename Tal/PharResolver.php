@@ -29,7 +29,7 @@ class Ztal_Tal_PharResolver implements PHPTAL_SourceResolver
 	/**
 	 * Class Constructor.
 	 * 
-	 * @param type $repositories Array of repositories source can be found in.
+	 * @param array $repositories Array of repositories source can be found in.
 	 */
 	public function __construct($repositories) 
 	{
@@ -39,7 +39,7 @@ class Ztal_Tal_PharResolver implements PHPTAL_SourceResolver
 	/**
 	 * Implementation of path resolving when Phars are in the list of repos.
 	 * 
-	 * @param type $path Path being looked for.
+	 * @param string $path Path being looked for.
 	 * 
 	 * @return null|PHPTAL_StringSource 
 	 */
