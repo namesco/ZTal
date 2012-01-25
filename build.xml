@@ -118,8 +118,7 @@
 							  --directory ."
 			  dir="${project.basedir}/source" checkreturn="true" />
 		<exec command="docblox transform --source ${project.basedir}/build/docs/structure.xml
-										 --target ${project.basedir}/build/docs
-										 --template default"
+										 --target ${project.basedir}/build/docs"
 			  dir="${project.basedir}/source" checkreturn="true" />
 	</target>
 
