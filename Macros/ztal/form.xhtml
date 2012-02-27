@@ -85,7 +85,11 @@
 					<li tal:define="element Ztal_Tales_Form.getElement:form,repeat/elementErrors/key">
 						<tal:inline i18n:translate="element/getLabel" />
 						<ul>
-							<li tal:repeat="error elementErrors" i18n:translate="error" />
+							<li
+								tal:repeat="error elementErrors"
+								i18n:domain="errorMessage_${repeat/element/key}"
+								i18n:translate="error"
+							/>
 						</ul>
 					</li>
 				</ul>
@@ -125,6 +129,7 @@
 							| Ztal_Tales_Generic.equal:errorMode,string:both">
 						<tal:block
 							tal:condition="not:Ztal_Tales_Generic.equal:elementErrors,null"
+							i18n:domain="errorMessage_${repeat/element/key}"
 							metal:use-macro="${Ztal_Tales_Form.getAttrib:element,string:errorMacro | elementErrorMacro | string:perElementErrors}" />
 					</tal:block>
 
