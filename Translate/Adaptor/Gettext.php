@@ -23,27 +23,26 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 
 
 	/**
-	 * Translates the given string
-	 * returns the translation
+	 * Translates the given string and returns the translation
 	 *
 	 * @see Zend_Locale
-	 * @param  string|array       $messageId Translation string, or Array (for
+	 * @param string|array       $messageId Translation string, or Array (for
 	 *                                        plural translations) or Array of
 	 *                                        Arrays (for complex translation).
-	 * @param  string|Zend_Locale $locale    (optional) Locale/Language to use,
-	 *	                                       identical with locale identifier,
-	 *                                        @see Zend_Locale for more information
+	 * @param string|Zend_Locale $locale    Optional. Locale/Language to use,
+	 *	                                       identical to locale identifier,
+	 *                                        @see Zend_Locale for details.
+	 *
 	 * @return string
 	 */
-    public function translate($messageId, $locale = null)
-	 {
-	 
+	public function translate($messageId, $locale = null)
+	{
 		$substitutions = null;
 		$context = null;
 		$keys = null;
 		$count = null;
 		$pluralLanguage = null;
-		
+
 		// First extract all the details from the various ways of
 		// presenting the parameters
 		if (is_array($messageId)) {
@@ -61,31 +60,32 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 				if (isset($messageId['pluralLanguage'])) {
 					$pluralLanguage = $messageId['pluralLanguage'];
 				}
-			} else {
+			}
+		} else {
+			$count = array_pop($messageId);
+			if (!is_numeric($count)) {
+				$pluralLanguage = $count;
 				$count = array_pop($messageId);
-				if (!is_numeric($count)) {
-					$pluralLanguage = $count;
-					$count = array_pop($messageId);
 				$keys = $messageId;
 			}
 		} else {
-			$keys = messageId;
+			$keys = $messageId;
 		}
-	 
-	 
+
+
 		// Now work out if the key can actually be translated.
 		// Here we assume all plural translations will have a singular
 		// translation that we can use to check for translatability.
 		// we also track whether a contextual translation is available.
-	 
+
 		if (is_array($keys)) {
 			$testKey = $keys[0];
 		} else {
 			$testKey = $keys;
 		}
-		
+
 		$didTranslate = 0; // 0 = no, 1 = global, 2= contextual
-		
+
 		// Test contextual first
 		if ($context != null) {
 			if ($this->isTranslated($context . chr(4) . $key, $locale)) {
@@ -98,7 +98,7 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 				$didTranslate = 2;
 			}
 		}
-		
+
 		// If no translation is available, return the key, possibly with
 		// plural details and optionally with ** prefix.
 		if ($didTranslate == 0) {
@@ -119,7 +119,7 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 			
 			return $result;
 		}
-		
+
 		// By this point, a translation will be possible so do the translation
 
 		// If we found a contextual translation, convert all the translation
@@ -135,7 +135,7 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 				$keys = $context . chr(4) . $keys;
 			}
 		}
-		
+
 		// Now build the translation array for plurals, if needed
 		if (is_array($keys)) {
 			if ($count != null) {
@@ -146,10 +146,10 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 				$keys[] = $pluralLanguage;
 			}
 		}
-		
+
 		// translate
 		$translation = parent::translate($keys, $locale);
-		
+
 		// Now do variable substitution, if there are any substitutions
 		if ($substitutions != null) {
 			$keys = array();
@@ -160,7 +160,7 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 			}
 			$translation = str_replace($keys, $values, $translation);
 		}
-		
+
 		return $translation;
-	 }
+	}
 }
