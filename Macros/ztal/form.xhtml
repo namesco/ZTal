@@ -45,7 +45,8 @@
 	<form tal:attributes="action form/getAction;
 						  class Ztal_Tales_Form.getAttrib:form,string:class | string:talForm;
 						  id form/getId;
-						  method form/getMethod"
+						  method form/getMethod;
+						  enctype form/getEnctype;"
 		  metal:define-macro="talForm"
 	>
 		<tal:block tal:define="errorMode errorDisplayMode | string:header;">
@@ -250,6 +251,7 @@
 				<tal:block i18n:translate="option" />
 			</label>
 		</tal:block>
+
 
 		<!-- If it is a multiple checkbox element, then iterate over the
 			 different options and render each one as an input element. -->
