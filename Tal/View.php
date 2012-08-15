@@ -78,8 +78,17 @@ class Ztal_Tal_View extends Zend_View
 	public function __construct($options = array())
 	{
 		parent::__construct($options);
-		
-		$this->setEngine(new PHPTAL());
+
+		if (isset($options['engineClass'])
+			&& $options['engineClass'] != ''
+			&& class_exists($options['engineClass'])
+			&& is_subclass_of($options['engineClass'], 'PHPTAL')
+		) {
+			$talClass = $options['engineClass'];
+		} else {
+			$talClass = 'PHPTAL';
+		}
+		$this->setEngine(new $talClass());
 		
 		// configure the encoding
 		if (isset($options['encoding']) && $options['encoding'] != '') {
@@ -441,7 +450,7 @@ class Ztal_Tal_View extends Zend_View
 		if ($this->_compressWhitespace == true) {
 			$this->_engine->addPreFilter(new PHPTAL_PreFilter_Compress());
 		}
-		
+
 		try {
 			$result = $this->_engine->execute();
 		} catch(PHPTAL_TemplateException $e) {
