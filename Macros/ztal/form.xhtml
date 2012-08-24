@@ -297,7 +297,8 @@
 				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
 								disabled Ztal_Tales_Form.isDisabled:element;
-								multiple string:multiple">
+								multiple string:multiple;
+								class Ztal_Tales_Form.getAttrib:element,string:class">
 				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
 				<tal:block tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions">
 					<option
