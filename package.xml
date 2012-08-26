@@ -56,11 +56,8 @@ None
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/tal/templateFragments/placeholder" role="data" />
    <file baseinstalldir="Ztal" md5sum="2d1e26417495d005d23803c05fa4c306" name="example/web/index.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/zendCache/placeholder" role="data" />
-   <file baseinstalldir="Ztal" md5sum="db8703794a0a2847ba12e245dbd23a0b" name="Macros/ztal/form.xhtml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="1ae1d2181394771b0212a5c31326504d" name="Macros/ztal/table.xhtml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="fd2dc7874fbe4d8fc70d6e1fab5c2ba8" name="nbproject/project.properties" role="data" />
-   <file baseinstalldir="Ztal" md5sum="908860262dd4d19aa83aece7f46ef821" name="nbproject/project.xml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="f4d786fdb50af82005c5e008a60fe734" name="nbproject/private/private.properties" role="data" />
+   <file baseinstalldir="Ztal" md5sum="db8703794a0a2847ba12e245dbd23a0b" name="Macros/ztal/form.xhtml" role="php" />
+   <file baseinstalldir="Ztal" md5sum="1ae1d2181394771b0212a5c31326504d" name="Macros/ztal/table.xhtml" role="php" />
    <file baseinstalldir="Ztal" md5sum="f9e77eb5e1d23437a0400ef8aa11e80a" name="Table/Abstract.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="2282d175f6b35401bd06fad2e32eca7b" name="Table/Row.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="c5f44991468d2d6e70ebdb94a6a64a65" name="Table/Column/Abstract.php" role="php" />
