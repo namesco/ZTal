@@ -57,7 +57,7 @@
 							   --coverage-html ${buildDir}/logs/coverage/
 							   --configuration ${sourceDir}/tests/phpunit.xml
 							   AllTests"
-			  dir="${sourceDir}/tests" checkreturn="true" />
+			  dir="${sourceDir}/tests" checkreturn="true" passthru="true" />
 	</target>
 
 	<target name="codeSniffer" depends="php-codesniffer" />
