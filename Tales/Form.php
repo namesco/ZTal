@@ -23,7 +23,7 @@
  * @package  Ztal
  * @author   Alex Mace <amace@names.co.uk>
  */
-	
+
 final class Ztal_Tales_Form implements PHPTAL_Tales
 {
 
@@ -37,7 +37,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	public static function calculateType($type)
 	{
 		//this is done in two steps using the $nameParts intermediate variable
-		//because it causes a strict error if something other than a defined 
+		//because it causes a strict error if something other than a defined
 		//variable reference is passed to array_pop
 		$nameParts = explode("_", $type);
 		$type = strtolower(array_pop($nameParts));
@@ -46,7 +46,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		if ($type == 'multicheckbox') {
 			$type = 'checkbox';
 		}
-		
+
 		return $type;
 
 	}
@@ -75,7 +75,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '(' . phptal_tale($a, $nothrow) . '->getAttrib(' 
+		return '(' . phptal_tale($a, $nothrow) . '->getAttrib('
 			. phptal_tale($b, $nothrow) . ') != null ? '
 			. phptal_tale($a, $nothrow) . '->getAttrib('
 			. phptal_tale($b, $nothrow) . ') : '
@@ -106,7 +106,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '(' . phptal_tale($a, $nothrow) . '->getElement(' 
+		return '(' . phptal_tale($a, $nothrow) . '->getElement('
 			. phptal_tale($b, $nothrow) . ') != null ? '
 			. phptal_tale($a, $nothrow) . '->getElement('
 			. phptal_tale($b, $nothrow) . ') : '
@@ -138,7 +138,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '(count(' . phptal_tale($a, $nothrow) . '->getErrors(' 
+		return '(count(' . phptal_tale($a, $nothrow) . '->getErrors('
 			. phptal_tale($b, $nothrow) . ')) > 0 ? '
 			. phptal_tale($a, $nothrow) . '->getErrors('
 			. phptal_tale($b, $nothrow) . ') : '
@@ -520,7 +520,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'select'";
 	}
-	
+
 	/**
 	 * Tal to determine whether or not the current element is a multi select.
 	 *
@@ -534,12 +534,12 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 */
 	public static function isMultiSelect($src, $nothrow)
 	{
-		
+
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		
+
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'multiselect'";
 	}
@@ -648,5 +648,5 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			. ')?$ctx->getSlot(' . phptal_tale($slotName, $nothrow)
 			. '):' . phptal_tale($notTrue, $nothrow) . ')';
 	}
-	
+
 }
