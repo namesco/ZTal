@@ -399,7 +399,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Checks whether an element is readonly or not.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:define="readonly Ztal_Tales_Form.isRequired:element" />
+	 * <tal:block tal:define="readonly Ztal_Tales_Form.isReadOnly:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
