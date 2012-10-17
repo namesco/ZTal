@@ -1,0 +1,17 @@
+{
+	"name": "Namesco/ZTal",
+	"homepage": "http://opensource.names.co.uk/ztal/",
+	"description": "ZTal makes integrating the PHP templating system PHPTAL into Zend Framework easy.",
+	"license": "Apache License, Version 2.0",
+	"type": "library",
+	"keywords": [
+		"zope",
+		"template engine",
+		"phptal",
+		"zend"
+	],
+	"require": {
+		"php": ">=5.3.0",
+		"phptal/phptal": "dev-master"
+	}
+}
