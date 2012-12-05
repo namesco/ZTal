@@ -22,7 +22,7 @@ Translation facilities. In particular:
 ## Documentation
 
 For more information and documentation please visit the
-[ZTal homepage](http://opensource.names.co.uk/ztal) or look through the example
+[ZTal Wiki](http://github.com/namesco/ZTal/wiki) or look through the example
 Zend application provided.
 
 
