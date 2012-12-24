@@ -62,9 +62,9 @@ class Ztal_Table_Column_Abstract
 	/**
 	 * Constructor.
 	 *
-	 * @param string $columnKey    The identifier for the column.
-	 * @param string $dataKey      The name of the dataSource for the column.
-	 * @param array  $options      Optional config options.
+	 * @param string $columnKey The identifier for the column.
+	 * @param string $dataKey   The name of the dataSource for the column.
+	 * @param array  $options   Optional config options.
 	 */
 	public function __construct($columnKey, $dataKey = null,
 		array $options = array()
@@ -185,6 +185,10 @@ class Ztal_Table_Column_Abstract
 	/**
 	 * Subclassable method to sort the supplied data source.
 	 *
+	 * @param mixed  &$dataSource   The data source to sort.
+	 * @param string $sortField     The sort field specified for this column.
+	 * @param int    $sortDirection The direction to sort in.
+	 *
 	 * @return void
 	 */
 	protected function _sortDataSource(&$dataSource, $sortField, $sortDirection)
@@ -194,6 +198,9 @@ class Ztal_Table_Column_Abstract
 	
 	/**
 	 * Subclassable method to return the value for a key from the data source.
+	 *
+	 * @param mixed $dataSource The data source to get a value from.
+	 * @param mixed $key        The key to get the value for.
 	 *
 	 * @return mixed
 	 */

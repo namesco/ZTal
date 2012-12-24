@@ -21,6 +21,11 @@
 	 * rows (textarea), cols (textarea), sort (select).
 	 *
 	 * @param Zend_Form form               The Zend_Form to render.
+	 * @param bool      useSimpleNames     Whether to use full, array wrapped
+	 *                                       names for elements based on the
+	 *                                       form's id (e.g. form1[element1])
+	 *                                       or just the simple name without
+	 *                                       wrapping (e.g. element1)
 	 * @param string    errorMode          Optional. Controls whether and where
 	 *                                       errors are displayed. Options are
 	 *                                       'header', 'inline', 'both' or 'none'.
@@ -57,11 +62,14 @@
 			>
 				<tal:block metal:use-macro="${headerErrorMacro | string:headerErrors}" />
 			</tal:block>
-
-
-			<tal:block tal:define="elements form;
-								   ulClass Ztal_Tales_Form.getAttrib:form, string:ulClass"
-					   metal:use-macro="fields" />
+		
+			<tal:block
+				tal:define="
+					elements form;
+					simpleElementNames useSimpleNames | Ztal_Tales_Form.getAttrib:form,string:useSimpleNames | string:0;
+					ulClass Ztal_Tales_Form.getAttrib:form, string:ulClass;"
+				metal:use-macro="fields" 
+			/>
 		</tal:block>
 	</form>
 
@@ -90,7 +98,7 @@
 						<ul>
 							<li
 								tal:repeat="error elementErrors"
-								i18n:domain="errorMessage_${repeat/element/key}"
+								i18n:domain="errorMessage_${repeat/elementErrors/key}"
 								i18n:translate="error"
 							/>
 						</ul>
@@ -111,7 +119,7 @@
 				<!-- Is this element a display group? -->
 				<li tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
 					tal:define="displayGroupElement element">
-					<tal:block metal:use-macro="${Ztal_Tales_Form.getAttrib:element,string:macro | displayGroupMacro | string:displayGroup}" />
+					<tal:block metal:use-macro="${displayGroupMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:displayGroup}" />
 				</li>
 
 				<!-- Is this an element (but not a hidden element)? -->
@@ -124,8 +132,8 @@
 						id string:${element/getId}-field"
 				>
 					<!-- display the element -->
-					<tal:block metal:use-macro="${Ztal_Tales_Form.getAttrib:element,string:macro | singleElementMacro | string:singleElement}" />
-
+					<tal:block metal:use-macro="${singleElementMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:singleElement}" />
+					
 					<!-- is there an error to display? -->
 					<tal:block tal:condition="
 							Ztal_Tales_Generic.equal:errorMode,string:inline
@@ -133,7 +141,7 @@
 						<tal:block
 							tal:condition="not:Ztal_Tales_Generic.equal:elementErrors,null"
 							i18n:domain="errorMessage_${repeat/element/key}"
-							metal:use-macro="${Ztal_Tales_Form.getAttrib:element,string:errorMacro | elementErrorMacro | string:perElementErrors}" />
+							metal:use-macro="${elementErrorMacro | Ztal_Tales_Form.getAttrib:element,string:errorMacro | string:perElementErrors}" />
 					</tal:block>
 
 				</li>
@@ -145,7 +153,7 @@
 			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element">
 				<tal:block
 					tal:define="value element/getValue"
-					metal:use-macro="${Ztal_Tales_Form.getAttrib:element,string:macro | singleElementMacro | string:singleElement}" />
+					metal:use-macro="${singleElementMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:singleElement}" />
 			</tal:block>
 		</tal:block>
 
@@ -197,12 +205,13 @@
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
 		   tal:attributes="type Ztal_Tales_Form.inputType:element;
-						   name name | element/getFullyQualifiedName;
+						   name name | Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 						   id element/getId;
 						   class Ztal_Tales_Form.getAttrib:element,string:class;
 						   value value | nothing;
 						   maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength;
 						   required Ztal_Tales_Generic.isTrue:string:${Ztal_Tales_Form.isRequired:element},string:required;
+						   readonly Ztal_Tales_Generic.isTrue:string:${Ztal_Tales_Form.isReadOnly:element},string:readonly;
 						   placeholder Ztal_Tales_Form.getAttrib:element,string:placeholder;
 						   checked checked | nothing;
 						   autocomplete Ztal_Tales_Form.getAttrib:element,string:autocomplete;
@@ -211,7 +220,7 @@
 
 	<!-- Will display a <textarea> element -->
 	<textarea metal:define-macro="textareaElement"
-		      tal:attributes="name name | element/getFullyQualifiedName;
+		      tal:attributes="name name | Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 							  id element/getId;
 							  class Ztal_Tales_Form.getAttrib:element,string:class;
 							  rows Ztal_Tales_Form.getAttrib:element,string:rows;
@@ -269,80 +278,81 @@
 			</tal:block>
 
 
-			<!-- If it is a multiple checkbox element, then iterate over the
-				different options and render each one as an input element. -->
-			<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
-					tal:repeat="option element/getMultiOptions">
-				<label class="checkboxOption">
-					<tal:block tal:define="name element/getFullyQualifiedName;
-										value repeat/option/key;
-										checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
-							metal:use-macro="inputElement"
-					/>
-					<tal:block i18n:translate="option" />
-				</label>
+		<!-- If it is a multiple checkbox element, then iterate over the
+			 different options and render each one as an input element. -->
+		<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
+				   tal:repeat="option element/getMultiOptions">
+			<label class="checkboxOption"> 
+				<tal:block tal:define="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+									   value repeat/option/key;
+									   checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
+						   metal:use-macro="inputElement" 
+			    />
+				<tal:block i18n:translate="option" />
+			</label>
+		</tal:block>
+
+		<!-- If it is a select, then create a <select> and then populate it with
+			 options based on the multiOptions in the element -->
+		<select tal:condition="Ztal_Tales_Form.isSelect:element"
+				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+								id element/getId;
+								disabled Ztal_Tales_Form.isDisabled:element">
+				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
+				<option tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
+						tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
+						tal:content="option"
+				/>
 			</tal:block>
-
-			<!-- If it is a select, then create a <select> and then populate it with
-				options based on the multiOptions in the element -->
-			<select tal:condition="Ztal_Tales_Form.isSelect:element"
-					tal:attributes="name element/getFullyQualifiedName;
-									id element/getId;
-									disabled Ztal_Tales_Form.isDisabled:element">
-					<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
-					<option tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
-							tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
-							tal:content="option"
+		</select>
+		
+		<!-- If it is a multiple select, then create a <select> and then populate it with
+			 options based on the multiOptions in the element -->
+		<select tal:condition="Ztal_Tales_Form.isMultiSelect:element"
+				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+								id element/getId;
+								disabled Ztal_Tales_Form.isDisabled:element;
+								multiple string:multiple;
+								class Ztal_Tales_Form.getAttrib:element,string:class">
+				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
+				<tal:block tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions">
+					<option
+						tal:define="keyName repeat/option/key"
+						tal:attributes="value repeat/option/key; selected Ztal_Tales_Array.in:repeat/option/key,element/getValue"
+						tal:content="option"
 					/>
 				</tal:block>
-			</select>
+			</tal:block>
+		</select>
 
-			<!-- If it is a multiple select, then create a <select> and then populate it with
-				options based on the multiOptions in the element -->
-			<select tal:condition="Ztal_Tales_Form.isMultiSelect:element"
-					tal:attributes="name element/getFullyQualifiedName;
-									id element/getId;
-									disabled Ztal_Tales_Form.isDisabled:element;
-									multiple string:multiple">
-					<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
-					<tal:block tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions">
-						<option
-							tal:define="keyName repeat/option/key"
-							tal:attributes="value repeat/option/key; selected Ztal_Tales_Array.in:repeat/option/key,element/getValue"
-							tal:content="option"
-						/>
-					</tal:block>
-				</tal:block>
-			</select>
+		<!-- If it is a button, then render it out -->
+		<button tal:condition="Ztal_Tales_Form.isButton:element"
+				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+								id Ztal_Tales_Form.getAttrib:element,string:id;
+								class Ztal_Tales_Form.getAttrib:element,string:class;
+								type Ztal_Tales_Form.getAttrib:element,string:type;
+								value element/getValue"
+				i18n:translate="element/getLabel" />
 
-			<!-- If it is a button, then render it out -->
-			<button tal:condition="Ztal_Tales_Form.isButton:element"
-					tal:attributes="name element/getFullyQualifiedName;
-									id Ztal_Tales_Form.getAttrib:element,string:id;
-									class Ztal_Tales_Form.getAttrib:element,string:class;
-									type Ztal_Tales_Form.getAttrib:element,string:type;
-									value element/getValue"
-					i18n:translate="element/getLabel" />
-
-			<!-- If it is an image captcha, display the image along with the instructions
-				for completing it -->
-			<div tal:condition="Ztal_Tales_Form.isImageCaptcha:element"
-				class="captcha">
-				<img tal:define="captcha element/getCaptcha;
-								captchaId Ztal_Tales_Form.getAttrib:element,string:captchaId"
-					tal:attributes="src string:${captcha/getImgUrl}${captchaId}.png"
-					alt="Captcha Image"
-				/>
-				<input type="hidden"
-					tal:attributes="name string:${element/getName}[id];
-									value Ztal_Tales_Form.getAttrib:element,string:captchaId"
-				/>
-				<div class="captchaInstructions"
-					i18n:translate="string:captchaInstructions" />
-				<label i18n:translate="string:captcha" />
-				<input autocomplete="off" type="text" value=""
-					tal:attributes="name string:${element/getName}[input]"
-				/>
+		<!-- If it is an image captcha, display the image along with the instructions
+			 for completing it -->
+		<div tal:condition="Ztal_Tales_Form.isImageCaptcha:element"
+			 class="captcha">
+			<img tal:define="captcha element/getCaptcha;
+							 captchaId Ztal_Tales_Form.getAttrib:element,string:captchaId"
+				 tal:attributes="src string:${captcha/getImgUrl}${captchaId}.png"
+				 alt="Captcha Image"
+			/>
+			<input type="hidden"
+				   tal:attributes="name string:${element/getName}[id];
+								   value Ztal_Tales_Form.getAttrib:element,string:captchaId"
+			/>
+			<div class="captchaInstructions"
+				 i18n:translate="string:captchaInstructions" />
+			<label i18n:translate="string:captcha" />
+			<input autocomplete="off" type="text" value=""
+				   tal:attributes="name string:${element/getName}[input]"
+			/>
 			</div>
 
 			<!-- If it is a captcha, display the rendered text along with the
@@ -363,7 +373,7 @@
 				<input autocomplete="off" type="text" value=""
 					tal:attributes="name string:${element/getName}[input]"
 				/>
-			</div>
+		</div>
 			<tal:block tal:condition="Ztal_Tales_Form.showLabelAfter:element"
 					tal:define="content element/getLabel;
 							elementId element/getId;

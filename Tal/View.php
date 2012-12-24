@@ -69,6 +69,16 @@ class Ztal_Tal_View extends Zend_View
 	protected $_zendPageCacheKey = false;
 
 
+	/**
+	 * Whether the prefilters have been added to the preFilter chain yet.
+	 *
+	 * Because we can use the same view instance for content and layout
+	 * we only want to make sure we only register the prefilters once.
+	 *
+	 * @var bool
+	 */
+	protected $_preFiltersRegistered = false;
+
 
 	/**
 	 * Constructor.
@@ -78,8 +88,19 @@ class Ztal_Tal_View extends Zend_View
 	public function __construct($options = array())
 	{
 		parent::__construct($options);
-		
-		$this->setEngine(new PHPTAL());
+
+		$this->_preFiltersRegistered = false;
+
+		if (isset($options['engineClass'])
+			&& $options['engineClass'] != ''
+			&& class_exists($options['engineClass'])
+			&& is_subclass_of($options['engineClass'], 'PHPTAL')
+		) {
+			$talClass = $options['engineClass'];
+		} else {
+			$talClass = 'PHPTAL';
+		}
+		$this->setEngine(new $talClass());
 		
 		// configure the encoding
 		if (isset($options['encoding']) && $options['encoding'] != '') {
@@ -435,13 +456,16 @@ class Ztal_Tal_View extends Zend_View
 			}
 		}
 		
-		// Strip html comments and compress un-needed whitespace
-		$this->_engine->addPreFilter(new PHPTAL_PreFilter_StripComments());
-		
-		if ($this->_compressWhitespace == true) {
-			$this->_engine->addPreFilter(new PHPTAL_PreFilter_Compress());
+		if (!$this->_preFiltersRegistered) {
+			// Strip html comments and compress un-needed whitespace
+			$this->_engine->addPreFilter(new PHPTAL_PreFilter_StripComments());
+			
+			if ($this->_compressWhitespace == true) {
+				$this->_engine->addPreFilter(new PHPTAL_PreFilter_Compress());
+			}
+			$this->_preFiltersRegistered = true;
 		}
-		
+
 		try {
 			$result = $this->_engine->execute();
 		} catch(PHPTAL_TemplateException $e) {
