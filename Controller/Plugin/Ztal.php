@@ -9,8 +9,6 @@
  * @license   http://names.co.uk/license Namesco
  */
 
-require_once 'PHPTAL.php';
-
 /**
  * Overrides the default Zend View to provide Tal templating through PHPTal.
  *
