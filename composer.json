@@ -15,4 +15,9 @@
 		"php": ">=5.3.0",
 		"phptal/phptal": "dev-master"
 	}
+    "autoload": {
+        "psr-0" : {
+            "Ztal_" : ""
+		}
+	}
 }
