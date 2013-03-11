@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tal;
+
 /**
  * Source Resolver for finding files in a Phar archive.
  *
@@ -16,15 +18,15 @@
  * @package  Ztal
  * @author   Alex Mace <amace@names.co.uk>
  */
-class Ztal_Tal_PharResolver implements PHPTAL_SourceResolver
+class PharResolver implements \PHPTAL_SourceResolver
 {
-
 	/**
 	 * Repositories that source can be found it.
 	 *
 	 * @var array
 	 */
 	private $_repositories;
+
 
 	/**
 	 * Class Constructor.
@@ -35,6 +37,7 @@ class Ztal_Tal_PharResolver implements PHPTAL_SourceResolver
 	{
 		$this->_repositories = $repositories;
 	}
+
 
 	/**
 	 * Implementation of path resolving when Phars are in the list of repos.
@@ -48,11 +51,10 @@ class Ztal_Tal_PharResolver implements PHPTAL_SourceResolver
 		foreach ($this->_repositories as $repository) {
 			$file = $repository . DIRECTORY_SEPARATOR . $path;
 			if (strpos($file, 'phar://') === 0 && file_exists($file)) {
-				return new PHPTAL_StringSource(file_get_contents($file), $file);
+				return new \PHPTAL_StringSource(file_get_contents($file), $file);
 			}
 		}
 
 		return null;
 	}
-
 }
