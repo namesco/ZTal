@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tal;
+
 /**
  * PHPTal Zend_Translate mock translation plugin.
  *
@@ -20,7 +22,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
+class MockTranslator implements \PHPTAL_TranslationService
 {
 	/**
 	 * Constructor.
