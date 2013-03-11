@@ -69,9 +69,9 @@ class Ztal extends \Zend_Controller_Plugin_Abstract
 
 		if (\Zend_Registry::isRegistered('Zend_Translate')) {
 			//setup the translation facilities in PHPTal
-			$translator = new \Ztal_Tal_ZendTranslateTranslator($this->_options);
+			$translator = new \Ztal\Tal\ZendTranslateTranslator($this->_options);
 		} else {
-			$translator = new \Ztal_Tal_MockTranslator($this->_options);
+			$translator = new \Ztal\Tal\MockTranslator($this->_options);
 		}
 		$translator->useDomain($request->getControllerName());
 		$view->getEngine()->setTranslator($translator);
@@ -91,6 +91,6 @@ class Ztal extends \Zend_Controller_Plugin_Abstract
 			$view->layout()->setViewSuffix('xhtml');
 		}
 		$viewRenderer->setView($view);
-		Zend_Registry::set('Ztal_View', $view);
+		\Zend_Registry::set('Ztal_View', $view);
 	}
 }
