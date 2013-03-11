@@ -106,17 +106,17 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 			if (is_array($keys)) {
 				$result .= '[' . $count . ']';
 			}
-			
+
 			$ztalOptions = Zend_Controller_Front::getInstance()
 				->getParam('bootstrap')
 				->getApplication()->getOption('ztal');
-				
+
 			if (isset($ztalOptions['highlightFailedTranslations'])
 				&& $ztalOptions['highlightFailedTranslations'] == '1'
 			) {
 				$result = '**' . $result;
 			}
-			
+
 			return $result;
 		}
 

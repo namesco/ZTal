@@ -51,8 +51,8 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 			. '), \'count\'=>' . phptal_tale($count, $nothrow)
 			. ', \'ctx\'=>$ctx)';
 	}
-	
-	
+
+
 	/**
 	 * Tal extension to translate the values in an array.
 	 *
@@ -82,11 +82,11 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		
+
 		return 'Ztal_Tales_Translation::arrayTranslationHelper('
 			. phptal_tale($src, $nothrow) . ', $_translator)';
 	}
-	
+
 	/**
 	 * Helper for the translateArrayValues Tal.
 	 *
@@ -103,7 +103,7 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 		if (!is_array($array)) {
 			return $array;
 		}
-		
+
 		$results = array();
 		foreach ($array as $key => $value) {
 			$results[$key] = $translator->translate($value, false);

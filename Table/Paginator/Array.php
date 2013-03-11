@@ -17,7 +17,7 @@
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 class Ztal_Table_Paginator_Array extends Ztal_Table_Paginator_Abstract
-{	
+{
 	/**
 	 * Perform a slice on the data source.
 	 *

@@ -53,14 +53,14 @@ class Ztal_Table_Column_Object extends Ztal_Table_Column_Abstract
 
 
 	}
-	
+
 	/**
 	 * Method to return the value for a key from the data source.
 	 *
 	 * @return mixed
 	 */
 	protected function _dataForKey($dataSource, $key)
-	{		
+	{
 		if (method_exists($dataSource, $key)) {
 			return $dataSource->$key();
 		}

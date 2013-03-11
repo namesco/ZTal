@@ -101,7 +101,7 @@ class Ztal_Tal_View extends Zend_View
 			$talClass = 'PHPTAL';
 		}
 		$this->setEngine(new $talClass());
-		
+
 		// configure the encoding
 		if (isset($options['encoding']) && $options['encoding'] != '') {
 			$this->setEncoding((string)$options['encoding']);
@@ -118,15 +118,15 @@ class Ztal_Tal_View extends Zend_View
 		if (isset($options['cachePurgeMode'])) {
 			$this->setCachePurgeMode($options['cachePurgeMode'] == '1');
 		}
-		
+
 		// configure the whitespace compression mode
 		if (isset($options['compressWhitespace'])) {
 			$this->setCompressWhitespace($options['compressWhitespace'] == '1');
 		}
-		
+
 		// Stack up the script paths. Zend's setScriptPath call is lifo
 		// so we start with the bottom item first.
-		
+
 		// First set the path for Ztal's own macros
 		$ztalBasePath = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
 		$this->setScriptPath($ztalBasePath . DIRECTORY_SEPARATOR . 'Macros');
@@ -141,11 +141,11 @@ class Ztal_Tal_View extends Zend_View
 				$this->addScriptPath($currentDirectory);
 			}
 		}
-	
-	
-	
+
+
+
 		// Next setup the custom modifiers
-		
+
 		//load in all php files that exist in the custom modifiers directory
 		if (isset($options['customModifiersDirectory'])) {
 			$customModifiers = $options['customModifiersDirectory'];
@@ -161,16 +161,16 @@ class Ztal_Tal_View extends Zend_View
 		$ztalTalesPath = $ztalBasePath . DIRECTORY_SEPARATOR . 'Tales';
 		$this->addCustomModifiersPath($ztalTalesPath);
 	}
-	 
-	 
-	 
+
+
+
 	/**
 	 * Load in all php files in the specified directory.
 	 *
 	 * @param string $customModifiersPath Path to scan for php files to load.
 	 *
 	 * @return void
-	 */		
+	 */
 	public function addCustomModifiersPath($customModifiersPath)
 	{
 		if (is_dir($customModifiersPath)) {
@@ -238,7 +238,7 @@ class Ztal_Tal_View extends Zend_View
 	 * @param bool $newValue Whether to delete old template cache files before rendering.
 	 *
 	 * @return void
-	 */	  
+	 */
 	public function setCachePurgeMode($newValue)
 	{
 		$this->_purgeCacheBeforeRender = $newValue;
@@ -285,8 +285,8 @@ class Ztal_Tal_View extends Zend_View
 		return $this->_compressWhitespace;
 	}
 
-	
-	
+
+
 	/**
 	 * Set the directory used to save generated templates.
 	 *
@@ -296,9 +296,9 @@ class Ztal_Tal_View extends Zend_View
 	 */
 	public function setCacheDirectory($path)
 	{
-		$this->_engine->setPhpCodeDestination($path);	
+		$this->_engine->setPhpCodeDestination($path);
 	}
-	
+
 
 
 	/**
@@ -343,41 +343,41 @@ class Ztal_Tal_View extends Zend_View
 		if ($options instanceof Zend_Config) {
 			$options = $options->toArray();
 		}
-		
+
 		// If the lifetime has been configured use it else default it.
 		if (isset($options['lifetime'])) {
 			$this->_zendPageCacheDuration = $options['lifetime'];
 		} else {
 			$this->_zendPageCacheDuration = 1800; // half an hour
 		}
-		
-		
+
+
 		// If the key has been configured use it else default it.
 		if (isset($options['key'])) {
 			$this->_zendPageCacheKey = $options['key'];
 		} else {
 			$this->_zendPageCacheKey = $_SERVER['REQUEST_URI'];
 		}
-		
+
 		// Prepend the key to prevent namespace collisions and
 		// remove unsupported chars
 		$this->_zendPageCacheKey = 'ZtalPage'
 			. str_replace('/', '', $this->_zendPageCacheKey);
-		
+
 		// Store the cache object
 		$this->_zendPageCache = $cache;
-		
+
 		// Check if the cache item exists and, if it does, fetch it
 		$this->_zendPageCacheContent = $this->_zendPageCache->load(
 			$this->_zendPageCacheKey);
-		
+
 		// return whether a valid cache item could be fetched.
 		return ($this->_zendPageCacheContent != false);
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Returns PHPTAL output - either from a render or from the cache.
 	 *
@@ -400,7 +400,7 @@ class Ztal_Tal_View extends Zend_View
 		if ($this->_zendPageCacheContent != false) {
 			return $this->_zendPageCacheContent;
 		}
-		
+
 		// Setup the script locations based on the view's script paths
 		$this->_engine->setTemplateRepository($this->getScriptPaths());
 
@@ -413,15 +413,15 @@ class Ztal_Tal_View extends Zend_View
 		foreach ($this->getVars() as $key => $value) {
 			$this->_engine->set($key, $value);
 		}
-		
-		
+
+
 		if (!is_array($template)) {
 			$this->_engine->setTemplate($this->_convertTemplateName($template));
 		} else {
 			$this->_engine->setSource($template['src'], $template['name']);
 		}
-		
-		
+
+
 		// Setup a collection of standard variable available in the view
 		$this->_engine->set('doctype', $this->doctype());
 		$this->_engine->set('headTitle', $this->headTitle());
@@ -444,8 +444,8 @@ class Ztal_Tal_View extends Zend_View
 				}
 			}
 		}
-		
-		
+
+
 		// if a layout is being used and nothing has already overloaded the viewContent,
 		// register the content as viewContent, otherwise set it to empty
 		if (!isset($this->viewContent)) {
@@ -455,11 +455,11 @@ class Ztal_Tal_View extends Zend_View
 				$this->viewContent = '';
 			}
 		}
-		
+
 		if (!$this->_preFiltersRegistered) {
 			// Strip html comments and compress un-needed whitespace
 			$this->_engine->addPreFilter(new PHPTAL_PreFilter_StripComments());
-			
+
 			if ($this->_compressWhitespace == true) {
 				$this->_engine->addPreFilter(new PHPTAL_PreFilter_Compress());
 			}
@@ -484,15 +484,15 @@ class Ztal_Tal_View extends Zend_View
 			}
 			throw $e;
 		}
-		
-		
+
+
 		// If the page needed to be rendered but was configured to
 		// cache then cache the result of the render.
 		if (($this->_zendPageCache instanceof Zend_Cache_Core)) {
 			$this->_zendPageCache->save($result, $this->_zendPageCacheKey,
 				array(), $this->_zendPageCacheDuration);
 		}
-		
+
 		return $result;
 	}
 

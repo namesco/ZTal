@@ -28,14 +28,14 @@ class Ztal_Table_Column_Abstract
 	 * @var string
 	 */
 	 protected $_columnKey;
-	 
+
 	/**
 	 * The key used to fetch this columns data from the data source.
 	 *
 	 * @var string
 	 */
 	protected $_dataKey;
-	
+
 	/**
 	 * The name of the sort field.
 	 *
@@ -58,7 +58,7 @@ class Ztal_Table_Column_Abstract
 	 */
 	protected $_formatter;
 
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -72,7 +72,7 @@ class Ztal_Table_Column_Abstract
 		$this->_columnKey = $columnKey;
 		$this->_dataKey = $dataKey;
 
-		if (isset($options['sortField']) && $options['sortField'] != '') {		
+		if (isset($options['sortField']) && $options['sortField'] != '') {
 			if (isset($options['defaultSortDirection'])) {
 				$this->_sortDirection = $options['defaultSortDirection'];
 			} else {
@@ -82,15 +82,15 @@ class Ztal_Table_Column_Abstract
 		} else {
 			$this->_sortField = null;
 		}
-		
+
 		if (isset($options['formatter']) && is_callable($options['formatter'])) {
 			$this->_formatter = $options['formatter'];
 		} else {
 			$this->_formatter = null;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return the data for the column from the supplied dataSource.
 	 *
@@ -101,15 +101,15 @@ class Ztal_Table_Column_Abstract
 	public function getColumnDataForSource($dataSource)
 	{
 		$data = $this->_dataForKey($dataSource, $this->_dataKey);
-		
+
 		if ($this->_formatter != null) {
 			$formatter = $this->_formatter;
 			$data = $formatter($data);
 		}
 		return $data;
 	}
-	
-	
+
+
 	/**
 	 * Return the key for the column.
 	 *
@@ -119,7 +119,7 @@ class Ztal_Table_Column_Abstract
 	{
 		return $this->_columnKey;
 	}
-	
+
 	/**
 	 * Can the current column be sorted.
 	 *
@@ -129,7 +129,7 @@ class Ztal_Table_Column_Abstract
 	{
 		return $this->_sortField != null;
 	}
-	
+
 	/**
 	 * Return the sort field for the column.
 	 *
@@ -149,8 +149,8 @@ class Ztal_Table_Column_Abstract
 	{
 		return $this->_sortDirection;
 	}
-	
-	
+
+
 	/**
 	 * Set the sort direction for the current column.
 	 *
@@ -166,8 +166,8 @@ class Ztal_Table_Column_Abstract
 			$this->_sortDirection = self::DIRECTION_ASCENDING;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Sort the data source by sortField in sortDirection.
 	 *
@@ -180,8 +180,8 @@ class Ztal_Table_Column_Abstract
 		$this->_sortDataSource($dataSource, $this->_sortField,
 			$this->_sortDirection);
 	}
-	
-	
+
+
 	/**
 	 * Subclassable method to sort the supplied data source.
 	 *
@@ -195,7 +195,7 @@ class Ztal_Table_Column_Abstract
 	{
 		throw new Exception('Invalid call to method in Abstract class');
 	}
-	
+
 	/**
 	 * Subclassable method to return the value for a key from the data source.
 	 *
@@ -208,5 +208,5 @@ class Ztal_Table_Column_Abstract
 	{
 		throw new Exception('Invalid call to method in Abstract class');
 	}
-	
+
 }

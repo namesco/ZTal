@@ -24,21 +24,21 @@ class Ztal_Table_Paginator_Abstract
 	 * @var int
 	 */
 	protected $_totalRowCount;
-	
+
 	/**
 	 * The number of rows to display per page.
 	 *
 	 * @var int
 	 */
 	protected $_rowsPerPage;
-	
+
 	/**
 	 * The page to be displayed.
 	 *
 	 * @var int
 	 */
 	protected $_currentPage;
-	
+
 
 	/**
 	 * Constructor.
@@ -50,17 +50,17 @@ class Ztal_Table_Paginator_Abstract
 		$this->_totalRowCount = 0;
 		$this->_rowsPerPage = 1;
 		$this->_currentPage = 0;
-		
+
 		if (isset($options['rowsPerPage'])) {
 			$this->setRowsPerPage($options['rowsPerPage']);
 		}
-		
+
 		if (isset($options['currentPage'])) {
 			$this->setCurrentPage($options['currentPage']);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Apply configuration parameters as passed from a rendered html table.
 	 *
@@ -75,8 +75,8 @@ class Ztal_Table_Paginator_Abstract
 			$this->_currentPage = $parameters[$prefix . 'page'];
 		}
 	}
-	
-	
+
+
 	/**
 	 * Apply pagination to a data source.
 	 *
@@ -100,7 +100,7 @@ class Ztal_Table_Paginator_Abstract
 
 		$this->_sliceDataSource($source, $startingRow, $this->_rowsPerPage);
 	}
-	
+
 
 
 	/**
@@ -143,8 +143,8 @@ class Ztal_Table_Paginator_Abstract
 	{
 		return $this->_currentPage - 1;
 	}
-	
-	
+
+
 	/**
 	 * Return the index of the page after the current one, or null.
 	 *
@@ -159,7 +159,7 @@ class Ztal_Table_Paginator_Abstract
 		return $this->_currentPage + 1;
 	}
 
-	
+
 	/**
 	 * Return the total number of rows in the data set.
 	 *
@@ -169,7 +169,7 @@ class Ztal_Table_Paginator_Abstract
 	{
 		return $this->_totalRowCount;
 	}
-	
+
 	/**
 	 * Set the total number of rows in the data set.
 	 *
@@ -184,8 +184,8 @@ class Ztal_Table_Paginator_Abstract
 		}
 		$this->_totalRowCount = $count;
 	}
-	
-	
+
+
 	/**
 	 * Return the current page number.
 	 *
@@ -195,7 +195,7 @@ class Ztal_Table_Paginator_Abstract
 	{
 		return $this->_currentPage;
 	}
-	
+
 	/**
 	 * Set the current page number.
 	 *
@@ -209,8 +209,8 @@ class Ztal_Table_Paginator_Abstract
 			$this->_currentPage = $page;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return how many rows are shown on a page.
 	 *
@@ -220,7 +220,7 @@ class Ztal_Table_Paginator_Abstract
 	{
 		return $this->_rowsPerPage;
 	}
-	
+
 	/**
 	 * Set how many rows are shown on a page.
 	 *
@@ -235,7 +235,7 @@ class Ztal_Table_Paginator_Abstract
 		}
 		$this->_rowsPerPage = $rowsPerPage;
 	}
-	
+
 	/**
 	 * Perform a slice on the data source.
 	 *

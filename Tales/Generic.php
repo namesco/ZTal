@@ -176,7 +176,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		return 'substr(' . phptal_tale($parts[0], $nothrow) . ', 0, '
 			. phptal_tale($parts[1], $nothrow) . ') . (strlen('
 			. phptal_tale($parts[0], $nothrow) . ') > '
-			. phptal_tale($parts[1], $nothrow) . ' ? "..." : "")'; 
+			. phptal_tale($parts[1], $nothrow) . ' ? "..." : "")';
 	}
 
 

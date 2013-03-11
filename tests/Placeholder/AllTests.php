@@ -40,4 +40,3 @@ class Placeholder_AllTests
 		return $suite;
 	}
 }
-

@@ -19,7 +19,7 @@
 
 class Application_Form_Basic extends Ztal_Form
 {
-	
+
 	/**
 	 * Sets up the form.
 	 *
@@ -33,10 +33,10 @@ class Application_Form_Basic extends Ztal_Form
 			'ping' => 'pingLabel',
 			'pong' => 'pongLabel',
 		);
-		
+
 		// Set the attributes of the form
 		$this->setAction('/default/index/form');
-		
+
 		// Add a select box based on the array above,
 		// of type 'select' and name 'selectList'
 		$this->addElement('select', 'selectList', array(
@@ -51,7 +51,7 @@ class Application_Form_Basic extends Ztal_Form
 			'label' => 'checkMe',));
 
 		$this->addElement('checkbox', 'checkbox2', array(
-			'label' => 'checkMeToo',));		
+			'label' => 'checkMeToo',));
 
 
 		// Now add them to the group
@@ -62,8 +62,8 @@ class Application_Form_Basic extends Ztal_Form
 		$this->addElement('text', 'textBox', array(
 			'label' => 'typeSomething',
 			'required' => true));
-										
-																				
+
+
 		// The save button
 		$this->addElement('button', 'save', array(
 			'type' => 'submit',

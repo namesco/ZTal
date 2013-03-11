@@ -24,7 +24,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	 * @var string
 	 */
 	protected $_id;
-	
+
 	/**
 	 * The data source for the table.
 	 *
@@ -33,7 +33,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	 * @var mixed
 	 */
 	protected $_dataSource;
-	
+
 	/**
 	 * An array of column objects representing the table columns.
 	 *
@@ -56,30 +56,30 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	 * @var Ztal_Table_Row
 	 */
 	protected $_rowObject;
-	
+
 	/**
 	 * Key of the current sort column.
 	 *
 	 * @var string
 	 */
 	protected $_sortColumnKey;
-	
-	
+
+
 	/**
 	 * Track the current row used in the iterator.
 	 *
 	 * @var int
 	 */
 	protected $_currentRowIndex;
-	
+
 	/**
 	 * The URI for the action that handles the table.
 	 *
 	 * @var string
 	 */
 	protected $_baseUri;
-	
-	
+
+
 	/**
 	 * The table's pagination delegate, if any.
 	 *
@@ -96,7 +96,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	 *                                     controller.
 	 */
 	public function __construct(array $parameters = array())
-	{		
+	{
 		$this->_dataSource = null;
 		$this->_currentRowIndex = 0;
 		$this->_columns = array();
@@ -107,10 +107,10 @@ class Ztal_Table_Abstract implements Countable, Iterator
 		$this->_paginator = null;
 		$this->_rowObject = new Ztal_Table_Row($this->_columns,
 			$this->_columnKeyIndex);
-		
+
 		// Overrideable function to configure the columns etc.
 		$this->_init();
-	
+
 		// The supplied parameters for sort and direction override the
 		// defaults and anything done in init()
 		$sortDirection = null;
@@ -125,21 +125,21 @@ class Ztal_Table_Abstract implements Countable, Iterator
 				$sortDirection = null;
 			}
 		}
-			
+
 		if ($this->_sortColumnKey != ''
 			&& isset($this->_columns[$this->_sortColumnKey])
 			&& $sortDirection != null
 		) {
 			$this->_columns[$this->_sortColumnKey]->setSortDirection($sortDirection);
 		}
-		
+
 		$paginator = $this->getPaginator();
 		if ($paginator != null) {
 			$paginator->initWithParameters($parameters, $this->_id . '-');
 		}
 	}
-	
-	
+
+
 
 
 
@@ -155,7 +155,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 		$this->_columns[$column->getColumnKey()] = $column;
 		$this->_columnKeyIndex[] = $column->getColumnKey();
 	}
-	 
+
 
 	/**
 	 * Return the array of table columns and their capabilities.
@@ -189,13 +189,13 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	{
 		return count($this->_columns);
 	}
-	
+
 
 
 
 	// ** Countable **
 	//********************************************
-	
+
 	/**
 	 * Countable Interface. How many rows the table has.
 	 *
@@ -205,13 +205,13 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	{
 		return count($this->_dataSource);
 	}
-	
 
-	
+
+
 	// ** Iterator **
 	//********************************************
 
-	
+
 	/**
 	 * Iterator Interface. Returns the current value.
 	 *
@@ -223,8 +223,8 @@ class Ztal_Table_Abstract implements Countable, Iterator
 			$this->_dataSource[$this->_currentRowIndex]);
 		return $this->_rowObject;
 	}
-	
-	
+
+
 	/**
 	 * Iterator Interface. Returns the current key.
 	 *
@@ -239,17 +239,17 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	 * Iterator Interface. Increments the iterator and returns the new value.
 	 *
 	 * @return void
-	 */	
+	 */
 	public function next()
 	{
 		$this->_currentRowIndex++;
 	}
-	
+
 	/**
 	 * Iterator Interface. Resets the iterator to the start of the sequence.
 	 *
 	 * @return void
-	 */	
+	 */
 	public function rewind()
 	{
 		$this->_currentRowIndex = 0;
@@ -259,7 +259,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	 * Iterator Interface. Checks if the current offset is valid.
 	 *
 	 * @return bool.
-	 */	
+	 */
 	public function valid()
 	{
 		return ($this->_currentRowIndex >= 0
@@ -383,7 +383,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 	{
 		return $this->_dataSource;
 	}
-	
+
 	/**
 	 * Set the data source used to supply data for the table.
 	 *
@@ -409,10 +409,10 @@ class Ztal_Table_Abstract implements Countable, Iterator
 		} elseif (!is_array($data)) {
 			throw new InvalidArgumentException('Invalid data type');
 		}
-			
-		
+
+
 		$this->_dataSource = $data;
-		
+
 		if (!$prepared) {
 			if (isset($this->_columns[$this->_sortColumnKey])) {
 				$column = $this->_columns[$this->_sortColumnKey];
@@ -420,7 +420,7 @@ class Ztal_Table_Abstract implements Countable, Iterator
 					$column->sort($this->_dataSource);
 				}
 			}
-		
+
 			$paginator = $this->getPaginator();
 			if ($paginator != null) {
 				$paginator->paginate($this->_dataSource);

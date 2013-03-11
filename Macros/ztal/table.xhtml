@@ -35,7 +35,7 @@
 			tal:define="
 				prefix table/getId;
 				showHeaders showColumnHeaders | string:1;
-				showBothArrows showBothSortArrows | string:0; 
+				showBothArrows showBothSortArrows | string:0;
 				sortColumn table/getSortColumn | null;
 				sortKey sortColumn/getColumnKey | null;
 				sortDirection sortColumn/getSortDirection | string:0;
@@ -45,7 +45,7 @@
 		>
 			<col tal:repeat="column table/getColumnDetails" tal:attributes="id string:${table/getId}_column_${column/key}" />
 			<thead>
-			
+
 				<!-- Show the paginator at the top of the table if requested -->
 				<tal:block tal:condition="paginator">
 					<tal:block
@@ -55,7 +55,7 @@
 						tal:define="paginatorMacroName paginatorMacroName | string:paginatorControls"
 						metal:use-macro="${paginatorMacroName}" />
 				</tal:block>
-				
+
 				<!-- Display the column headers and sort selectors -->
 				<tr tal:condition="showHeaders">
 					<tal:block tal:repeat="columnDetails table/getColumnDetails">
@@ -69,7 +69,7 @@
 						>
 							<!-- for non-sortable columns just show the title -->
 							<span tal:condition="not:sortable" class="columnTitle" i18n:translate="columnDetails/key"/>
-							
+
 							<div tal:condition="sortable">
 								<!-- for sortable columns show the title as a link and show one or more sort direction links -->
 								<a
@@ -79,7 +79,7 @@
 										href string:${table/getBaseUri}/${prefix}-sort/${columnDetails/key}/${prefix}-direction/${columnSortDirectionLink | string:0}/${prefix}-page/0;"
 									class="columnTitle"
 								/>
-								
+
 								<a
 									tal:define="showArrow Ztal_Tales_Generic.equal:columnDetails/sortDirection,string:1 | showBothArrows;
 										columnSortDirectionLink Ztal_Tales_Generic.isTrue:active,string:0 | string:1"
@@ -89,7 +89,7 @@
 								>
 									<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:sortAscending | string:" />
 								</a>
-								
+
 								<a
 									tal:define="showArrow Ztal_Tales_Generic.equal:columnDetails/sortDirection,string:0 | showBothArrows;
 									columnSortDirectionLink Ztal_Tales_Generic.isTrue:active,string:1 | string:0"
@@ -99,18 +99,18 @@
 								>
 									<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:sortDescending | string:" />
 								</a>
-								
+
 							</div>
 						</th>
 					</tal:block>
 				</tr>
 			</thead>
-			
+
 			<!-- display the data -->
 			<tbody>
 				<tal:block tal:define="rowMacroName rowMacroName | string:tableRow" tal:repeat="row table" metal:use-macro="${rowMacroName}" />
 			</tbody>
-			
+
 			<!-- Show the paginator at the bottom of the table if requested -->
 			<tfoot>
 				<tal:block tal:condition="paginator">

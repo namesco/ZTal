@@ -3,7 +3,7 @@
 
 <!-- Production -->
 	<production>
-	
+
 		<phpSettings>
 			<display_startup_errors value="0" />
 			<display_errors value="0" />
@@ -14,7 +14,7 @@
 				<globalTemplatesDirectory><zf:const zf:name="APPLICATION_PATH" />/../tal/templateFragments</globalTemplatesDirectory>
 				<customModifiersDirectory><zf:const zf:name="APPLICATION_PATH" />/../tal/customModifiers</customModifiersDirectory>
 		</ztal>
-		
+
 	</production>
 
 <!-- Development -->
@@ -26,15 +26,15 @@
 		</phpSettings>
 
 		<ztal highlightFailedTranslations="1" compressWhitespace="0" cachePurgeMode="0" />
-		
+
 	</development>
 
 
 <!-- Testing -->
 	<testing zf:extends="development">
-	
+
 		<ztal cachePurgeMode="1" />
-		
+
 	</testing>
 
 </config>

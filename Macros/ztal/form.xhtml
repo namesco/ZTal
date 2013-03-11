@@ -62,13 +62,13 @@
 			>
 				<tal:block metal:use-macro="${headerErrorMacro | string:headerErrors}" />
 			</tal:block>
-		
+
 			<tal:block
 				tal:define="
 					elements form;
 					simpleElementNames useSimpleNames | Ztal_Tales_Form.getAttrib:form,string:useSimpleNames | string:0;
 					ulClass Ztal_Tales_Form.getAttrib:form, string:ulClass;"
-				metal:use-macro="fields" 
+				metal:use-macro="fields"
 			/>
 		</tal:block>
 	</form>
@@ -133,7 +133,7 @@
 				>
 					<!-- display the element -->
 					<tal:block metal:use-macro="${singleElementMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:singleElement}" />
-					
+
 					<!-- is there an error to display? -->
 					<tal:block tal:condition="
 							Ztal_Tales_Generic.equal:errorMode,string:inline
@@ -282,11 +282,11 @@
 			 different options and render each one as an input element. -->
 		<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
 				   tal:repeat="option element/getMultiOptions">
-			<label class="checkboxOption"> 
+			<label class="checkboxOption">
 				<tal:block tal:define="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 									   value repeat/option/key;
 									   checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
-						   metal:use-macro="inputElement" 
+						   metal:use-macro="inputElement"
 			    />
 				<tal:block i18n:translate="option" />
 			</label>
@@ -305,7 +305,7 @@
 				/>
 			</tal:block>
 		</select>
-		
+
 		<!-- If it is a multiple select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal_Tales_Form.isMultiSelect:element"

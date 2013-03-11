@@ -52,7 +52,7 @@ class Ztal_Table_Column_Array extends Ztal_Table_Column_Abstract
 		);
 
 	}
-	
+
 	/**
 	 * Method to return the value for a key from the data source.
 	 *

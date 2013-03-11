@@ -26,8 +26,8 @@ class Ztal_Mail extends Zend_Mail
 	 * @var Ztal_Tal_View
 	 */
 	public $view = null;
-	
-	
+
+
 	/**
 	 * Generate a macro launch stub to render the correct user template.
 	 *
@@ -50,8 +50,8 @@ class Ztal_Mail extends Zend_Mail
 </tal:block>';
 		return array('src' => $src, 'name' => __FILE__);
 	}
-	
-	
+
+
 	/**
 	 * Calculate the path for the email template.
 	 *
@@ -63,8 +63,8 @@ class Ztal_Mail extends Zend_Mail
 	{
 		return '../emails/' . $template . '.email';
 	}
-	
-	
+
+
 	/**
 	 * Constructor.
 	 *
@@ -75,16 +75,16 @@ class Ztal_Mail extends Zend_Mail
 		if (!Zend_Registry::isRegistered('Ztal_View')) {
 			throw new Exception('No available Ztal View');
 		}
-		
+
 		$this->view = clone Zend_Registry::get('Ztal_View');
 		$this->view->layout()->disableLayout();
 		$this->view->setCompressWhitespace(true);
 
-		
+
 		parent::__construct($charset);
 	}
-	
-	
+
+
 	/**
 	 * Set the plaintext body of the email to the output from the named template.
 	 *
@@ -99,12 +99,12 @@ class Ztal_Mail extends Zend_Mail
 	) {
 		$this->view->ztalMailMacro = $this->_calculateTemplatePath($template)
 			. '/plain';
-			
+
 		return $this->setBodyText($this->view->render(
 			$this->_template()), $charset, $encoding);
 	}
-	
-	
+
+
 	/**
 	 * Set the html body of the email to the output from the named template.
 	 *

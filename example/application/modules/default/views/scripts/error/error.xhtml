@@ -23,7 +23,7 @@
 		<body>
 			<h1>An error occurred</h1>
 			<h2 tal:content="message"></h2>
-			<div tal:condition="not: productionMode"> 
+			<div tal:condition="not: productionMode">
 				<h3>Exception information:</h3>
 				<p><b>Message:</b><span tal:content="exceptionMessage" /></p>
 				<h3>Stack trace:</h3>
@@ -33,5 +33,5 @@
 			</div>
 		</body>
 	</html>
-	
+
 </tal:block>

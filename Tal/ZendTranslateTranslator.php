@@ -31,7 +31,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	 * Whether to mark failed translations with a '**' prefix.
 	 *
 	 * @var bool
-	 */	 
+	 */
 	protected $_highlightFailedTranslations;
 
 
@@ -48,7 +48,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 		}
 	}
 
-	
+
 	/**
 	 * Set whether failed translation strings should be prefixed with a '**'.
 	 *
@@ -60,7 +60,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	{
 		$this->_highlightFailedTranslations = $flag;
 	}
-	
+
 	/**
 	 * Set the target language for translations.
 	 *
@@ -73,7 +73,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 		$translator = Zend_Registry::get('Zend_Translate');
 		return $translator->setLocale(array_shift(func_get_args()));
 	}
-	
+
 	/**
 	 * Set the encoding used for translated output.
 	 *
@@ -89,7 +89,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	public function setEncoding($encoding)
 	{
 	}
-	
+
 	/**
 	 * Set the domain to use for translations.
 	 *
@@ -103,7 +103,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	{
 		$this->_domain = trim($domain);
 	}
-	
+
 	/**
 	 * Set an interpolation var.
 	 *
@@ -119,7 +119,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	{
 		$this->_vars[$key] = $value;
 	}
-	
+
 	/**
 	 * Translate a given key string.
 	 *
@@ -139,12 +139,12 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	public function translate($key, $htmlencode = true)
 	{
 		$translator = Zend_Registry::get('Zend_Translate');
-		
+
 		//is the translation is a plurals translation created using the 'plurals' modifier?
 		if (is_array($key) && isset($key['pluralKeys'])) {
 			//grab the global translation key array
 			$globalTranslateSet = $key['pluralKeys'];
-			
+
 			//create the domain specific translation array by prepending the domain key
 			// and trim the global key while we are at it
 			$domainTranslateSet = array();
@@ -152,20 +152,20 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 				$currentKey = trim($currentKey);
 				$domainTranslateSet[] = $this->_domain . chr(4) . $currentKey;
 			}
-			
+
 			//work out the count variable value
 			$countVariable = $key['count'];
-			
+
 			//append the count value to the end of the arrays
 			$domainTranslateSet[] = $countVariable;
 			$globalTranslateSet[] = $countVariable;
-			
+
 			//register 'count' as a post-translation var so the count can appear in the translated message
 			if (! isset($this->_vars)) {
 				$this->_vars = array();
 			}
 			$this->_vars['count'] = $countVariable;
-			
+
 			//check first if a domain specific translation is available
 			if ($translator->isTranslated($domainTranslateSet[0])) {
 				$value = $translator->translate($domainTranslateSet);
@@ -173,7 +173,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 				//then check if a global translation is available
 			} elseif ($translator->isTranslated($globalTranslateSet[0])) {
 				$value = $translator->translate($globalTranslateSet);
-				
+
 				//otherwise just return the first key plus the count info
 			} else {
 				$value = $globalTranslateSet[0] . '[' . $countVariable . ']';
@@ -181,7 +181,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 					$value = '**' . $value;
 				}
 			}
-			
+
 			//otherwise the translation is a simple value
 		} else {
 			$key = trim($key);
@@ -196,7 +196,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 				}
 			}
 		}
-		
+
 		//if requested, html-encode the returned value
 		if ($htmlencode) {
 			$value = htmlspecialchars($value, ENT_QUOTES);
