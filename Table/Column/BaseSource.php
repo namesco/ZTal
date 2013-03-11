@@ -18,7 +18,7 @@ namespace Ztal\Table\Column;
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Base
+class BaseSource
 {
 	/**
 	 * Ascending sort direction.
