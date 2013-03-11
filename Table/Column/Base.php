@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table\Column;
+
 /**
  * Represent a column in an html table.
  *
@@ -16,9 +18,20 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Column_Abstract
+class Base
 {
+	/**
+	 * Ascending sort direction.
+	 *
+	 * @const int
+	 */
 	const DIRECTION_ASCENDING = 1;
+
+	/**
+	 * Descending sort direction.
+	 *
+	 * @const int
+	 */
 	const DIRECTION_DESCENDING = 0;
 
 
@@ -27,7 +40,7 @@ class Ztal_Table_Column_Abstract
 	 *
 	 * @var string
 	 */
-	 protected $_columnKey;
+	protected $_columnKey;
 
 	/**
 	 * The key used to fetch this columns data from the data source.
@@ -50,7 +63,6 @@ class Ztal_Table_Column_Abstract
 	 */
 	protected $_sortDirection;
 
-
 	/**
 	 * A function to format the data before handing it over to the table.
 	 *
@@ -66,9 +78,8 @@ class Ztal_Table_Column_Abstract
 	 * @param string $dataKey   The name of the dataSource for the column.
 	 * @param array  $options   Optional config options.
 	 */
-	public function __construct($columnKey, $dataKey = null,
-		array $options = array()
-	) {
+	public function __construct($columnKey, $dataKey = null, array $options = array())
+	{
 		$this->_columnKey = $columnKey;
 		$this->_dataKey = $dataKey;
 
@@ -120,6 +131,7 @@ class Ztal_Table_Column_Abstract
 		return $this->_columnKey;
 	}
 
+
 	/**
 	 * Can the current column be sorted.
 	 *
@@ -130,6 +142,7 @@ class Ztal_Table_Column_Abstract
 		return $this->_sortField != null;
 	}
 
+
 	/**
 	 * Return the sort field for the column.
 	 *
@@ -139,6 +152,7 @@ class Ztal_Table_Column_Abstract
 	{
 		return $this->_sortField;
 	}
+
 
 	/**
 	 * Return the sort direction for the column.
@@ -177,8 +191,7 @@ class Ztal_Table_Column_Abstract
 	 */
 	public function sort(&$dataSource)
 	{
-		$this->_sortDataSource($dataSource, $this->_sortField,
-			$this->_sortDirection);
+		$this->_sortDataSource($dataSource, $this->_sortField, $this->_sortDirection);
 	}
 
 
@@ -193,8 +206,9 @@ class Ztal_Table_Column_Abstract
 	 */
 	protected function _sortDataSource(&$dataSource, $sortField, $sortDirection)
 	{
-		throw new Exception('Invalid call to method in Abstract class');
+		throw new \Exception('Invalid call to method in Base class');
 	}
+
 
 	/**
 	 * Subclassable method to return the value for a key from the data source.
@@ -206,7 +220,6 @@ class Ztal_Table_Column_Abstract
 	 */
 	protected function _dataForKey($dataSource, $key)
 	{
-		throw new Exception('Invalid call to method in Abstract class');
+		throw new \Exception('Invalid call to method in Base class');
 	}
-
 }
