@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Controller\Plugin;
+
 /**
  * Overrides the default Zend View to provide Tal templating through PHPTal.
  *
@@ -31,7 +33,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
+class Ztal extends \Zend_Controller_Plugin_Abstract
 {
 
 	/**
@@ -59,30 +61,23 @@ class Ztal_Controller_Plugin_Ztal extends Zend_Controller_Plugin_Abstract
 	 *
 	 * @return void
 	 */
-	public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
+	public function dispatchLoopStartup(\Zend_Controller_Request_Abstract $request)
 	{
-		// Unregister the built-in autoloader
-		spl_autoload_unregister(array('PHPTAL','autoload'));
-
-		// Register the autoloader through Zend
-		Zend_Loader_Autoloader::getInstance()->pushAutoloader(
-			array('PHPTAL','autoload'), 'PHPTAL');
-
 		// We create an instance of our view wrapper and configure it
 		// It extends Zend_View so we can configure it the same way
-		$view = new Ztal_Tal_View($this->_options);
+		$view = new \Ztal\Tal\View($this->_options);
 
-		if (Zend_Registry::isRegistered('Zend_Translate')) {
+		if (\Zend_Registry::isRegistered('Zend_Translate')) {
 			//setup the translation facilities in PHPTal
-			$translator = new Ztal_Tal_ZendTranslateTranslator($this->_options);
+			$translator = new \Ztal_Tal_ZendTranslateTranslator($this->_options);
 		} else {
-			$translator = new Ztal_Tal_MockTranslator($this->_options);
+			$translator = new \Ztal_Tal_MockTranslator($this->_options);
 		}
 		$translator->useDomain($request->getControllerName());
 		$view->getEngine()->setTranslator($translator);
 
 		// We configure the view renderer in order to use our PHPTAL view
-		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
+		$viewRenderer = \Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
 
 		// If the view template suffix has not already been changed away from
 		// the Zend 'phtml' convention then change it to 'xhtml'.
