@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tal;
+
 /**
  * Subclass of Zend View that replaces the standard functionality with PHPTal.
  *
@@ -16,9 +18,8 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Tal_View extends Zend_View
+class View extends \Zend_View
 {
-
 	/**
 	 * The PHPTal engine.
 	 *
@@ -68,7 +69,6 @@ class Ztal_Tal_View extends Zend_View
 	 */
 	protected $_zendPageCacheKey = false;
 
-
 	/**
 	 * Whether the prefilters have been added to the preFilter chain yet.
 	 *
@@ -98,7 +98,7 @@ class Ztal_Tal_View extends Zend_View
 		) {
 			$talClass = $options['engineClass'];
 		} else {
-			$talClass = 'PHPTAL';
+			$talClass = '\PHPTAL';
 		}
 		$this->setEngine(new $talClass());
 
@@ -128,7 +128,7 @@ class Ztal_Tal_View extends Zend_View
 		// so we start with the bottom item first.
 
 		// First set the path for Ztal's own macros
-		$ztalBasePath = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+		$ztalBasePath = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 		$this->setScriptPath($ztalBasePath . DIRECTORY_SEPARATOR . 'Macros');
 
 		// Now setup the directories specified in the Ztal config
@@ -141,8 +141,6 @@ class Ztal_Tal_View extends Zend_View
 				$this->addScriptPath($currentDirectory);
 			}
 		}
-
-
 
 		// Next setup the custom modifiers
 
@@ -163,7 +161,6 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 
-
 	/**
 	 * Load in all php files in the specified directory.
 	 *
@@ -174,7 +171,7 @@ class Ztal_Tal_View extends Zend_View
 	public function addCustomModifiersPath($customModifiersPath)
 	{
 		if (is_dir($customModifiersPath)) {
-			foreach (new DirectoryIterator($customModifiersPath) as $modifierFile) {
+			foreach (new \DirectoryIterator($customModifiersPath) as $modifierFile) {
 				if ($modifierFile->isDot()) {
 					continue;
 				}
@@ -192,7 +189,6 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 
-
 	/**
 	 * Handle cloning of the view by cloning the PHPTAL object correctly.
 	 *
@@ -202,7 +198,6 @@ class Ztal_Tal_View extends Zend_View
 	{
 		$this->_engine = clone $this->_engine;
 	}
-
 
 
 	/**
@@ -219,7 +214,6 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 
-
 	/**
 	 * Returns the current PHPTAL instance.
 	 *
@@ -229,7 +223,6 @@ class Ztal_Tal_View extends Zend_View
 	{
 		return $this->_engine;
 	}
-
 
 
 	/**
@@ -243,7 +236,6 @@ class Ztal_Tal_View extends Zend_View
 	{
 		$this->_purgeCacheBeforeRender = $newValue;
 	}
-
 
 
 	/**
@@ -260,7 +252,6 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 
-
 	/**
 	 * Sets whether whitespace compression should be performed.
 	 *
@@ -274,7 +265,6 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 
-
 	/**
 	 * Gets whether whitespace compression is currently turned on.
 	 *
@@ -284,7 +274,6 @@ class Ztal_Tal_View extends Zend_View
 	{
 		return $this->_compressWhitespace;
 	}
-
 
 
 	/**
@@ -298,7 +287,6 @@ class Ztal_Tal_View extends Zend_View
 	{
 		$this->_engine->setPhpCodeDestination($path);
 	}
-
 
 
 	/**
@@ -317,7 +305,6 @@ class Ztal_Tal_View extends Zend_View
 	}
 
 
-
 	/**
 	 * Returns the cache purge mode.
 	 *
@@ -332,15 +319,15 @@ class Ztal_Tal_View extends Zend_View
 	/**
 	 * Setup the parameters to cache the result of a page render.
 	 *
-	 * @param Zend_Cache        $cache   The cache to use.
-	 * @param Zend_Config|array $options Additional options.
+	 * @param \Zend_Cache        $cache   The cache to use.
+	 * @param \Zend_Config|array $options Additional options.
 	 *
 	 * @return bool
 	 */
 	public function cacheRenderedPage($cache, $options)
 	{
 		// If the options are a Zend_Config object, convert to an array
-		if ($options instanceof Zend_Config) {
+		if ($options instanceof \Zend_Config) {
 			$options = $options->toArray();
 		}
 
@@ -351,7 +338,6 @@ class Ztal_Tal_View extends Zend_View
 			$this->_zendPageCacheDuration = 1800; // half an hour
 		}
 
-
 		// If the key has been configured use it else default it.
 		if (isset($options['key'])) {
 			$this->_zendPageCacheKey = $options['key'];
@@ -361,30 +347,26 @@ class Ztal_Tal_View extends Zend_View
 
 		// Prepend the key to prevent namespace collisions and
 		// remove unsupported chars
-		$this->_zendPageCacheKey = 'ZtalPage'
-			. str_replace('/', '', $this->_zendPageCacheKey);
+		$this->_zendPageCacheKey = 'ZtalPage' . str_replace('/', '', $this->_zendPageCacheKey);
 
 		// Store the cache object
 		$this->_zendPageCache = $cache;
 
 		// Check if the cache item exists and, if it does, fetch it
-		$this->_zendPageCacheContent = $this->_zendPageCache->load(
-			$this->_zendPageCacheKey);
+		$this->_zendPageCacheContent = $this->_zendPageCache->load($this->_zendPageCacheKey);
 
 		// return whether a valid cache item could be fetched.
 		return ($this->_zendPageCacheContent != false);
 	}
 
 
-
-
 	/**
 	 * Returns PHPTAL output - either from a render or from the cache.
 	 *
 	 * @param string|array $template The name of the template to render or
-	 *                                an array with the ('src') src for a template
-	 *                                and a ('name') name to help identify the
-	 *                                template in error messages.
+	 *                               an array with the ('src') src for a template
+	 *                               and a ('name') name to help identify the
+	 *                               template in error messages.
 	 *
 	 * @return string
 	 */
@@ -392,9 +374,8 @@ class Ztal_Tal_View extends Zend_View
 	{
 		// Check we are fully configured and initialised.
 		if ($this->_engine == null) {
-			throw new Zend_View_Exception('PHPTAL is not defined', $this);
+			throw new \Zend_View_Exception('PHPTAL is not defined', $this);
 		}
-
 
 		// If a cache has been setup and content is available, return it
 		if ($this->_zendPageCacheContent != false) {
@@ -406,21 +387,18 @@ class Ztal_Tal_View extends Zend_View
 
 		// Do this at this point rather than in the constructor because we don't
 		// know what the template repositories are going to be at that point.
-		$this->_engine->addSourceResolver(
-			new Ztal_Tal_PharResolver($this->getScriptPaths()));
+		$this->_engine->addSourceResolver(new PharResolver($this->getScriptPaths()));
 
 		// Assign all the variables set here through to the PHPTAL engine.
 		foreach ($this->getVars() as $key => $value) {
 			$this->_engine->set($key, $value);
 		}
 
-
 		if (!is_array($template)) {
 			$this->_engine->setTemplate($this->_convertTemplateName($template));
 		} else {
 			$this->_engine->setSource($template['src'], $template['name']);
 		}
-
 
 		// Setup a collection of standard variable available in the view
 		$this->_engine->set('doctype', $this->doctype());
@@ -445,7 +423,6 @@ class Ztal_Tal_View extends Zend_View
 			}
 		}
 
-
 		// if a layout is being used and nothing has already overloaded the viewContent,
 		// register the content as viewContent, otherwise set it to empty
 		if (!isset($this->viewContent)) {
@@ -458,17 +435,17 @@ class Ztal_Tal_View extends Zend_View
 
 		if (!$this->_preFiltersRegistered) {
 			// Strip html comments and compress un-needed whitespace
-			$this->_engine->addPreFilter(new PHPTAL_PreFilter_StripComments());
+			$this->_engine->addPreFilter(new \PHPTAL_PreFilter_StripComments());
 
 			if ($this->_compressWhitespace == true) {
-				$this->_engine->addPreFilter(new PHPTAL_PreFilter_Compress());
+				$this->_engine->addPreFilter(new \PHPTAL_PreFilter_Compress());
 			}
 			$this->_preFiltersRegistered = true;
 		}
 
 		try {
 			$result = $this->_engine->execute();
-		} catch(PHPTAL_TemplateException $e) {
+		} catch(\PHPTAL_TemplateException $e) {
 			// If the exception is a root PHPTAL_TemplateException
 			// rather than a subclass of this exception and xdebug is enabled,
 			// it will have already been picked up by xdebug, if enabled, and
@@ -485,17 +462,14 @@ class Ztal_Tal_View extends Zend_View
 			throw $e;
 		}
 
-
 		// If the page needed to be rendered but was configured to
 		// cache then cache the result of the render.
-		if (($this->_zendPageCache instanceof Zend_Cache_Core)) {
-			$this->_zendPageCache->save($result, $this->_zendPageCacheKey,
-				array(), $this->_zendPageCacheDuration);
+		if (($this->_zendPageCache instanceof \Zend_Cache_Core)) {
+			$this->_zendPageCache->save($result, $this->_zendPageCacheKey, array(), $this->_zendPageCacheDuration);
 		}
 
 		return $result;
 	}
-
 
 
 	/**
