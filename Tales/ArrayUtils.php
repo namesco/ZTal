@@ -12,6 +12,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tales;
+
 /**
  * Creates a namespace for the tales extensions.
  *
@@ -23,7 +25,7 @@
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
-final class Ztal_Tales_Array implements PHPTAL_Tales
+final class ArrayUtils implements \PHPTAL_Tales
 {
 	/**
 	 * Tal to support sorting of an array.
@@ -44,7 +46,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function sort($src, $nothrow)
+	static public function sort($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$command = strtolower(substr($src, 0, $break));
@@ -58,7 +60,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 			$rest = substr($src, $break + 1);
 		}
 
-		return 'Ztal_Tales_Array::sortHelper('
+		return 'Ztal\Tales\ArrayUtils::sortHelper('
 			. phptal_tale($variable, $nothrow) . ', '
 			. phptal_tale($command, $nothrow) . ')';
 	}
@@ -71,7 +73,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return array
 	 */
-	public static function sortHelper($array, $sortMode)
+	static public function sortHelper($array, $sortMode)
 	{
 		if ($sortMode == 'none') {
 			return $array;
@@ -119,7 +121,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function in($src, $nothrow)
+	static public function in($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$needle = substr($src, 0, $break);
@@ -158,7 +160,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function intersect($src, $nothrow)
+	static public function intersect($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -193,7 +195,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function complement($src, $nothrow)
+	static public function complement($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -233,7 +235,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function union($src, $nothrow)
+	static public function union($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -248,5 +250,4 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 			. phptal_tale($parts[1], $nothrow) . '), array_values('
 			. phptal_tale($parts[2], $nothrow) . ')))';
 	}
-
 }
