@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table\Paginator;
+
 /**
  * Abstract class to handle pagination in html tables.
  *
@@ -16,7 +18,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Paginator_Abstract
+class BaseSource
 {
 	/**
 	 * The total number of rows to paginate.
@@ -102,7 +104,6 @@ class Ztal_Table_Paginator_Abstract
 	}
 
 
-
 	/**
 	 * Return true if there are multiple pages.
 	 *
@@ -170,6 +171,7 @@ class Ztal_Table_Paginator_Abstract
 		return $this->_totalRowCount;
 	}
 
+
 	/**
 	 * Set the total number of rows in the data set.
 	 *
@@ -221,6 +223,7 @@ class Ztal_Table_Paginator_Abstract
 		return $this->_rowsPerPage;
 	}
 
+
 	/**
 	 * Set how many rows are shown on a page.
 	 *
@@ -236,6 +239,7 @@ class Ztal_Table_Paginator_Abstract
 		$this->_rowsPerPage = $rowsPerPage;
 	}
 
+
 	/**
 	 * Perform a slice on the data source.
 	 *
@@ -247,7 +251,6 @@ class Ztal_Table_Paginator_Abstract
 	 */
 	protected function _sliceDataSource(&$dataSource, $start, $count)
 	{
-		throw new Exception('Invalid call to method in Abstract class');
+		throw new \Exception('Invalid call to method in Abstract class');
 	}
-
 }
