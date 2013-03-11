@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tal;
+
 /**
  * PHPTal Zend_Translate translation plugin.
  *
@@ -18,7 +20,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
+class ZendTranslateTranslator implements \PHPTAL_TranslationService
 {
 	/**
 	 * The translation domain to use. A translation domain is akin to a namespace.
@@ -61,6 +63,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 		$this->_highlightFailedTranslations = $flag;
 	}
 
+
 	/**
 	 * Set the target language for translations.
 	 *
@@ -70,9 +73,10 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	 */
 	public function setLanguage(/*...*/)
 	{
-		$translator = Zend_Registry::get('Zend_Translate');
+		$translator = \Zend_Registry::get('Zend_Translate');
 		return $translator->setLocale(array_shift(func_get_args()));
 	}
+
 
 	/**
 	 * Set the encoding used for translated output.
@@ -90,6 +94,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	{
 	}
 
+
 	/**
 	 * Set the domain to use for translations.
 	 *
@@ -103,6 +108,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	{
 		$this->_domain = trim($domain);
 	}
+
 
 	/**
 	 * Set an interpolation var.
@@ -119,6 +125,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	{
 		$this->_vars[$key] = $value;
 	}
+
 
 	/**
 	 * Translate a given key string.
@@ -138,7 +145,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	 */
 	public function translate($key, $htmlencode = true)
 	{
-		$translator = Zend_Registry::get('Zend_Translate');
+		$translator = \Zend_Registry::get('Zend_Translate');
 
 		//is the translation is a plurals translation created using the 'plurals' modifier?
 		if (is_array($key) && isset($key['pluralKeys'])) {
@@ -206,7 +213,7 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 		while (preg_match('/\${(.*?)\}/sm', $value, $m)) {
 			list($src, $var) = $m;
 			if (! isset($this->_vars[$var])) {
-				throw new PHPTAL_VariableNotFoundException('Interpolation error. Translation uses ${'
+				throw new \PHPTAL_VariableNotFoundException('Interpolation error. Translation uses ${'
 					. $var . '}, which is not defined in the template (via i18n:name)');
 			}
 			$value = str_replace($src, $this->_vars[$var], $value);
