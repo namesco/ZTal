@@ -12,6 +12,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tales;
+
 /**
  * Form Tale Modifiers.
  *
@@ -23,10 +25,8 @@
  * @package  Ztal
  * @author   Alex Mace <amace@names.co.uk>
  */
-
-final class Ztal_Tales_Form implements PHPTAL_Tales
+final class Form implements \PHPTAL_Tales
 {
-
 	/**
 	 * Figures out the simple element type from the one passed in.
 	 *
@@ -34,12 +34,12 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function calculateType($type)
+	static public function calculateType($type)
 	{
-		//this is done in two steps using the $nameParts intermediate variable
-		//because it causes a strict error if something other than a defined
-		//variable reference is passed to array_pop
-		$nameParts = explode("_", $type);
+		// This is done in two steps using the $nameParts intermediate variable
+		// because it causes a strict error if something other than a defined
+		// variable reference is passed to array_pop.
+		$nameParts = explode('_', $type);
 		$type = strtolower(array_pop($nameParts));
 
 		// Switch multicheckbox to be just "checkbox".
@@ -48,7 +48,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		}
 
 		return $type;
-
 	}
 
 	/**
@@ -62,7 +61,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function getAttrib($src, $nothrow)
+	static public function getAttrib($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -93,7 +92,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function getElement($src, $nothrow)
+	static public function getElement($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -125,7 +124,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function getErrors($src, $nothrow)
+	static public function getErrors($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -157,14 +156,13 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function inputType($src, $nothrow)
+	static public function inputType($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
-			   . '->getType())';
+		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow) . '->getType())';
 	}
 
 	/**
@@ -179,15 +177,13 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isDisplayGroup($src, $nothrow)
+	static public function isDisplayGroup($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return phptal_tale($src, $nothrow)
-			   . ' instanceof Zend_Form_DisplayGroup';
+		return phptal_tale($src, $nothrow) . ' instanceof Zend_Form_DisplayGroup';
 	}
 
 	/**
@@ -204,9 +200,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isFormElement($src, $nothrow)
+	static public function isFormElement($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -230,9 +225,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isHiddenElement($src, $nothrow)
+	static public function isHiddenElement($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -254,18 +248,16 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isButton($src, $nothrow)
+	static public function isButton($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
-			   . "->getType()) == 'button'";
-
+		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow) . "->getType()) == 'button'";
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is an image captcha.
@@ -278,9 +270,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isImageCaptcha($src, $nothrow)
+	static public function isImageCaptcha($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -303,9 +294,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isCaptcha($src, $nothrow)
+	static public function isCaptcha($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -315,7 +305,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			   . "->getType()) == 'captcha' && !method_exists("
 				. phptal_tale($src, $nothrow) . ', "getImgUrl"))';
 	}
-
 
 
 	/**
@@ -335,7 +324,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isChecked($src, $nothrow)
+	static public function isChecked($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -364,7 +353,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isDisabled($src, $nothrow)
+	static public function isDisabled($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -373,6 +362,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return phptal_tale($src, $nothrow) . '->getAttrib("disabled") ? true : false';
 	}
+
 
 	/**
 	 * Checks whether an element is required or not.
@@ -385,7 +375,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isRequired($src, $nothrow)
+	static public function isRequired($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -394,6 +384,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return phptal_tale($src, $nothrow) . '->isRequired()';
 	}
+
 
 	/**
 	 * Checks whether an element is readonly or not.
@@ -406,7 +397,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isReadOnly($src, $nothrow)
+	static public function isReadOnly($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -415,6 +406,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return '(bool) ' . phptal_tale($src, $nothrow) . '->getAttrib(\'readonly\')';
 	}
+
 
 	/**
 	 * Tal extension to determine whether or not the current element is an input.
@@ -427,9 +419,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isInput($src, $nothrow)
+	static public function isInput($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -438,8 +429,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return 'in_array(Ztal_Tales_Form::calculateType('
 			   . phptal_tale($src, $nothrow) . "->getType()), "
 			   . "array('text', 'hidden', 'password', 'date', 'email', 'file'))";
-
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a multi checkbox.
@@ -452,9 +443,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isMultiCheckbox($src, $nothrow)
+	static public function isMultiCheckbox($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -466,8 +456,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return 'method_exists(' . phptal_tale($src, $nothrow)
 			   . ", 'getMultiOptions') && Ztal_Tales_Form::calculateType("
 			   . phptal_tale($src, $nothrow) . "->getType()) == 'checkbox'";
-
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a radio element.
@@ -480,9 +470,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isRadio($src, $nothrow)
+	static public function isRadio($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -490,7 +479,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'radio'";
-
 	}
 
 
@@ -505,9 +493,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isCheckbox($src, $nothrow)
+	static public function isCheckbox($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -515,7 +502,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'checkbox'";
-
 	}
 
 
@@ -530,9 +516,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isSelect($src, $nothrow)
+	static public function isSelect($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -541,6 +526,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'select'";
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a multi select.
@@ -553,9 +539,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isMultiSelect($src, $nothrow)
+	static public function isMultiSelect($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -564,6 +549,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'multiselect'";
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a textarea input.
@@ -576,9 +562,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isTextarea($src, $nothrow)
+	static public function isTextarea($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -586,8 +571,8 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 
 		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'textarea'";
-
 	}
+
 
 	/**
 	 * Tal to determine whether the element should have a label displayed before it.
@@ -601,7 +586,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function showLabelBefore($src, $nothrow)
+	static public function showLabelBefore($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -612,7 +597,6 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			   . "array('date', 'email', 'password', 'file', 'select', 'multiselect', 'text', 'textarea')) && "
 			   . phptal_tale($src, $nothrow) . '->getLabel()';
 	}
-
 
 
 	/**
@@ -627,7 +611,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function showLabelAfter($src, $nothrow)
+	static public function showLabelAfter($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -655,7 +639,7 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function getSlotContent($src, $nothrow)
+	static public function getSlotContent($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break === false) {
@@ -669,5 +653,4 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			. ')?$ctx->getSlot(' . phptal_tale($slotName, $nothrow)
 			. '):' . phptal_tale($notTrue, $nothrow) . ')';
 	}
-
 }
