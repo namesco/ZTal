@@ -11,6 +11,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tales;
+
 /**
  * Creates a namespace for the tales extensions.
  *
@@ -22,9 +24,8 @@
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
-final class Ztal_Tales_Generic implements PHPTAL_Tales
+final class Generic implements \PHPTAL_Tales
 {
-
 	/**
 	 * Tal extension to allow string casing.
 	 *
@@ -40,7 +41,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function uc($src, $nothrow)
+	static public function uc($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$command = strtolower(substr($src, 0, $break));
@@ -53,8 +54,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$string = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		switch ($command) {
 
+		switch ($command) {
 			case 'word':
 				return 'ucwords(' . phptal_tale($src, $nothrow) . ')';
 				break;
@@ -75,6 +76,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 		return phptal_tales($rest, $nothrow);
 	}
 
+
 	/**
 	 * Tal extension to convert new lines to <br> and any text to htmlentities.
 	 *
@@ -83,7 +85,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function toHTML($src, $nothrow)
+	static public function toHTML($src, $nothrow)
 	{
 		return 'nl2br(htmlspecialchars(' . phptal_tales($src, $nothrow) . '))';
 	}
@@ -99,8 +101,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-
-	public static function strReplace($src, $nothrow)
+	static public function strReplace($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -125,7 +126,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 * @static
 	 * @return string
 	 */
-	public static function count($src, $nothrow)
+	static public function count($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$command = strtolower(substr($src, 0, $break));
@@ -138,8 +139,8 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			$string = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		switch ($command) {
 
+		switch ($command) {
 			case 'string':
 				return 'strlen(' . phptal_tale($src, $nothrow) . ')';
 				break;
@@ -165,7 +166,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 * @static
 	 * @return string
 	 */
-	public static function ellipsis($src, $nothrow)
+	static public function ellipsis($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -178,10 +179,6 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			. phptal_tale($parts[0], $nothrow) . ') > '
 			. phptal_tale($parts[1], $nothrow) . ' ? "..." : "")';
 	}
-
-
-
-
 
 
 	/**
@@ -199,8 +196,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-
-	public static function fromJsonString($src, $nothrow)
+	static public function fromJsonString($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break === false) {
@@ -214,7 +210,6 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	}
 
 
-
 	/**
 	 * Tal extension to return the php type of a variable.
 	 *
@@ -225,8 +220,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-
-	public static function phpType($src, $nothrow)
+	static public function phpType($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -250,7 +244,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function runtimeCalculateType($var)
+	static public function runtimeCalculateType($var)
 	{
 		return gettype($var);
 	}
@@ -266,7 +260,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function mod($src, $nothrow)
+	static public function mod($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -281,7 +275,6 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	}
 
 
-
 	/**
 	 * Tal extension to return true when both arguments are equal.
 	 *
@@ -292,7 +285,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function equal($src, $nothrow)
+	static public function equal($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -309,6 +302,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 			. '?1:' . phptal_tale($rest, $nothrow) . ')';
 	}
 
+
 	/**
 	 * Tal extension to return true when the first argument is greater.
 	 *
@@ -320,7 +314,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function greaterThan($src, $nothrow)
+	static public function greaterThan($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -348,7 +342,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isTrue($src, $nothrow)
+	static public function isTrue($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$variable = substr($src, 0, $break);
@@ -366,7 +360,6 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	}
 
 
-
 	/**
 	 * Tal extension to handle Zend_Date objects.
 	 *
@@ -377,7 +370,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function zendDate($src, $nothrow)
+	static public function zendDate($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$variable = substr($src, 0, $break);
@@ -402,7 +395,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function zendLocaleNumber($src, $nothrow)
+	static public function zendLocaleNumber($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$variable = substr($src, 0, $break);
@@ -429,7 +422,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function zendCurrency($src, $nothrow)
+	static public function zendCurrency($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$variable = substr($src, 0, $break);
@@ -460,7 +453,7 @@ final class Ztal_Tales_Generic implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function numberFormatDecimal($src, $nothrow)
+	static public function numberFormatDecimal($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$variable = substr($src, 0, $break);
