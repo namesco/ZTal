@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tales;
+
 /**
  * Tales namespace handler to allow definition of plurals in a translation.
  *
@@ -20,11 +22,10 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-final class Ztal_Tales_Translation implements PHPTAL_Tales
+final class Translation implements \PHPTAL_Tales
 {
-
 	/**
-	 * Tal extension to allow string casing.
+	 * Tal extension to allow string pluralising.
 	 *
 	 * Example use within template:
 	 * <span i18n:translate="Ztal_Tales_Translation.plural:string:singularKey,string:pluralKey,countVariable />
@@ -35,7 +36,7 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 	 * @return string
 	 */
 
-	public static function plural($src, $nothrow)
+	static public function plural($src, $nothrow)
 	{
 		$parts = explode(',', $src);
 		$count = array_pop($parts);
@@ -76,7 +77,7 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function translateArrayValues($src, $nothrow)
+	static public function translateArrayValues($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -86,6 +87,7 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 		return 'Ztal_Tales_Translation::arrayTranslationHelper('
 			. phptal_tale($src, $nothrow) . ', $_translator)';
 	}
+
 
 	/**
 	 * Helper for the translateArrayValues Tal.
@@ -98,7 +100,7 @@ final class Ztal_Tales_Translation implements PHPTAL_Tales
 	 *
 	 * @return array
 	 */
-	public static function arrayTranslationHelper($array, $translator)
+	static public function arrayTranslationHelper($array, $translator)
 	{
 		if (!is_array($array)) {
 			return $array;
