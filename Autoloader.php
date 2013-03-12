@@ -133,7 +133,7 @@ class Autoloader
 			return false;
 		}
 
-		include $classPath;
+		include_once $classPath;
 		return true;
 	}
 }
