@@ -38,7 +38,7 @@ class AutoloaderTests extends \PHPUnit_Framework_TestCase
 	 */
 	public function testAutoloadingCompatibilityClasses($legacyClassName, $className)
 	{
-		$this->assertTrue(\Ztal\Autoloader::compatibility($legacyClassName), 'Failed to autoload.');
+		$this->assertTrue(\Ztal\Autoloader::autoloadCompatibility($legacyClassName), 'Failed to autoload.');
 		$this->assertTrue(class_exists($className), 'Class doesn\'t exist.');
 	}
 
