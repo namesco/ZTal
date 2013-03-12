@@ -9,11 +9,11 @@
  * @license   http://names.co.uk/license Namesco
  */
 
-//shared environment configuration
-require_once dirname(__FILE__) . '/sharedTestSetup.php';
+// Shared environment configuration.
+require_once __DIR__ . '/sharedTestSetup.php';
 
-//Test classes
-require_once 'Placeholder/AllTests.php';
+// Test classes.
+require_once __DIR__ . '/Tests/AutoloaderTests.php';
 
 /**
  * Top level config for all Ztal Unit Tests.
@@ -22,7 +22,6 @@ require_once 'Placeholder/AllTests.php';
  * @package  PHPUnit
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-
 class AllTests
 {
 	/**
@@ -34,7 +33,8 @@ class AllTests
 	{
 		// Create an instance of a test suite
 		$suite = new PHPUnit_Framework_TestSuite('Ztal');
-		$suite->addTest(Placeholder_AllTests::suite());
+
+		$suite->addTestSuite('Ztal\Tests\AutoloaderTests');
 
 		return $suite;
 	}

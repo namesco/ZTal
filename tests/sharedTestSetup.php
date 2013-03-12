@@ -13,9 +13,9 @@ if (function_exists('xdebug_disable')) {
 	xdebug_disable();
 }
 
-require_once 'PHPUnit/Autoload.php';
-
-// Configure autoloaders for Zend and Dada
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('Zend_');
+/**
+ * Total cheat. Empty interface so we can load TALES. Must be in the global namespace.
+ */
+interface PHPTAL_Tales
+{
+}
