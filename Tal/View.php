@@ -414,7 +414,7 @@ class View extends \Zend_View
 		if ($this->_purgeCacheBeforeRender) {
 			$cacheFolder = $this->_engine->getPhpCodeDestination();
 			if (is_dir($cacheFolder)) {
-				foreach (new DirectoryIterator($cacheFolder) as $cacheItem) {
+				foreach (new \DirectoryIterator($cacheFolder) as $cacheItem) {
 					if (strncmp($cacheItem->getFilename(), 'tpl_', 4) != 0 || $cacheItem->isdir()) {
 						continue;
 					}
