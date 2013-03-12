@@ -18,7 +18,7 @@ namespace Ztal\Table;
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Base implements Countable, Iterator
+class Base implements \Countable, \Iterator
 {
 	/**
 	 * The Id of the table.
