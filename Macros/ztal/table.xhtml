@@ -50,8 +50,8 @@
 				<tal:block tal:condition="paginator">
 					<tal:block
 						tal:condition="
-							Ztal_Tales_Generic.equal:paginatorDisplayLoc,string:top
-							| Ztal_Tales_Generic.equal:paginatorDisplayLoc,string:both"
+							Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:top
+							| Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:both"
 						tal:define="paginatorMacroName paginatorMacroName | string:paginatorControls"
 						metal:use-macro="${paginatorMacroName}" />
 				</tal:block>
@@ -61,10 +61,10 @@
 					<tal:block tal:repeat="columnDetails table/getColumnDetails">
 						<th
 							tal:define="
-								active Ztal_Tales_Generic.equal:columnDetails/key,sortKey;
+								active Ztal\Tales\Generic.equal:columnDetails/key,sortKey;
 								sortable columnDetails/sortable;"
 							tal:attributes="
-								class string:${Ztal_Tales_Generic.isTrue:sortable,string:sortable} ${Ztal_Tales_Generic.isTrue:active,string:activeSortColumn};
+								class string:${Ztal\Tales\Generic.isTrue:sortable,string:sortable} ${Ztal\Tales\Generic.isTrue:active,string:activeSortColumn};
 								id string:${table/getId}_header_${columnDetails/key};"
 						>
 							<!-- for non-sortable columns just show the title -->
@@ -74,30 +74,30 @@
 								<!-- for sortable columns show the title as a link and show one or more sort direction links -->
 								<a
 									i18n:translate="columnDetails/key"
-									tal:define="columnSortDirectionLink Ztal_Tales_Generic.isTrue:active,not:columnDetails/sortDirection | columnDetails/sortDirection"
+									tal:define="columnSortDirectionLink Ztal\Tales\Generic.isTrue:active,not:columnDetails/sortDirection | columnDetails/sortDirection"
 									tal:attributes="
 										href string:${table/getBaseUri}/${prefix}-sort/${columnDetails/key}/${prefix}-direction/${columnSortDirectionLink | string:0}/${prefix}-page/0;"
 									class="columnTitle"
 								/>
 
 								<a
-									tal:define="showArrow Ztal_Tales_Generic.equal:columnDetails/sortDirection,string:1 | showBothArrows;
-										columnSortDirectionLink Ztal_Tales_Generic.isTrue:active,string:0 | string:1"
+									tal:define="showArrow Ztal\Tales\Generic.equal:columnDetails/sortDirection,string:1 | showBothArrows;
+										columnSortDirectionLink Ztal\Tales\Generic.isTrue:active,string:0 | string:1"
 									tal:condition="showArrow"
 									tal:attributes="href string:${table/getBaseUri}/${prefix}-sort/${columnDetails/key}/${prefix}-direction/${columnSortDirectionLink}/${prefix}-page/0;"
 									class="sortArrow sortAscending"
 								>
-									<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:sortAscending | string:" />
+									<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:sortAscending | string:" />
 								</a>
 
 								<a
-									tal:define="showArrow Ztal_Tales_Generic.equal:columnDetails/sortDirection,string:0 | showBothArrows;
-									columnSortDirectionLink Ztal_Tales_Generic.isTrue:active,string:1 | string:0"
+									tal:define="showArrow Ztal\Tales\Generic.equal:columnDetails/sortDirection,string:0 | showBothArrows;
+									columnSortDirectionLink Ztal\Tales\Generic.isTrue:active,string:1 | string:0"
 									tal:condition="showArrow"
 									tal:attributes="href string:${table/getBaseUri}/${prefix}-sort/${columnDetails/key}/${prefix}-direction/${columnSortDirectionLink}/${prefix}-page/0"
 									class="sortArrow sortDescending"
 								>
-									<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:sortDescending | string:" />
+									<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:sortDescending | string:" />
 								</a>
 
 							</div>
@@ -115,8 +115,8 @@
 			<tfoot>
 				<tal:block tal:condition="paginator">
 					<tal:block tal:condition="
-						Ztal_Tales_Generic.equal:paginatorDisplayLoc,string:bottom
-						| Ztal_Tales_Generic.equal:paginatorDisplayLoc,string:both"
+						Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:bottom
+						| Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:both"
 						tal:define="paginatorMacroName paginatorMacroName | string:paginatorControls"
 						metal:use-macro="${paginatorMacroName}" />
 				</tal:block>
@@ -146,32 +146,32 @@
 <!-- basic paginator controls macro -->
 <tr metal:define-macro="paginatorControls">
 	<td
-		tal:define="sortPart Ztal_Tales_Generic.isTrue:sortColumn,sortUri | string:;"
+		tal:define="sortPart Ztal\Tales\Generic.isTrue:sortColumn,sortUri | string:;"
 		tal:condition="paginator/isMultipage"
 		tal:attributes="colspan table/columnCount"
 		class="paginator"
 	>
 		<div class="inner">
 			<a
-				tal:condition="not:Ztal_Tales_Generic.equal:paginator/previousPage,string:-1"
+				tal:condition="not:Ztal\Tales\Generic.equal:paginator/previousPage,string:-1"
 				tal:attributes="href string:${table/getBaseUri}${sortPart}/${prefix}-page/${paginator/previousPage}"
 				class="paginatorPreviousPage"
 			>
-				<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:previousPage | string:" />
+				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:previousPage | string:" />
 			</a>
 			<a
-				tal:condition="not:Ztal_Tales_Generic.equal:paginator/nextPage,string:-1"
+				tal:condition="not:Ztal\Tales\Generic.equal:paginator/nextPage,string:-1"
 				tal:attributes="href string:${table/getBaseUri}${sortPart}/${prefix}-page/${paginator/nextPage}"
 				class="paginatorNextPage"
 			>
-				<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:nextPage | string:" />
+				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:nextPage | string:" />
 			</a>
 			<div class="paginatorPageSelector">
 				<a
 					tal:repeat="currentPage paginator/pages"
 					tal:content="currentPage/label"
 					tal:attributes="
-						class Ztal_Tales_Generic.isTrue:currentPage/currentPage,string:paginatorCurrentPage;
+						class Ztal\Tales\Generic.isTrue:currentPage/currentPage,string:paginatorCurrentPage;
 						href string:${table/getBaseUri}${sortPart}/${prefix}-page/${currentPage/index}"
 				/>
 			</div>
