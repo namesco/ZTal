@@ -29,7 +29,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to allow string casing.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.uc:option,variable" />
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.uc:option,variable" />
 	 * Options:
 	 *		first - uppercase the first letter of the string
 	 *		word - uppercase the first letter of each word
@@ -94,7 +94,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to allow string replacement.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.strReplace:string,original,replacement" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.strReplace:string,original,replacement" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -118,7 +118,7 @@ final class Generic implements \PHPTAL_Tales
 	 * Tal extension to allow counting of items.
 	 *
 	 * Example use within template:
-	 *  <span class="item" tal:content="Ztal_Tales_Generic.count:array,ticket/posts">1</span>
+	 *  <span class="item" tal:content="Ztal\Tales\Generic.count:array,ticket/posts">1</span>
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -158,7 +158,7 @@ final class Generic implements \PHPTAL_Tales
 	 * Tal extension: Adds ellipsis to strings when it's over a given length.
 	 *
 	 * Example use within template:
-	 *  <td tal:content="Ztal_Tales_Generic.ellipsis:ticket/posts/0/body,string:100" />
+	 *  <td tal:content="Ztal\Tales\Generic.ellipsis:ticket/posts/0/body,string:100" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -185,7 +185,7 @@ final class Generic implements \PHPTAL_Tales
 	 * Tal extension to build a data structure out of a json string.
 	 *
 	 * Example use within template:
-	 * <span tal:define=" myVar Ztal_Tales_Generic.fromJsonString:{'name':'robert','gender':'male'}" />
+	 * <span tal:define=" myVar Ztal\Tales\Generic.fromJsonString:{'name':'robert','gender':'male'}" />
 	 *
 	 * Note that single rather than double quotes are used to wrap strings and
 	 * these are auto-converted. In order to insert a single quote into the
@@ -213,7 +213,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to return the php type of a variable.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.phpType:variable" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.phpType:variable" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -226,7 +226,7 @@ final class Generic implements \PHPTAL_Tales
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return 'Ztal_Tales_Generic::runtimeCalculateType('
+		return 'Ztal\Tales\Generic::runtimeCalculateType('
 			. phptal_tale($src, $nothrow) . ')';
 	}
 
@@ -253,7 +253,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to return the result of a mod b (a%b in php talk).
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.mod:a,b" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.mod:a,b" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -278,7 +278,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to return true when both arguments are equal.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.equal:a,b" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.equal:a,b" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -307,7 +307,7 @@ final class Generic implements \PHPTAL_Tales
 	 * Tal extension to return true when the first argument is greater.
 	 *
 	 * Example use within template:
-	 *	<span tal:content="Ztal_Tales_Generic.greaterThan:a,b" />.
+	 *	<span tal:content="Ztal\Tales\Generic.greaterThan:a,b" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -335,7 +335,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to return the supplied string when the value is true.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.isTrue:variable,string" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.isTrue:variable,string" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -363,7 +363,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal extension to handle Zend_Date objects.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.zendDate:variable,format" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.zendDate:variable,format" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -388,7 +388,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal to handle formatting of numbers using a supplied Zend_Locale object.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.zendLocaleNumber:variable,localeObject" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.zendLocaleNumber:variable,localeObject" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -415,7 +415,7 @@ final class Generic implements \PHPTAL_Tales
 	/**
 	 * Tal to handle formatting of numbers using a supplied Zend_Currency object.
 	 *
-	 * Example use within template: <span tal:content="Ztal_Tales_Generic.zendCurrency:variable,currencyObject" />.
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.zendCurrency:variable,currencyObject" />.
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -445,7 +445,7 @@ final class Generic implements \PHPTAL_Tales
 	 * Example use within template:
 	 *
 	 * <span
-	 *   tal:content="Ztal_Tales_Generic.numberFormatDecimal:numberVar,string:2"
+	 *   tal:content="Ztal\Tales\Generic.numberFormatDecimal:numberVar,string:2"
 	 * />.
 	 *
 	 * @param string $src     The original template string.
