@@ -28,7 +28,7 @@ final class Translation implements \PHPTAL_Tales
 	 * Tal extension to allow string pluralising.
 	 *
 	 * Example use within template:
-	 * <span i18n:translate="Ztal_Tales_Translation.plural:string:singularKey,string:pluralKey,countVariable />
+	 * <span i18n:translate="Ztal\Tales\Translation.plural:string:singularKey,string:pluralKey,countVariable />
 	 *
 	 * @param string $src     The original string from the source template.
 	 * @param bool   $nothrow Whether to throw an exception on error or not.
@@ -67,7 +67,7 @@ final class Translation implements \PHPTAL_Tales
 	 *
 	 * Example use within template:
 	 * <span
-	 *    tal:define="translatedArray Ztal_Tales_Translation.translateArrayValues:originalArray"
+	 *    tal:define="translatedArray Ztal\Tales\Translation.translateArrayValues:originalArray"
 	 *    tal:repeat="item translatedArray"
 	 *    tal:content="item"
 	 * />
@@ -84,7 +84,7 @@ final class Translation implements \PHPTAL_Tales
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Translation::arrayTranslationHelper('
+		return 'Ztal\Tales\Translation::arrayTranslationHelper('
 			. phptal_tale($src, $nothrow) . ', $_translator)';
 	}
 
