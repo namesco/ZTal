@@ -31,7 +31,7 @@ final class ArrayUtils implements \PHPTAL_Tales
 	 * Tal to support sorting of an array.
 	 *
 	 * Example usage:
-	 * <span tal:define="sortedArray Ztal_Tales_Array.sort:sortMode,array" />
+	 * <span tal:define="sortedArray Ztal\Tales\ArrayUtils.sort:sortMode,array" />
 	 *
 	 * sortMode may be:
 	 *    regular      - standard sort with no type conversion
@@ -112,7 +112,7 @@ final class ArrayUtils implements \PHPTAL_Tales
 	 * Example usage:
 	 *
 	 * <span
-	 *  tal:condition="Ztal_Tales_Array.in:needle,haystack"
+	 *  tal:condition="Ztal\Tales\ArrayUtils.in:needle,haystack"
 	 *  tal:content="MATCH"
 	 * />
 	 *
@@ -147,7 +147,7 @@ final class ArrayUtils implements \PHPTAL_Tales
 	 * Return an array of all the items that are in array1 and array2.
 	 *
 	 * Example usage:
-	 * <span tal:define="diff Ztal_Tales_Array.intersect:mode,array1,array2" />
+	 * <span tal:define="diff Ztal\Tales\ArrayUtils.intersect:mode,array1,array2" />
 	 *
 	 * mode may be:
 	 *  key - diff on keys
@@ -182,7 +182,7 @@ final class ArrayUtils implements \PHPTAL_Tales
 	 * Return an array of the items in array1 that are not in array2.
 	 *
 	 * Example usage:
-	 * <span tal:define="complement Ztal_Tales_Array.complement:mode,array1,array2" />
+	 * <span tal:define="complement Ztal\Tales\ArrayUtils.complement:mode,array1,array2" />
 	 *
 	 * mode may be:
 	 *  key - diff on keys
@@ -222,7 +222,7 @@ final class ArrayUtils implements \PHPTAL_Tales
 	 * using array_merge before filtered for uniqueness with array_unique.
 	 *
 	 * Example usage:
-	 * <span tal:define="complement Ztal_Tales_Array.complement:mode,array1,array2" />
+	 * <span tal:define="complement Ztal\Tales\ArrayUtils.complement:mode,array1,array2" />
 	 *
 	 * mode may be:
 	 *  key - diff on keys
