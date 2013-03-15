@@ -49,7 +49,7 @@ class Ztal extends \Zend_Controller_Plugin_Abstract
 	 *
 	 * @param array $options Configuration options.
 	 */
-	public function __construct($options)
+	public function __construct($options = array())
 	{
 		$this->_options = $options;
 	}
@@ -63,9 +63,14 @@ class Ztal extends \Zend_Controller_Plugin_Abstract
 	 */
 	public function dispatchLoopStartup(\Zend_Controller_Request_Abstract $request)
 	{
-		// We create an instance of our view wrapper and configure it
+		// We create an instance of the view wrapper and configure it
 		// It extends Zend_View so we can configure it the same way
-		$view = new \Ztal\Tal\View($this->_options);
+		if (isset($this->_options['viewClass'])) {
+			$viewClass = $this->_options['viewClass'];
+			$view = new $viewClass($this->_options);
+		} else {
+			$view = new \Ztal\Tal\View($this->_options);
+		}
 
 		if (\Zend_Registry::isRegistered('Zend_Translate')) {
 			//setup the translation facilities in PHPTal
