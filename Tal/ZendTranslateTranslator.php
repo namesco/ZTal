@@ -101,7 +101,9 @@ class Ztal_Tal_ZendTranslateTranslator implements PHPTAL_TranslationService
 	 */
 	public function useDomain($domain)
 	{
+		$oldDomain = $this->_domain;
 		$this->_domain = trim($domain);
+		return $oldDomain;
 	}
 	
 	/**
