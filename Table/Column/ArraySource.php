@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table\Column;
+
 /**
  * Represent a column based on data from an array in an html table.
  *
@@ -16,7 +18,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Column_Array extends Ztal_Table_Column_Abstract
+class ArraySource extends BaseSource
 {
 	/**
 	 * Sort the supplied data source.
@@ -43,18 +45,21 @@ class Ztal_Table_Column_Array extends Ztal_Table_Column_Abstract
 		usort($dataSource, function($a, $b) use ($sortField, $sortDirection)
 			{
 				$result = strcmp($a[$sortField], $b[$sortField]);
-				if ($sortDirection == Ztal_Table_Column_Abstract::DIRECTION_DESCENDING) {
+				if ($sortDirection == self::DIRECTION_DESCENDING) {
 					return ($result == 0 ? 0 : -$result);
 				} else {
 					return $result;
 				}
 			}
 		);
-
 	}
-	
+
+
 	/**
 	 * Method to return the value for a key from the data source.
+	 *
+	 * @param mixed  $dataSource The data source to get data from.
+	 * @param string $key        The key to get data for.
 	 *
 	 * @return mixed
 	 */

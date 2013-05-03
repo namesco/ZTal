@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tal;
+
 /**
  * PHPTal Zend_Translate mock translation plugin.
  *
@@ -20,7 +22,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
+class MockTranslator implements \PHPTAL_TranslationService
 {
 	/**
 	 * Constructor.
@@ -31,7 +33,7 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	{
 	}
 
-		
+
 	/**
 	 * Set the target language for translations.
 	 *
@@ -42,8 +44,8 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	public function setLanguage(/*...*/)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Set the encoding used for translated output.
 	 *
@@ -59,8 +61,8 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	public function setEncoding($encoding)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Set the domain to use for translations.
 	 *
@@ -73,8 +75,8 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	public function useDomain($domain)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Set an interpolation var.
 	 *
@@ -89,8 +91,8 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	public function setVar($key, $value)
 	{
 	}
-	
-	
+
+
 	/**
 	 * Translate a given key string.
 	 *
@@ -108,16 +110,16 @@ class Ztal_Tal_MockTranslator implements PHPTAL_TranslationService
 	 * @return string
 	 */
 	public function translate($key, $htmlencode = true)
-	{		
+	{
 		//is the translation is a plurals translation created using the 'plurals' modifier?
 		if (is_array($key) && isset($key['pluralKeys'])) {
 			$value = trim($key['pluralKeys'][0]) . '[' . $key['count'] . ']';
-			
+
 			//otherwise the translation is a simple value
 		} else {
 			$value = trim($key);
 		}
-		
+
 		//if requested, html-encode the returned value
 		if ($htmlencode) {
 			$value = htmlspecialchars($value, ENT_QUOTES);

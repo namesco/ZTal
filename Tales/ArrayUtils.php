@@ -12,6 +12,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tales;
+
 /**
  * Creates a namespace for the tales extensions.
  *
@@ -23,13 +25,13 @@
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
 
-final class Ztal_Tales_Array implements PHPTAL_Tales
+final class ArrayUtils implements \PHPTAL_Tales
 {
 	/**
 	 * Tal to support sorting of an array.
 	 *
 	 * Example usage:
-	 * <span tal:define="sortedArray Ztal_Tales_Array.sort:sortMode,array" />
+	 * <span tal:define="sortedArray Ztal\Tales\ArrayUtils.sort:sortMode,array" />
 	 *
 	 * sortMode may be:
 	 *    regular      - standard sort with no type conversion
@@ -44,7 +46,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function sort($src, $nothrow)
+	static public function sort($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$command = strtolower(substr($src, 0, $break));
@@ -58,7 +60,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 			$rest = substr($src, $break + 1);
 		}
 
-		return 'Ztal_Tales_Array::sortHelper('
+		return 'Ztal\Tales\ArrayUtils::sortHelper('
 			. phptal_tale($variable, $nothrow) . ', '
 			. phptal_tale($command, $nothrow) . ')';
 	}
@@ -71,7 +73,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return array
 	 */
-	public static function sortHelper($array, $sortMode)
+	static public function sortHelper($array, $sortMode)
 	{
 		if ($sortMode == 'none') {
 			return $array;
@@ -110,7 +112,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 * Example usage:
 	 *
 	 * <span
-	 *  tal:condition="Ztal_Tales_Array.in:needle,haystack"
+	 *  tal:condition="Ztal\Tales\ArrayUtils.in:needle,haystack"
 	 *  tal:content="MATCH"
 	 * />
 	 *
@@ -119,7 +121,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function in($src, $nothrow)
+	static public function in($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$needle = substr($src, 0, $break);
@@ -145,7 +147,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 * Return an array of all the items that are in array1 and array2.
 	 *
 	 * Example usage:
-	 * <span tal:define="diff Ztal_Tales_Array.intersect:mode,array1,array2" />
+	 * <span tal:define="diff Ztal\Tales\ArrayUtils.intersect:mode,array1,array2" />
 	 *
 	 * mode may be:
 	 *  key - diff on keys
@@ -158,7 +160,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function intersect($src, $nothrow)
+	static public function intersect($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -180,7 +182,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 * Return an array of the items in array1 that are not in array2.
 	 *
 	 * Example usage:
-	 * <span tal:define="complement Ztal_Tales_Array.complement:mode,array1,array2" />
+	 * <span tal:define="complement Ztal\Tales\ArrayUtils.complement:mode,array1,array2" />
 	 *
 	 * mode may be:
 	 *  key - diff on keys
@@ -193,7 +195,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function complement($src, $nothrow)
+	static public function complement($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -220,7 +222,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 * using array_merge before filtered for uniqueness with array_unique.
 	 *
 	 * Example usage:
-	 * <span tal:define="complement Ztal_Tales_Array.complement:mode,array1,array2" />
+	 * <span tal:define="complement Ztal\Tales\ArrayUtils.complement:mode,array1,array2" />
 	 *
 	 * mode may be:
 	 *  key - diff on keys
@@ -233,7 +235,7 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function union($src, $nothrow)
+	static public function union($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -248,5 +250,4 @@ final class Ztal_Tales_Array implements PHPTAL_Tales
 			. phptal_tale($parts[1], $nothrow) . '), array_values('
 			. phptal_tale($parts[2], $nothrow) . ')))';
 	}
-
 }

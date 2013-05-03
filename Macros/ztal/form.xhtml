@@ -48,7 +48,7 @@
 	<!-- Form Fragment, expects an instance of Zend_Form, or something that
 		 extends it-->
 	<form tal:attributes="action form/getAction;
-						  class Ztal_Tales_Form.getAttrib:form,string:class | string:talForm;
+						  class Ztal\Tales\Form.getAttrib:form,string:class | string:talForm;
 						  id form/getId;
 						  method form/getMethod;
 						  enctype form/getEnctype;"
@@ -57,18 +57,18 @@
 		<tal:block tal:define="errorMode errorDisplayMode | string:header;">
 			<tal:block
 				tal:condition="
-					Ztal_Tales_Generic.equal:errorMode,string:header
-					| Ztal_Tales_Generic.equal:errorMode,string:both"
+					Ztal\Tales\Generic.equal:errorMode,string:header
+					| Ztal\Tales\Generic.equal:errorMode,string:both"
 			>
 				<tal:block metal:use-macro="${headerErrorMacro | string:headerErrors}" />
 			</tal:block>
-		
+
 			<tal:block
 				tal:define="
 					elements form;
-					simpleElementNames useSimpleNames | Ztal_Tales_Form.getAttrib:form,string:useSimpleNames | string:0;
-					ulClass Ztal_Tales_Form.getAttrib:form, string:ulClass;"
-				metal:use-macro="fields" 
+					simpleElementNames useSimpleNames | Ztal\Tales\Form.getAttrib:form,string:useSimpleNames | string:0;
+					ulClass Ztal\Tales\Form.getAttrib:form, string:ulClass;"
+				metal:use-macro="fields"
 			/>
 		</tal:block>
 	</form>
@@ -93,7 +93,7 @@
 						For each element with errors, show the element
 						name and a ul list of errors
 					-->
-					<li tal:define="element Ztal_Tales_Form.getElement:form,repeat/elementErrors/key">
+					<li tal:define="element Ztal\Tales\Form.getElement:form,repeat/elementErrors/key">
 						<tal:inline i18n:translate="element/getLabel" />
 						<ul>
 							<li
@@ -117,31 +117,31 @@
 			<tal:block tal:repeat="element elements">
 
 				<!-- Is this element a display group? -->
-				<li tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
+				<li tal:condition="Ztal\Tales\Form.isDisplayGroup:element"
 					tal:define="displayGroupElement element">
-					<tal:block metal:use-macro="${displayGroupMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:displayGroup}" />
+					<tal:block metal:use-macro="${displayGroupMacro | Ztal\Tales\Form.getAttrib:element,string:macro | string:displayGroup}" />
 				</li>
 
 				<!-- Is this an element (but not a hidden element)? -->
-				<li tal:condition="Ztal_Tales_Form.isFormElement:element"
+				<li tal:condition="Ztal\Tales\Form.isFormElement:element"
 					tal:define="
-						elementErrors Ztal_Tales_Form.getErrors:form,repeat/element/key;
-						errorClass Ztal_Tales_Generic.isTrue:exists:elementErrors,string:hasError;"
+						elementErrors Ztal\Tales\Form.getErrors:form,repeat/element/key;
+						errorClass Ztal\Tales\Generic.isTrue:exists:elementErrors,string:hasError;"
 					tal:attributes="
-						class string:${errorClass} ${Ztal_Tales_Generic.isTrue:element/isRequired,string:required-element | string:optional-element} ${Ztal_Tales_Form.getAttrib:element,string:contextClass} ${Ztal_Tales_Form.inputType:element}-element;
+						class string:${errorClass} ${Ztal\Tales\Generic.isTrue:element/isRequired,string:required-element | string:optional-element} ${Ztal\Tales\Form.getAttrib:element,string:contextClass} ${Ztal\Tales\Form.inputType:element}-element;
 						id string:${element/getId}-field"
 				>
 					<!-- display the element -->
-					<tal:block metal:use-macro="${singleElementMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:singleElement}" />
-					
+					<tal:block metal:use-macro="${singleElementMacro | Ztal\Tales\Form.getAttrib:element,string:macro | string:singleElement}" />
+
 					<!-- is there an error to display? -->
 					<tal:block tal:condition="
-							Ztal_Tales_Generic.equal:errorMode,string:inline
-							| Ztal_Tales_Generic.equal:errorMode,string:both">
+							Ztal\Tales\Generic.equal:errorMode,string:inline
+							| Ztal\Tales\Generic.equal:errorMode,string:both">
 						<tal:block
-							tal:condition="not:Ztal_Tales_Generic.equal:elementErrors,null"
+							tal:condition="not:Ztal\Tales\Generic.equal:elementErrors,null"
 							i18n:domain="errorMessage_${repeat/element/key}"
-							metal:use-macro="${elementErrorMacro | Ztal_Tales_Form.getAttrib:element,string:errorMacro | string:perElementErrors}" />
+							metal:use-macro="${elementErrorMacro | Ztal\Tales\Form.getAttrib:element,string:errorMacro | string:perElementErrors}" />
 					</tal:block>
 
 				</li>
@@ -150,10 +150,10 @@
 
 		<!-- Iterate over the hidden elements, if any -->
 		<tal:block tal:repeat="element elements">
-			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element">
+			<tal:block tal:condition="Ztal\Tales\Form.isHiddenElement:element">
 				<tal:block
 					tal:define="value element/getValue"
-					metal:use-macro="${singleElementMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:singleElement}" />
+					metal:use-macro="${singleElementMacro | Ztal\Tales\Form.getAttrib:element,string:macro | string:singleElement}" />
 			</tal:block>
 		</tal:block>
 
@@ -173,14 +173,14 @@
 	<!-- Display Group Fragment, expects an instance of Zend_Form_DisplayGroup,
 		 will render it into a fieldset -->
 	<fieldset metal:define-macro="displayGroup"
-			  tal:attributes="class Ztal_Tales_Form.getAttrib:element,string:class;
-					id Ztal_Tales_Form.getAttrib:element,string:id | repeat/element/key">
-		<legend tal:condition="not:Ztal_Tales_Generic.equal:element/getLegend,string:">
+			  tal:attributes="class Ztal\Tales\Form.getAttrib:element,string:class;
+					id Ztal\Tales\Form.getAttrib:element,string:id | repeat/element/key">
+		<legend tal:condition="not:Ztal\Tales\Generic.equal:element/getLegend,string:">
 			<span i18n:translate="element/getLegend" />
 		</legend>
-		<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:${repeat/element/key}-preSlot" />
+		<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:${repeat/element/key}-preSlot" />
 		<tal:block tal:define="elements displayGroupElement/getElements" metal:use-macro="fields" />
-		<span tal:replace="structure Ztal_Tales_Form.getSlotContent:string:${repeat/element/key}-postSlot" />
+		<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:${repeat/element/key}-postSlot" />
 	</fieldset>
 
 	<!-- Date selection macro, for displaying date drop downs.
@@ -192,7 +192,7 @@
 	getElements should return an array of Zend_Form_Element_Selects.
 	-->
 	<tal:block metal:define-macro="dateSelect">
-		<label tal:condition="Ztal_Tales_Form.showLabelBefore:element"
+		<label tal:condition="Ztal\Tales\Form.showLabelBefore:element"
 			   i18n:translate="element/getLabel"
 		/>
 		<tal:block  tal:repeat="dateElement element/getElements">
@@ -204,28 +204,28 @@
 
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
-		   tal:attributes="type Ztal_Tales_Form.inputType:element;
-						   name name | Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+		   tal:attributes="type Ztal\Tales\Form.inputType:element;
+						   name name | Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 						   id element/getId;
-						   class Ztal_Tales_Form.getAttrib:element,string:class;
+						   class Ztal\Tales\Form.getAttrib:element,string:class;
 						   value value | nothing;
-						   maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength;
-						   required Ztal_Tales_Generic.isTrue:string:${Ztal_Tales_Form.isRequired:element},string:required;
-						   readonly Ztal_Tales_Generic.isTrue:string:${Ztal_Tales_Form.isReadOnly:element},string:readonly;
-						   placeholder Ztal_Tales_Form.getAttrib:element,string:placeholder;
+						   maxlength Ztal\Tales\Form.getAttrib:element,string:maxlength;
+						   required Ztal\Tales\Generic.isTrue:string:${Ztal\Tales\Form.isRequired:element},string:required;
+						   readonly Ztal\Tales\Generic.isTrue:string:${Ztal\Tales\Form.isReadOnly:element},string:readonly;
+						   placeholder Ztal\Tales\Form.getAttrib:element,string:placeholder;
 						   checked checked | nothing;
-						   autocomplete Ztal_Tales_Form.getAttrib:element,string:autocomplete;
-						   disabled Ztal_Tales_Form.isDisabled:element"
+						   autocomplete Ztal\Tales\Form.getAttrib:element,string:autocomplete;
+						   disabled Ztal\Tales\Form.isDisabled:element"
 	/>
 
 	<!-- Will display a <textarea> element -->
 	<textarea metal:define-macro="textareaElement"
-		      tal:attributes="name name | Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+		      tal:attributes="name name | Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 							  id element/getId;
-							  class Ztal_Tales_Form.getAttrib:element,string:class;
-							  rows Ztal_Tales_Form.getAttrib:element,string:rows;
-							  cols Ztal_Tales_Form.getAttrib:element,string:cols;
-							  disabled Ztal_Tales_Form.isDisabled:element;"
+							  class Ztal\Tales\Form.getAttrib:element,string:class;
+							  rows Ztal\Tales\Form.getAttrib:element,string:rows;
+							  cols Ztal\Tales\Form.getAttrib:element,string:cols;
+							  disabled Ztal\Tales\Form.isDisabled:element;"
 			  tal:content="value"
 	/>
 
@@ -237,41 +237,41 @@
 	<!-- Will display a single form element along with a label -->
 	<tal:block metal:define-macro="singleElement">
 
-		<tal:block tal:condition="Ztal_Tales_Form.showLabelBefore:element"
+		<tal:block tal:condition="Ztal\Tales\Form.showLabelBefore:element"
 				   tal:define="content element/getLabel;
 							   elementId element/getId;
-							   labelClass Ztal_Tales_Form.getAttrib:element,string:labelClass"
+							   labelClass Ztal\Tales\Form.getAttrib:element,string:labelClass"
 				   metal:use-macro="labelForElement"
 		/>
 
 		<!-- Not used most of the time, but allows you to enclose the form
 			 element in a div if you need to, like if you need to include
 			 additional styling hooks. -->
-		<div tal:omit-tag="not:Ztal_Tales_Form.getAttrib:element,string:enclosed"
-			 tal:attributes="class Ztal_Tales_Form.getAttrib:element,string:enclosingClass">
+		<div tal:omit-tag="not:Ztal\Tales\Form.getAttrib:element,string:enclosed"
+			 tal:attributes="class Ztal\Tales\Form.getAttrib:element,string:enclosingClass">
 
 			<!-- If it is an input, render it using the inputElement fragment -->
-			<tal:block tal:condition="Ztal_Tales_Form.isInput:element"
+			<tal:block tal:condition="Ztal\Tales\Form.isInput:element"
 					tal:define="value element/getValue"
 					metal:use-macro="inputElement" />
 
 			<!-- If it is a checkbox, render it using the inputElement fragment -->
-			<tal:block tal:condition="Ztal_Tales_Form.isCheckbox:element">
+			<tal:block tal:condition="Ztal\Tales\Form.isCheckbox:element">
 				<tal:block tal:define="value element/getCheckedValue; checked element/isChecked"
 					metal:use-macro="inputElement" />
 			</tal:block>
 
 			<!-- If it is a textarea, render it using the textareaElement fragment -->
-			<tal:block tal:condition="Ztal_Tales_Form.isTextarea:element"
+			<tal:block tal:condition="Ztal\Tales\Form.isTextarea:element"
 					tal:define="value element/getValue"
 					metal:use-macro="textareaElement" />
 
 			<!-- If it is a radio element, then iterate over the different options
 				and render each one as an input element. -->
-			<tal:block tal:condition="Ztal_Tales_Form.isRadio:element"
+			<tal:block tal:condition="Ztal\Tales\Form.isRadio:element"
 					tal:repeat="option element/getMultiOptions">
 				<label class="radioOption">
-					<tal:block tal:define="value repeat/option/key; checked Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
+					<tal:block tal:define="value repeat/option/key; checked Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
 							metal:use-macro="inputElement" />
 					<tal:block i18n:translate="option" />
 				</label>
@@ -280,13 +280,13 @@
 
 		<!-- If it is a multiple checkbox element, then iterate over the
 			 different options and render each one as an input element. -->
-		<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
+		<tal:block tal:condition="Ztal\Tales\Form.isMultiCheckbox:element"
 				   tal:repeat="option element/getMultiOptions">
-			<label class="checkboxOption"> 
-				<tal:block tal:define="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+			<label class="checkboxOption">
+				<tal:block tal:define="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 									   value repeat/option/key;
-									   checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
-						   metal:use-macro="inputElement" 
+									   checked Ztal\Tales\Form.isChecked:element,repeat/option/key"
+						   metal:use-macro="inputElement"
 			    />
 				<tal:block i18n:translate="option" />
 			</label>
@@ -294,31 +294,31 @@
 
 		<!-- If it is a select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
-		<select tal:condition="Ztal_Tales_Form.isSelect:element"
-				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+		<select tal:condition="Ztal\Tales\Form.isSelect:element"
+				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
-								disabled Ztal_Tales_Form.isDisabled:element">
-				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
-				<option tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
-						tal:attributes="value repeat/option/key; selected Ztal_Tales_Generic.equal:element/getValue,repeat/option/key"
+								disabled Ztal\Tales\Form.isDisabled:element">
+				<tal:block tal:define="sort Ztal\Tales\Form.getAttrib:element,string:sort | string:none;">
+				<option tal:repeat="option Ztal\Tales\ArrayUtils.sort:sort,Ztal\Tales\Translation.translateArrayValues:element/getMultiOptions"
+						tal:attributes="value repeat/option/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
 						tal:content="option"
 				/>
 			</tal:block>
 		</select>
-		
+
 		<!-- If it is a multiple select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
-		<select tal:condition="Ztal_Tales_Form.isMultiSelect:element"
-				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+		<select tal:condition="Ztal\Tales\Form.isMultiSelect:element"
+				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
-								disabled Ztal_Tales_Form.isDisabled:element;
+								disabled Ztal\Tales\Form.isDisabled:element;
 								multiple string:multiple;
-								class Ztal_Tales_Form.getAttrib:element,string:class">
-				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
-				<tal:block tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions">
+								class Ztal\Tales\Form.getAttrib:element,string:class">
+				<tal:block tal:define="sort Ztal\Tales\Form.getAttrib:element,string:sort | string:none;">
+				<tal:block tal:repeat="option Ztal\Tales\ArrayUtils.sort:sort,Ztal\Tales\Translation.translateArrayValues:element/getMultiOptions">
 					<option
 						tal:define="keyName repeat/option/key"
-						tal:attributes="value repeat/option/key; selected Ztal_Tales_Array.in:repeat/option/key,element/getValue"
+						tal:attributes="value repeat/option/key; selected Ztal\Tales\ArrayUtils.in:repeat/option/key,element/getValue"
 						tal:content="option"
 					/>
 				</tal:block>
@@ -326,26 +326,26 @@
 		</select>
 
 		<!-- If it is a button, then render it out -->
-		<button tal:condition="Ztal_Tales_Form.isButton:element"
-				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
-								id Ztal_Tales_Form.getAttrib:element,string:id;
-								class Ztal_Tales_Form.getAttrib:element,string:class;
-								type Ztal_Tales_Form.getAttrib:element,string:type;
+		<button tal:condition="Ztal\Tales\Form.isButton:element"
+				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+								id Ztal\Tales\Form.getAttrib:element,string:id;
+								class Ztal\Tales\Form.getAttrib:element,string:class;
+								type Ztal\Tales\Form.getAttrib:element,string:type;
 								value element/getValue"
 				i18n:translate="element/getLabel" />
 
 		<!-- If it is an image captcha, display the image along with the instructions
 			 for completing it -->
-		<div tal:condition="Ztal_Tales_Form.isImageCaptcha:element"
+		<div tal:condition="Ztal\Tales\Form.isImageCaptcha:element"
 			 class="captcha">
 			<img tal:define="captcha element/getCaptcha;
-							 captchaId Ztal_Tales_Form.getAttrib:element,string:captchaId"
+							 captchaId Ztal\Tales\Form.getAttrib:element,string:captchaId"
 				 tal:attributes="src string:${captcha/getImgUrl}${captchaId}.png"
 				 alt="Captcha Image"
 			/>
 			<input type="hidden"
 				   tal:attributes="name string:${element/getName}[id];
-								   value Ztal_Tales_Form.getAttrib:element,string:captchaId"
+								   value Ztal\Tales\Form.getAttrib:element,string:captchaId"
 			/>
 			<div class="captchaInstructions"
 				 i18n:translate="string:captchaInstructions" />
@@ -357,7 +357,7 @@
 
 			<!-- If it is a captcha, display the rendered text along with the
 					instructions for completing it -->
-			<div tal:condition="Ztal_Tales_Form.isCaptcha:element"
+			<div tal:condition="Ztal\Tales\Form.isCaptcha:element"
 				class="captcha">
 				<pre tal:define="captcha element/getCaptcha"
 					alt="Captcha Word"
@@ -365,7 +365,7 @@
 				/>
 				<input type="hidden"
 					tal:attributes="name string:${element/getName}[id];
-									value Ztal_Tales_Form.getAttrib:element,string:captchaId"
+									value Ztal\Tales\Form.getAttrib:element,string:captchaId"
 				/>
 				<div class="captchaInstructions"
 					i18n:translate="string:captchaInstructions" />
@@ -374,10 +374,10 @@
 					tal:attributes="name string:${element/getName}[input]"
 				/>
 		</div>
-			<tal:block tal:condition="Ztal_Tales_Form.showLabelAfter:element"
+			<tal:block tal:condition="Ztal\Tales\Form.showLabelAfter:element"
 					tal:define="content element/getLabel;
 							elementId element/getId;
-							labelClass Ztal_Tales_Form.getAttrib:element,string:labelClass"
+							labelClass Ztal\Tales\Form.getAttrib:element,string:labelClass"
 				metal:use-macro="labelForElement"
 			/>
 

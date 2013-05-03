@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table\Paginator;
+
 /**
  * Class to handle array pagination in html tables.
  *
@@ -16,8 +18,8 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Paginator_Array extends Ztal_Table_Paginator_Abstract
-{	
+class ArraySource extends Base
+{
 	/**
 	 * Perform a slice on the data source.
 	 *
@@ -31,5 +33,4 @@ class Ztal_Table_Paginator_Array extends Ztal_Table_Paginator_Abstract
 	{
 		$dataSource = array_slice($dataSource, $start, $count);
 	}
-
 }

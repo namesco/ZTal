@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Translate\Adaptor;
+
 /**
  * Ztal Translate.
  *
@@ -18,22 +20,21 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
+class Gettext extends \Zend_Translate_Adaptor_Gettext
 {
-
-
 	/**
-	 * Translates the given string and returns the translation
+	 * Translates the given string and returns the translation.
 	 *
-	 * @see Zend_Locale
 	 * @param string|array       $messageId Translation string, or Array (for
 	 *                                        plural translations) or Array of
 	 *                                        Arrays (for complex translation).
 	 * @param string|Zend_Locale $locale    Optional. Locale/Language to use,
-	 *	                                       identical to locale identifier,
-	 *                                        @see Zend_Locale for details.
+	 *                                        identical to locale identifier,
+	 *                                        see Zend_Locale for details.
 	 *
 	 * @return string
+	 *
+	 * @see Zend_Locale
 	 */
 	public function translate($messageId, $locale = null)
 	{
@@ -60,18 +61,17 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 				if (isset($messageId['pluralLanguage'])) {
 					$pluralLanguage = $messageId['pluralLanguage'];
 				}
-			}
-		} else {
-			$count = array_pop($messageId);
-			if (!is_numeric($count)) {
-				$pluralLanguage = $count;
+			} else {
 				$count = array_pop($messageId);
-				$keys = $messageId;
+				if (! is_numeric($count)) {
+					$pluralLanguage = $count;
+					$count = array_pop($messageId);
+					$keys = $messageId;
+				}
 			}
 		} else {
 			$keys = $messageId;
 		}
-
 
 		// Now work out if the key can actually be translated.
 		// Here we assume all plural translations will have a singular
@@ -106,17 +106,17 @@ class Ztal_Translate_Adaptor_Gettext extends Zend_Translate_Adaptor_Gettext
 			if (is_array($keys)) {
 				$result .= '[' . $count . ']';
 			}
-			
-			$ztalOptions = Zend_Controller_Front::getInstance()
+
+			$ztalOptions = \Zend_Controller_Front::getInstance()
 				->getParam('bootstrap')
 				->getApplication()->getOption('ztal');
-				
+
 			if (isset($ztalOptions['highlightFailedTranslations'])
 				&& $ztalOptions['highlightFailedTranslations'] == '1'
 			) {
 				$result = '**' . $result;
 			}
-			
+
 			return $result;
 		}
 

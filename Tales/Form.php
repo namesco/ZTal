@@ -12,6 +12,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Tales;
+
 /**
  * Form Tale Modifiers.
  *
@@ -23,10 +25,8 @@
  * @package  Ztal
  * @author   Alex Mace <amace@names.co.uk>
  */
-
-final class Ztal_Tales_Form implements PHPTAL_Tales
+final class Form implements \PHPTAL_Tales
 {
-
 	/**
 	 * Figures out the simple element type from the one passed in.
 	 *
@@ -34,12 +34,12 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function calculateType($type)
+	static public function calculateType($type)
 	{
-		//this is done in two steps using the $nameParts intermediate variable
-		//because it causes a strict error if something other than a defined
-		//variable reference is passed to array_pop
-		$nameParts = explode("_", $type);
+		// This is done in two steps using the $nameParts intermediate variable
+		// because it causes a strict error if something other than a defined
+		// variable reference is passed to array_pop.
+		$nameParts = explode('_', $type);
 		$type = strtolower(array_pop($nameParts));
 
 		// Switch multicheckbox to be just "checkbox".
@@ -48,21 +48,20 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		}
 
 		return $type;
-
 	}
 
 	/**
 	 * Gets the specified attribute from a form element based on the name.
 	 *
 	 * Example used within template:
-	 * <input tal:attributes="maxlength Ztal_Tales_Form.getAttrib:element,string:maxlength" />
+	 * <input tal:attributes="maxlength Ztal\Tales\Form.getAttrib:element,string:maxlength" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function getAttrib($src, $nothrow)
+	static public function getAttrib($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -86,14 +85,14 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Gets the element from a form based on the name.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:define="element Ztal_Tales_Form.getElement:element,string:name" />
+	 * <tal:block tal:define="element Ztal\Tales\Form.getElement:element,string:name" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function getElement($src, $nothrow)
+	static public function getElement($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -118,14 +117,14 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Gets the errors for a named element.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:define="element Ztal_Tales_Form.getErrors:form,elementName" />
+	 * <tal:block tal:define="element Ztal\Tales\Form.getErrors:form,elementName" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function getErrors($src, $nothrow)
+	static public function getErrors($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -150,28 +149,27 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Tal extension to determine the input field type of a variable.
 	 *
 	 * Example use within template:
-	 * <input tal:attributes="type Ztal_Tales_Form.inputType:element" />
+	 * <input tal:attributes="type Ztal\Tales\Form.inputType:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function inputType($src, $nothrow)
+	static public function inputType($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
-			   . '->getType())';
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow) . '->getType())';
 	}
 
 	/**
 	 * Tal to determine whether or not the current element is a display group.
 	 *
 	 * Example use within template:
-	 * <fieldset tal:condition="Ztal_Tales_Form.isDisplayGroup:element">
+	 * <fieldset tal:condition="Ztal\Tales\Form.isDisplayGroup:element">
 	 * </fieldset>
 	 *
 	 * @param string $src     The original template string.
@@ -179,15 +177,13 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function isDisplayGroup($src, $nothrow)
+	static public function isDisplayGroup($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return phptal_tale($src, $nothrow)
-			   . ' instanceof Zend_Form_DisplayGroup';
+		return phptal_tale($src, $nothrow) . ' instanceof Zend_Form_DisplayGroup';
 	}
 
 	/**
@@ -197,22 +193,21 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * standard form element like input, select, etc.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isFormElement:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isFormElement:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isFormElement($src, $nothrow)
+	static public function isFormElement($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 		return '((' . phptal_tale($src, $nothrow)
-			. ' instanceof Zend_Form_Element) && (Ztal_Tales_Form::calculateType('
+			. ' instanceof Zend_Form_Element) && (Ztal\Tales\Form::calculateType('
 			. phptal_tale($src, $nothrow) . '->getType()) != "hidden"))';
 	}
 
@@ -223,22 +218,21 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * hidden form element.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isHiddenElement:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isHiddenElement:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isHiddenElement($src, $nothrow)
+	static public function isHiddenElement($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 		return '((' . phptal_tale($src, $nothrow)
-			. ' instanceof Zend_Form_Element) && (Ztal_Tales_Form::calculateType('
+			. ' instanceof Zend_Form_Element) && (Ztal\Tales\Form::calculateType('
 			. phptal_tale($src, $nothrow) . '->getType()) == "hidden"))';
 	}
 
@@ -247,46 +241,43 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Tal to determine whether or not the current element is a button input.
 	 *
 	 * Example use within template:
-	 * <button tal:condition="Ztal_Tales_Form.isButton:element" />
+	 * <button tal:condition="Ztal\Tales\Form.isButton:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isButton($src, $nothrow)
+	static public function isButton($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
-			   . "->getType()) == 'button'";
-
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow) . "->getType()) == 'button'";
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is an image captcha.
 	 *
 	 * Example use within template:
-	 * <button tal:condition="Ztal_Tales_Form.isImageCaptcha:element" />
+	 * <button tal:condition="Ztal\Tales\Form.isImageCaptcha:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isImageCaptcha($src, $nothrow)
+	static public function isImageCaptcha($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return '(Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return '(Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'captcha' && method_exists("
 				. phptal_tale($src, $nothrow) . ', "getImgUrl"))';
 	}
@@ -296,26 +287,24 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Tal to determine whether or not the current element is a captcha input.
 	 *
 	 * Example use within template:
-	 * <button tal:condition="Ztal_Tales_Form.isCaptcha:element" />
+	 * <button tal:condition="Ztal\Tales\Form.isCaptcha:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isCaptcha($src, $nothrow)
+	static public function isCaptcha($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return '(Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return '(Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'captcha' && !method_exists("
 				. phptal_tale($src, $nothrow) . ', "getImgUrl"))';
 	}
-
 
 
 	/**
@@ -328,14 +317,14 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * current option.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:define="checked Ztal_Tales_Form.isChecked:element,repeat/option/key" />
+	 * <tal:block tal:define="checked Ztal\Tales\Form.isChecked:element,repeat/option/key" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isChecked($src, $nothrow)
+	static public function isChecked($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$a = substr($src, 0, $break);
@@ -357,14 +346,14 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Checks whether an element is disabled or not.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:attributes="disabled Ztal_Tales_Form.isDisabled:element" />
+	 * <tal:block tal:attributes="disabled Ztal\Tales\Form.isDisabled:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isDisabled($src, $nothrow)
+	static public function isDisabled($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -374,18 +363,19 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return phptal_tale($src, $nothrow) . '->getAttrib("disabled") ? true : false';
 	}
 
+
 	/**
 	 * Checks whether an element is required or not.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:define="required Ztal_Tales_Form.isRequired:element" />
+	 * <tal:block tal:define="required Ztal\Tales\Form.isRequired:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isRequired($src, $nothrow)
+	static public function isRequired($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -395,18 +385,19 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return phptal_tale($src, $nothrow) . '->isRequired()';
 	}
 
+
 	/**
 	 * Checks whether an element is readonly or not.
 	 *
 	 * Example used within template:
-	 * <tal:block tal:define="readonly Ztal_Tales_Form.isReadOnly:element" />
+	 * <tal:block tal:define="readonly Ztal\Tales\Form.isReadOnly:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isReadOnly($src, $nothrow)
+	static public function isReadOnly($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
@@ -416,45 +407,44 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		return '(bool) ' . phptal_tale($src, $nothrow) . '->getAttrib(\'readonly\')';
 	}
 
+
 	/**
 	 * Tal extension to determine whether or not the current element is an input.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isInput:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isInput:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isInput($src, $nothrow)
+	static public function isInput($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'in_array(Ztal_Tales_Form::calculateType('
+		return 'in_array(Ztal\Tales\Form::calculateType('
 			   . phptal_tale($src, $nothrow) . "->getType()), "
 			   . "array('text', 'hidden', 'password', 'date', 'email', 'file'))";
-
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a multi checkbox.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isMultiCheckbox:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isMultiCheckbox:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isMultiCheckbox($src, $nothrow)
+	static public function isMultiCheckbox($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
@@ -464,33 +454,31 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 		// "getMultiOptions". However, selects also have that function so we
 		// have to check that this isn't a select.
 		return 'method_exists(' . phptal_tale($src, $nothrow)
-			   . ", 'getMultiOptions') && Ztal_Tales_Form::calculateType("
+			   . ", 'getMultiOptions') && Ztal\Tales\Form::calculateType("
 			   . phptal_tale($src, $nothrow) . "->getType()) == 'checkbox'";
-
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a radio element.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isRadio:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isRadio:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isRadio($src, $nothrow)
+	static public function isRadio($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'radio'";
-
 	}
 
 
@@ -498,24 +486,22 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Tal to determine whether or not the current element is a checkbox.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isCheckbox:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isCheckbox:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isCheckbox($src, $nothrow)
+	static public function isCheckbox($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'checkbox'";
-
 	}
 
 
@@ -523,77 +509,76 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * Tal extension to determine whether or not the current element is a select.
 	 *
 	 * Example use within template:
-	 * <select tal:condition="Ztal_Tales_Form.isSelect:element" />
+	 * <select tal:condition="Ztal\Tales\Form.isSelect:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isSelect($src, $nothrow)
+	static public function isSelect($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'select'";
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a multi select.
 	 *
 	 * Example use within template:
-	 * <select tal:condition="Ztal_Tales_Form.isSelect:element" />
+	 * <select tal:condition="Ztal\Tales\Form.isSelect:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isMultiSelect($src, $nothrow)
+	static public function isMultiSelect($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'multiselect'";
 	}
+
 
 	/**
 	 * Tal to determine whether or not the current element is a textarea input.
 	 *
 	 * Example use within template:
-	 * <textarea tal:condition="Ztal_Tales_Form.isTextarea:element" />
+	 * <textarea tal:condition="Ztal\Tales\Form.isTextarea:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function isTextarea($src, $nothrow)
+	static public function isTextarea($src, $nothrow)
 	{
-
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
 
-		return 'Ztal_Tales_Form::calculateType(' . phptal_tale($src, $nothrow)
+		return 'Ztal\Tales\Form::calculateType(' . phptal_tale($src, $nothrow)
 			   . "->getType()) == 'textarea'";
-
 	}
+
 
 	/**
 	 * Tal to determine whether the element should have a label displayed before it.
 	 *
 	 * Example use within template:
-	 * <label tal:condition="Ztal_Tales_Form.showLabelBefore:element"
+	 * <label tal:condition="Ztal\Tales\Form.showLabelBefore:element"
 	 *  	  i18n:translate="element/getLabel" />
 	 *
 	 * @param string $src     The original template string.
@@ -601,25 +586,24 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function showLabelBefore($src, $nothrow)
+	static public function showLabelBefore($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return 'in_array(Ztal_Tales_Form::calculateType('
+		return 'in_array(Ztal\Tales\Form::calculateType('
 			   . phptal_tale($src, $nothrow) . '->getType()), '
 			   . "array('date', 'email', 'password', 'file', 'select', 'multiselect', 'text', 'textarea')) && "
 			   . phptal_tale($src, $nothrow) . '->getLabel()';
 	}
 
 
-
 	/**
 	 * Tal to determine whether the element should have a label displayed after it.
 	 *
 	 * Example use within template:
-	 * <label tal:condition="Ztal_Tales_Form.showLabelAfter:element"
+	 * <label tal:condition="Ztal\Tales\Form.showLabelAfter:element"
 	 *  	  i18n:translate="element/getLabel" />
 	 *
 	 * @param string $src     The original template string.
@@ -627,13 +611,13 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function showLabelAfter($src, $nothrow)
+	static public function showLabelAfter($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break !== false) {
 			$src = substr($src, 0, $break);
 		}
-		return 'in_array(Ztal_Tales_Form::calculateType('
+		return 'in_array(Ztal\Tales\Form::calculateType('
 			   . phptal_tale($src, $nothrow) . '->getType()), '
 			   . "array('checkbox', 'radio')) && "
 			   . phptal_tale($src, $nothrow) . '->getLabel()';
@@ -648,14 +632,14 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	 * assign it to a variable which we can then output.
 	 *
 	 * Example use within template:
-	 * <tal:block tal:define="slotContent Ztal_Tales_Form.getSlotContent:slotName" />
+	 * <tal:block tal:define="slotContent Ztal\Tales\Form.getSlotContent:slotName" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
 	 *
 	 * @return string
 	 */
-	public static function getSlotContent($src, $nothrow)
+	static public function getSlotContent($src, $nothrow)
 	{
 		$break = strpos($src, '|');
 		if ($break === false) {
@@ -669,5 +653,4 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 			. ')?$ctx->getSlot(' . phptal_tale($slotName, $nothrow)
 			. '):' . phptal_tale($notTrue, $nothrow) . ')';
 	}
-
 }

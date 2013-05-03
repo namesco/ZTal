@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table\Paginator;
+
 /**
  * Class to handle object pagination in html tables.
  *
@@ -16,8 +18,8 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Paginator_Object extends Ztal_Table_Paginator_Abstract
-{	
+class ObjectSource extends BaseSource
+{
 	/**
 	 * Perform a slice on the data source.
 	 *
@@ -32,8 +34,7 @@ class Ztal_Table_Paginator_Object extends Ztal_Table_Paginator_Abstract
 		if (method_exists($dataSource, 'slice')) {
 			$dataSource = $dataSource->slice($start, $count);
 		} else {
-			throw new Exception('Unable to paginate object: no slice method');
+			throw new \Exception('Unable to paginate object: no slice method');
 		}
 	}
-
 }
