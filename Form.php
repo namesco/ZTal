@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal;
+
 /**
  * Ztal Form.
  *
@@ -18,9 +20,8 @@
  * @package  Ztal
  * @author   Alex Mace <amace@names.co.uk>
  */
-class Ztal_Form extends Zend_Form
+class Form extends \Zend_Form
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -35,8 +36,8 @@ class Ztal_Form extends Zend_Form
 
 		// Call the parent constructor to set up everything else.
 		parent::__construct($options);
-
 	}
+
 
 	/**
      * Create an element.

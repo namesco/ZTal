@@ -44,7 +44,7 @@ class Application_Model_Basic
 		$this->_age = $age;
 		$this->_height = $height;
 	}
-	
+
 	/**
 	 * Return the age.
 	 *
@@ -54,7 +54,7 @@ class Application_Model_Basic
 	{
 		return $this->_age;
 	}
-	
+
 	/**
 	 * Return the height.
 	 *
@@ -64,20 +64,20 @@ class Application_Model_Basic
 	{
 		return $this->_height;
 	}
-	
-	
+
+
 	/**
 	 * Sort method compatible with the example table sort call.
 	 *
 	 * @param Application_Model_Basic $otherItem The item to compare $this with.
-	 * 
+	 *
 	 * @return int
 	 */
 	public function sortByAge(Application_Model_Basic $otherItem)
 	{
 		$thisValue = $this->getAge();
 		$otherValue = $otherItem->getAge();
-		
+
 		if ($thisValue == $otherValue) {
 			return 0;
 		}
@@ -89,14 +89,14 @@ class Application_Model_Basic
 	 * Sort method compatible with the example table sort call.
 	 *
 	 * @param Application_Model_Basic $otherItem The item to compare $this with.
-	 * 
+	 *
 	 * @return int
 	 */
 	public function sortByHeight(Application_Model_Basic $otherItem)
 	{
 		$thisValue = $this->getHeight();
 		$otherValue = $otherItem->getHeight();
-		
+
 		if ($thisValue == $otherValue) {
 			return 0;
 		}

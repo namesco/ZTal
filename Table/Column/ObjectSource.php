@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table\Column;
+
 /**
  * Represent a column based on data from an object in an html table.
  *
@@ -16,7 +18,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Column_Object extends Ztal_Table_Column_Abstract
+class ObjectSource extends BaseSource
 {
 	/**
 	 * Sort the supplied data source.
@@ -43,24 +45,26 @@ class Ztal_Table_Column_Object extends Ztal_Table_Column_Abstract
 		usort($dataSource, function($a, $b) use ($sortField, $sortDirection)
 			{
 				$result = $a->$sortField($b);
-				if ($sortDirection == Ztal_Table_Column_Abstract::DIRECTION_DESCENDING) {
+				if ($sortDirection == self::DIRECTION_DESCENDING) {
 					return ($result == 0 ? 0 : -$result);
 				} else {
 					return $result;
 				}
 			}
 		);
-
-
 	}
-	
+
+
 	/**
 	 * Method to return the value for a key from the data source.
+	 *
+	 * @param mixed  $dataSource The data source to get data from.
+	 * @param string $key        The key to get data for.
 	 *
 	 * @return mixed
 	 */
 	protected function _dataForKey($dataSource, $key)
-	{		
+	{
 		if (method_exists($dataSource, $key)) {
 			return $dataSource->$key();
 		}

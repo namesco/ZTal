@@ -53,7 +53,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Layout::startMvc(array('layoutPath' => APPLICATION_PATH
 			. '/layouts/scripts'));
 	}
-	
+
 
 	/**
 	 * Init translation services and locale.
@@ -74,19 +74,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$frontendOptions['write_control'] = false;
 		$frontendOptions['master_files'] = array($languagesPath
 			. '/en/messages.mo');
-		
+
 		$backendOptions['cache_dir'] = APPLICATION_PATH . '/../zendCache';
 		$backendOptions['hashed_directory_level'] = 1;
-		
+
 		$cache = Zend_Cache::factory('File', 'File', $frontendOptions,
 			$backendOptions);
-		
+
 		Zend_Translate::setCache($cache);
 		Zend_Locale::setCache($cache);
 
 		// Register the locale for system-wide use
 		Zend_Registry::set('Zend_Locale', new Zend_Locale('en'));
-		
+
 		// Create a translator
 		$translator = new Zend_Translate(array(
 			'adapter' => 'gettext',
@@ -97,7 +97,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Registry::set('Zend_Translate', $translator);
 	}
 
-	
+
 	/**
 	 * Override the default Zend_View with Ztal support and configure defaults.
 	 *
@@ -107,8 +107,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 		//configure an autoload prefix for Ztal
 		Zend_Loader_Autoloader::getInstance()->registerNamespace('Ztal');
-		
-		//register the Ztal plugin			
+
+		//register the Ztal plugin
 		$plugin = new Ztal_Controller_Plugin_Ztal($this->getOption('ztal'));
 		Zend_Controller_Front::getInstance()->registerPlugin($plugin);
 	}

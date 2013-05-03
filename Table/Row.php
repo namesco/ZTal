@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal\Table;
+
 /**
  * Represent a row in an html table.
  *
@@ -16,7 +18,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
+class Row implements \Countable, \Iterator, \ArrayAccess
 {
 	/**
 	* The array of columns as provided in the constructor.
@@ -24,7 +26,7 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	* @var array
 	*/
 	protected $_columns;
-	
+
 	/**
 	 * An array of column indexes specifying the ordering of the columns.
 	 *
@@ -38,7 +40,6 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	 * @var mixed
 	 */
 	protected $_rowDataSource;
-	
 
 	/**
 	 * Track the current column used in the iterator.
@@ -46,8 +47,8 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	 * @var int
 	 */
 	protected $_currentColumnIndex;
-	
-	
+
+
 	/**
 	 * Constructor.
 	 *
@@ -60,22 +61,19 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 		// parent Table object.
 		$this->_columns = &$columnArray;
 		$this->_columnKeyIndex = &$columnKeyIndex;
-		
+
 		$this->_currentColumnIndex = 0;
 	}
-	
-
-
 
 
 	// ** ArrayAccess **
 	//********************************************
-	
+
+
 	/**
 	 * ArrayAccess Interface. Checks if an offset is set.
 	 *
-	 * @param mixed $offset The offset (traditionally called the key) to check
-	 *						for existence.
+	 * @param mixed $offset The offset (traditionally called the key) to check for existence.
 	 *
 	 * @return bool
 	 */
@@ -83,7 +81,7 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	{
 		return isset($this->_columns[$offset]);
 	}
-	
+
 
 	/**
 	 * ArrayAccess Interface. Returns the value for an offset.
@@ -96,12 +94,12 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	public function offsetGet($offset)
 	{
 		if (!isset($this->_columns[$offset])) {
-			throw new OutOfBoundsException('Invalid offset');
+			throw new \OutOfBoundsException('Invalid offset');
 		}
 		return $this->_columns[$offset]->getColumnDataForSource($this->_rowDataSource);
 	}
-	
-	
+
+
 	/**
 	 * ArrayAccess Interface. Sets the value for an offset.
 	 *
@@ -114,9 +112,9 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	 */
 	public function offsetSet($offset, $item)
 	{
-		throw new Exception('Setting of row columns is not permitted');
+		throw new \Exception('Setting of row columns is not permitted');
 	}
-	
+
 
 	/**
 	 * ArrayAccess Interface. Unsets an offset.
@@ -128,13 +126,14 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	 */
 	public function offsetUnset($offset)
 	{
-		throw new Exception('Unsetting of row columns is not permitted');
+		throw new \Exception('Unsetting of row columns is not permitted');
 	}
 
 
 	// ** Countable **
 	//********************************************
-	
+
+
 	/**
 	 * Countable Interface. How many columns the table has.
 	 *
@@ -149,7 +148,7 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	// ** Iterator **
 	//********************************************
 
-	
+
 	/**
 	 * Iterator Interface. Returns the current value.
 	 *
@@ -160,8 +159,8 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 		return $this->_columns[$this->_columnKeyIndex[$this->_currentColumnIndex]]
 						->getColumnDataForSource($this->_rowDataSource);
 	}
-	
-	
+
+
 	/**
 	 * Iterator Interface. Returns the current key.
 	 *
@@ -170,46 +169,47 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	public function key()
 	{
 		if (!isset($this->_columnKeyIndex[$this->_currentColumnIndex])) {
-			throw new OutOfBoundsException('Invalid offset ' . $this->_currentColumnIndex);
+			throw new \OutOfBoundsException('Invalid offset ' . $this->_currentColumnIndex);
 		}
-		
+
 		return $this->_columnKeyIndex[$this->_currentColumnIndex];
-		
+
 	}
+
 
 	/**
 	 * Iterator Interface. Increments the iterator and returns the new value.
 	 *
 	 * @return void
-	 */	
+	 */
 	public function next()
 	{
 		$this->_currentColumnIndex++;
 	}
-	
+
+
 	/**
 	 * Iterator Interface. Resets the iterator to the start of the sequence.
 	 *
 	 * @return void
-	 */	
+	 */
 	public function rewind()
 	{
 		$this->_currentColumnIndex = 0;
 	}
 
+
 	/**
 	 * Iterator Interface. Checks if the current offset is valid.
 	 *
 	 * @return bool.
-	 */	
+	 */
 	public function valid()
 	{
 		return ($this->_currentColumnIndex >= 0 && $this->_currentColumnIndex < count($this->_columns));
 	}
 
 
-
-	
 	/**
 	 * Set the data source providing data for the row.
 	 *
@@ -222,7 +222,8 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 		$this->_rowDataSource = $rowDataSource;
 		$this->_currentColumnIndex = 0;
 	}
-	
+
+
 	/**
 	 * Get the current data source.
 	 *
@@ -232,5 +233,4 @@ class Ztal_Table_Row implements Countable, Iterator, ArrayAccess
 	{
 		return $this->_rowDataSource;
 	}
-	
 }

@@ -31,7 +31,7 @@ class Application_Table_Object extends Ztal_Table_Abstract
 			'getAge', array('sortField' => 'sortByAge')));
 
 		$this->appendColumn(new Ztal_Table_Column_Object('height',
-			'getHeight', array('sortField' => 'sortByHeight'))); 
+			'getHeight', array('sortField' => 'sortByHeight')));
 
 
 
@@ -39,11 +39,11 @@ class Application_Table_Object extends Ztal_Table_Abstract
 		$this->setId('objectTable');
 		$this->setBaseUri('/default/index/object-table');
 		$this->setSortColumn('age');
-		
+
 		// Configure the paginator
 		$paginator = new Ztal_Table_Paginator_Array();
 		$paginator->setRowsPerPage(4);
-		
+
 		$this->setPaginator($paginator);
 	}
 }

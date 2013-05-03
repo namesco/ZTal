@@ -1,7 +1,7 @@
 <?php
 /**
  * Global default error handler.
- * 
+ *
  * Handles global errors across the application.
  *
  * @category  Namesco
@@ -13,7 +13,7 @@
 
 /**
  * Default error controller.
- * 
+ *
  * As well as acting like a normal controller, this controller is used for
  * redirecting un-caught error events across the application.
  *
@@ -23,7 +23,7 @@
  */
 class ErrorController extends Zend_Controller_Action
 {
-	
+
 	/**
 	 * Handles displaying of errors.
 	 *
@@ -35,7 +35,7 @@ class ErrorController extends Zend_Controller_Action
 	public function errorAction()
 	{
 		$errors = $this->_getParam('error_handler');
-		
+
 		switch ($errors->type) {
 			case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
 			case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
@@ -43,14 +43,14 @@ class ErrorController extends Zend_Controller_Action
 				$this->getResponse()->setHttpResponseCode(404);
 				$this->view->message = 'Page not found';
 				break;
-				
+
 			default:
-				// application error 
+				// application error
 				$this->getResponse()->setHttpResponseCode(500);
 				$this->view->message = 'Application error';
 				break;
 		}
-		
+
 		$this->view->exceptionMessage = $errors->exception->getMessage();
 		$this->view->stackTrace = $errors->exception->getTraceAsString();
 		$this->view->requestParameters = var_export($errors->request->getParams(), true);

@@ -31,7 +31,7 @@ class Application_Table_Basic extends Ztal_Table_Abstract
 			'col1', array('sortField' => 'col1')));
 
 		$this->appendColumn(new Ztal_Table_Column_Array('secondColumn',
-			'col2', array('sortField' => 'col2'))); 
+			'col2', array('sortField' => 'col2')));
 
 
 
@@ -39,11 +39,11 @@ class Application_Table_Basic extends Ztal_Table_Abstract
 		$this->setId('basicTable');
 		$this->setBaseUri('/default/index/table');
 		$this->setSortColumn('firstColumn');
-		
+
 		// Configure the paginator
 		$paginator = new Ztal_Table_Paginator_Array();
 		$paginator->setRowsPerPage(2);
-		
+
 		$this->setPaginator($paginator);
 	}
 }

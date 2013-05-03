@@ -9,6 +9,8 @@
  * @license   http://names.co.uk/license Namesco
  */
 
+namespace Ztal;
+
 /**
  * Ztal Mail.
  *
@@ -18,7 +20,7 @@
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class Ztal_Mail extends Zend_Mail
+class Mail extends \Zend_Mail
 {
 	/**
 	 * The view object used to render the email content.
@@ -26,8 +28,8 @@ class Ztal_Mail extends Zend_Mail
 	 * @var Ztal_Tal_View
 	 */
 	public $view = null;
-	
-	
+
+
 	/**
 	 * Generate a macro launch stub to render the correct user template.
 	 *
@@ -50,8 +52,8 @@ class Ztal_Mail extends Zend_Mail
 </tal:block>';
 		return array('src' => $src, 'name' => __FILE__);
 	}
-	
-	
+
+
 	/**
 	 * Calculate the path for the email template.
 	 *
@@ -63,8 +65,8 @@ class Ztal_Mail extends Zend_Mail
 	{
 		return '../emails/' . $template . '.email';
 	}
-	
-	
+
+
 	/**
 	 * Constructor.
 	 *
@@ -72,19 +74,18 @@ class Ztal_Mail extends Zend_Mail
 	 */
 	public function __construct($charset = 'iso-8859-1')
 	{
-		if (!Zend_Registry::isRegistered('Ztal_View')) {
+		if (! \Zend_Registry::isRegistered('Ztal_View')) {
 			throw new Exception('No available Ztal View');
 		}
-		
-		$this->view = clone Zend_Registry::get('Ztal_View');
+
+		$this->view = clone \Zend_Registry::get('Ztal_View');
 		$this->view->layout()->disableLayout();
 		$this->view->setCompressWhitespace(true);
 
-		
 		parent::__construct($charset);
 	}
-	
-	
+
+
 	/**
 	 * Set the plaintext body of the email to the output from the named template.
 	 *
@@ -92,19 +93,19 @@ class Ztal_Mail extends Zend_Mail
 	 * @param string $charset  The charset to use for the content.
 	 * @param int    $encoding The encoding to use for the content.
 	 *
-	 * @return Ztal_Mail
+	 * @return Mail
 	 */
 	public function setBodyTextFromTemplate($template, $charset = null,
-		$encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE
+		$encoding = \Zend_Mime::ENCODING_QUOTEDPRINTABLE
 	) {
 		$this->view->ztalMailMacro = $this->_calculateTemplatePath($template)
 			. '/plain';
-			
+
 		return $this->setBodyText($this->view->render(
 			$this->_template()), $charset, $encoding);
 	}
-	
-	
+
+
 	/**
 	 * Set the html body of the email to the output from the named template.
 	 *
@@ -112,10 +113,10 @@ class Ztal_Mail extends Zend_Mail
 	 * @param string $charset  The charset to use for the content.
 	 * @param int    $encoding The encoding to use for the content.
 	 *
-	 * @return Ztal_Mail
+	 * @return Mail
 	 */
 	public function setBodyHtmlFromTemplate($template, $charset = null,
-		$encoding = Zend_Mime::ENCODING_QUOTEDPRINTABLE
+		$encoding = \Zend_Mime::ENCODING_QUOTEDPRINTABLE
 	) {
 		$this->view->ztalMailMacro = $this->_calculateTemplatePath($template)
 			. '/html';
@@ -123,5 +124,4 @@ class Ztal_Mail extends Zend_Mail
 		return $this->setBodyHtml($this->view->render(
 			$this->_template()), $charset, $encoding);
 	}
-
 }
