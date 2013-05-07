@@ -1,9 +1,13 @@
+1.5.1 - 07/05/2013
+	Improve the compatibility autoloader to make it easier to use.
+
 1.5 - 03/05/2013
 	Move the code into a Ztal namespace.
 	Rename some classes since their old name wasn't namespaceable.
 	Add an autoloader capable of re-mapping the new names to the old.
 	Added support for a 'viewClass' parameter in the options that controls the actual view class used.
 	Various coding standards fixes and docblocks updated.
+	Requires PHPTAL 1.2.3 (not yet released), or a patched version of 1.2.2.
 
 ----------------
 1.4 - 21/09/2012

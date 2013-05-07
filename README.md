@@ -25,6 +25,11 @@ For more information and documentation please visit the
 [ZTal Wiki](http://github.com/namesco/ZTal/wiki) or look through the example
 Zend application provided.
 
+## Compatibility
+
+As of v1.5.0, ZTal requires PHPTAL 1.2.3 (currently unreleased) or later.
+Alternatively, you can apply a
+[tiny patch](http://github.com/namesco/ZTal/wiki/Using-PHPTAL-1.2.2) to 1.2.2.
 
 ## Other Questions
 
