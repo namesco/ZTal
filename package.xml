@@ -16,11 +16,11 @@
   <email>amace@names.co.uk</email>
   <active>yes</active>
  </lead>
- <date>2013-05-03</date>
- <time>12:40:22</time>
+ <date>2013-05-07</date>
+ <time>12:36:13</time>
  <version>
-  <release>1.5.0</release>
-  <api>1.5.0</api>
+  <release>1.5.1</release>
+  <api>1.5.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -77,14 +77,14 @@ None
    <file baseinstalldir="Ztal" md5sum="67395871a11ba3e1ac90eb31f9778968" name="tests/sharedTestSetup.php" role="test" />
    <file baseinstalldir="Ztal" md5sum="90a711a9fe531f90587b2d46a1be3b76" name="tests/Tests/AutoloaderTests.php" role="test" />
    <file baseinstalldir="Ztal" md5sum="5b08dfbdb6b561ab68774219010811df" name="Translate/Adaptor/Gettext.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="0b2ad2fc7938017cad97fb7dec98edbe" name="Autoloader.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="6bb5481523baaad1570a21e73d8e1f2f" name="Autoloader.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="18841abb4c344352576fbd7dcfbc578d" name="build.xml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="f919bd2c57318903f6564d233391d453" name="CHANGELOG" role="data" />
+   <file baseinstalldir="Ztal" md5sum="32091d4fcf625e261746df250d2ab4fd" name="CHANGELOG" role="data" />
    <file baseinstalldir="Ztal" md5sum="3f503e81c966d4d23be81d3b45d1ccb7" name="composer.json" role="data" />
    <file baseinstalldir="Ztal" md5sum="0e9e9c1d8472a8f6217762bcb32c54e4" name="Form.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="da27ef050e61662df9807f9da3e8c172" name="LICENSE" role="data" />
    <file baseinstalldir="Ztal" md5sum="e13d5e3151955d34df39de1171f8ba5b" name="Mail.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="b1e39d1d6c8a81c198fdcf79e9285a03" name="README.md" role="data" />
+   <file baseinstalldir="Ztal" md5sum="3863625b5779898323b3b3e6c65be5b8" name="README.md" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -229,6 +229,21 @@ None
     <api>stable</api>
    </stability>
    <date>2013-05-03</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.1</release>
+    <api>1.5.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-05-07</date>
    <license uri="http://www.apache.org/licenses/">Apache</license>
    <notes>
 None
