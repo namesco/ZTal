@@ -71,6 +71,11 @@ class Autoloader
 	 */
 	static public function autoloadCompatibility($legacyClassName)
 	{
+		// Simply pass through requests to load the namespaced classes.
+		if (substr($legacyClassName, 0, 5) == 'Ztal\\') {
+			return static::autoload($legacyClassName);
+		}
+
 		// Don't attempt to load any classes but ours.
 		if (substr($legacyClassName, 0, 5) != 'Ztal_') {
 			return false;
