@@ -18,7 +18,7 @@ namespace Ztal\Table\Paginator;
  * @package  Ztal
  * @author   Robert Goldsmith <rgoldsmith@names.co.uk>
  */
-class ArraySource extends Base
+class ArraySource extends BaseSource
 {
 	/**
 	 * Perform a slice on the data source.
