@@ -199,7 +199,6 @@
 		</tal:block>
    </tal:block>
 
-
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
 		   tal:attributes="type Ztal_Tales_Form.inputType:element;
@@ -211,7 +210,7 @@
 						   required Ztal_Tales_Generic.isTrue:string:${Ztal_Tales_Form.isRequired:element},string:required;
 						   placeholder Ztal_Tales_Form.getAttrib:element,string:placeholder;
 						   checked checked | nothing;
-						   autocomplete Ztal_Tales_Form.getAttrib:element,string:autocomplete;
+						   autocomplete Ztal_Tales_Generic.isTrue:string:${Ztal_Tales_Form.isPassword:element},string:off | Ztal_Tales_Form.getAttrib:element,string:autocomplete;
 						   disabled Ztal_Tales_Form.isDisabled:element"
 	/>
 
@@ -246,13 +245,14 @@
 				   metal:use-macro="inputElement" />
 		</tal:block>
 
-		<!-- If it is a textarea, render it using the textareaElement fragment -->
+		<!-- If it is a textarea, render it using the textareaElement 
+			fragment -->
 		<tal:block tal:condition="Ztal_Tales_Form.isTextarea:element"
 				   tal:define="value element/getValue"
 				   metal:use-macro="textareaElement" />
 
 		<!-- If it is a radio element, then iterate over the different options
-			 and render each one as an input element. -->
+			and render each one as an input element. -->
 		<tal:block tal:condition="Ztal_Tales_Form.isRadio:element"
 				   tal:repeat="option element/getMultiOptions">
 			<label class="radioOption">

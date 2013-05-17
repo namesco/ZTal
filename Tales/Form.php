@@ -421,6 +421,31 @@ final class Ztal_Tales_Form implements PHPTAL_Tales
 	}
 
 	/**
+	 * Tal to determine whether or not the current element is a password input.
+	 *
+	 * Example use within template:
+	 * <input tal:condition="Ztal_Tales_Form.isPassword:element" />
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function isPassword($src, $nothrow)
+	{
+
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+
+		return 'in_array(Ztal_Tales_Form::calculateType('
+			   . phptal_tale($src, $nothrow) . "->getType()), "
+			   . "array('password'))";
+
+	}
+
+	/**
 	 * Tal to determine whether or not the current element is a multi checkbox.
 	 *
 	 * Example use within template:
