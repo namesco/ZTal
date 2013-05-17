@@ -201,7 +201,6 @@
 		</tal:block>
    </tal:block>
 
-
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
 		   tal:attributes="type Ztal\Tales\Form.inputType:element;
@@ -214,7 +213,7 @@
 						   readonly Ztal\Tales\Generic.isTrue:string:${Ztal\Tales\Form.isReadOnly:element},string:readonly;
 						   placeholder Ztal\Tales\Form.getAttrib:element,string:placeholder;
 						   checked checked | nothing;
-						   autocomplete Ztal\Tales\Form.getAttrib:element,string:autocomplete;
+						   autocomplete Ztal\Tales\Generic.isTrue:string:${Ztal\Tales\Form.isPassword:element},string:off | Ztal\Tales\Form.getAttrib:element,string:autocomplete;
 						   disabled Ztal\Tales\Form.isDisabled:element"
 	/>
 
@@ -250,33 +249,32 @@
 		<div tal:omit-tag="not:Ztal\Tales\Form.getAttrib:element,string:enclosed"
 			 tal:attributes="class Ztal\Tales\Form.getAttrib:element,string:enclosingClass">
 
-			<!-- If it is an input, render it using the inputElement fragment -->
-			<tal:block tal:condition="Ztal\Tales\Form.isInput:element"
-					tal:define="value element/getValue"
-					metal:use-macro="inputElement" />
+		<!-- If it is an input, render it using the inputElement fragment -->
+		<tal:block tal:condition="Ztal\Tales\Form.isInput:element"
+				tal:define="value element/getValue"
+				metal:use-macro="inputElement" />
 
-			<!-- If it is a checkbox, render it using the inputElement fragment -->
-			<tal:block tal:condition="Ztal\Tales\Form.isCheckbox:element">
-				<tal:block tal:define="value element/getCheckedValue; checked element/isChecked"
-					metal:use-macro="inputElement" />
-			</tal:block>
+		<!-- If it is a checkbox, render it using the inputElement fragment -->
+		<tal:block tal:condition="Ztal\Tales\Form.isCheckbox:element">
+			<tal:block tal:define="value element/getCheckedValue; checked element/isChecked"
+				metal:use-macro="inputElement" />
+		</tal:block>
 
-			<!-- If it is a textarea, render it using the textareaElement fragment -->
-			<tal:block tal:condition="Ztal\Tales\Form.isTextarea:element"
-					tal:define="value element/getValue"
-					metal:use-macro="textareaElement" />
+		<!-- If it is a textarea, render it using the textareaElement fragment -->
+		<tal:block tal:condition="Ztal\Tales\Form.isTextarea:element"
+				   tal:define="value element/getValue"
+				   metal:use-macro="textareaElement" />
 
-			<!-- If it is a radio element, then iterate over the different options
-				and render each one as an input element. -->
-			<tal:block tal:condition="Ztal\Tales\Form.isRadio:element"
-					tal:repeat="option element/getMultiOptions">
-				<label class="radioOption">
-					<tal:block tal:define="value repeat/option/key; checked Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
-							metal:use-macro="inputElement" />
-					<tal:block i18n:translate="option" />
-				</label>
-			</tal:block>
-
+		<!-- If it is a radio element, then iterate over the different options
+			and render each one as an input element. -->
+		<tal:block tal:condition="Ztal\Tales\Form.isRadio:element"
+				   tal:repeat="option element/getMultiOptions">
+			<label class="radioOption">
+				<tal:block tal:define="value repeat/option/key; checked Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
+						metal:use-macro="inputElement" />
+				<tal:block i18n:translate="option" />
+			</label>
+		</tal:block>
 
 		<!-- If it is a multiple checkbox element, then iterate over the
 			 different options and render each one as an input element. -->
