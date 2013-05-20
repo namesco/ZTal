@@ -16,11 +16,11 @@
   <email>amace@names.co.uk</email>
   <active>yes</active>
  </lead>
- <date>2013-05-07</date>
- <time>12:36:13</time>
+ <date>2013-05-20</date>
+ <time>14:28:54</time>
  <version>
-  <release>1.5.1</release>
-  <api>1.5.1</api>
+  <release>1.5.2</release>
+  <api>1.5.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -55,14 +55,14 @@ None
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/tal/customModifiers/placeholder" role="data" />
    <file baseinstalldir="Ztal" md5sum="d41d8cd98f00b204e9800998ecf8427e" name="example/tal/templateFragments/placeholder" role="data" />
    <file baseinstalldir="Ztal" md5sum="2d1e26417495d005d23803c05fa4c306" name="example/web/index.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="aae439c386e6454d83b51e43dfaa354b" name="Macros/ztal/form.xhtml" role="php" />
+   <file baseinstalldir="Ztal" md5sum="845bdfe43f893df65a0942827f593366" name="Macros/ztal/form.xhtml" role="php" />
    <file baseinstalldir="Ztal" md5sum="909f8fd9c2c2f6f7b6372aa7a3029e21" name="Macros/ztal/table.xhtml" role="php" />
    <file baseinstalldir="Ztal" md5sum="cac3ae37197d4117e7f0ecbbdf408ca2" name="Table/Base.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="2b7c03114e4f4a6b15fac05b10a3e02e" name="Table/Row.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="00bd6eed023fd0ddb0a604329566cd99" name="Table/Column/ArraySource.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="1212293a871f7c9ab815b032dd80a38b" name="Table/Column/BaseSource.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="6bff5247331d5061602f2ae9d4c55ece" name="Table/Column/ObjectSource.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="38f13fc325ddb51d0f94ba4299c2e25c" name="Table/Paginator/ArraySource.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="c2d3f61f9011aea52d8f6eebff794ffe" name="Table/Paginator/ArraySource.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="fc517a42a7b26808e22bed3c83631b50" name="Table/Paginator/BaseSource.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="f110a5e717b313f1e4f63e0c68b62629" name="Table/Paginator/ObjectSource.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="8712093dfd90c74d8fa960bb16027b37" name="Tal/MockTranslator.php" role="php" />
@@ -70,7 +70,7 @@ None
    <file baseinstalldir="Ztal" md5sum="7324bfad94747b3c9e5fef7ce67d52f0" name="Tal/View.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="3d63180dbbc8d57fe5e74e03db3eb9c5" name="Tal/ZendTranslateTranslator.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="e2a8fb80715df0c0fd38af380a452aaf" name="Tales/ArrayUtils.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="e967e8333864a993f2fa6f87ceeafa1e" name="Tales/Form.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="78206727e2da0b27afd90b55f181b270" name="Tales/Form.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="7be86241538a14f138f05b31c48a064d" name="Tales/Generic.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="20603ddefeb319ac79f1ad4525d4e592" name="Tales/Translation.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="aa355dfaae03a89cf1b9161db2cd61cb" name="tests/AllTests.php" role="test" />
@@ -79,7 +79,7 @@ None
    <file baseinstalldir="Ztal" md5sum="5b08dfbdb6b561ab68774219010811df" name="Translate/Adaptor/Gettext.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="6bb5481523baaad1570a21e73d8e1f2f" name="Autoloader.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="18841abb4c344352576fbd7dcfbc578d" name="build.xml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="32091d4fcf625e261746df250d2ab4fd" name="CHANGELOG" role="data" />
+   <file baseinstalldir="Ztal" md5sum="f7a234a549967c6727b71fd7ff753181" name="CHANGELOG" role="data" />
    <file baseinstalldir="Ztal" md5sum="3f503e81c966d4d23be81d3b45d1ccb7" name="composer.json" role="data" />
    <file baseinstalldir="Ztal" md5sum="0e9e9c1d8472a8f6217762bcb32c54e4" name="Form.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="da27ef050e61662df9807f9da3e8c172" name="LICENSE" role="data" />
@@ -221,21 +221,6 @@ None
   </release>
   <release>
    <version>
-    <release>1.4.1</release>
-    <api>1.4.1</api>
-   </version>
-   <stability>
-    <release>stable</release>
-    <api>stable</api>
-   </stability>
-   <date>2013-05-17</date>
-   <license uri="http://www.apache.org/licenses/">Apache</license>
-   <notes>
-None
-   </notes>
-  </release>
-  <release>
-   <version>
     <release>1.5.0</release>
     <api>1.5.0</api>
    </version>
@@ -259,6 +244,36 @@ None
     <api>stable</api>
    </stability>
    <date>2013-05-07</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.4.1</release>
+    <api>1.4.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-05-17</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.2</release>
+    <api>1.5.2</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-05-20</date>
    <license uri="http://www.apache.org/licenses/">Apache</license>
    <notes>
 None

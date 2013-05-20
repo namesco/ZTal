@@ -1,3 +1,8 @@
+1.5.2 - 20/05/2013
+Form additions:
+	Password input fields now always have the autocomplete attribute set to "off" (foward port from 1.4.1).
+
+----------------
 1.5.1 - 07/05/2013
 	Improve the compatibility autoloader to make it easier to use.
 
