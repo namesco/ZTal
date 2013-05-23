@@ -75,7 +75,7 @@ class Mail extends \Zend_Mail
 	public function __construct($charset = 'iso-8859-1')
 	{
 		if (! \Zend_Registry::isRegistered('Ztal_View')) {
-			throw new Exception('No available Ztal View');
+			throw new \Exception('No available Ztal View');
 		}
 
 		$this->view = clone \Zend_Registry::get('Ztal_View');
