@@ -436,7 +436,7 @@ final class Form implements \PHPTAL_Tales
 	 * Tal to determine whether or not the current element is a password input.
 	 *
 	 * Example use within template:
-	 * <input tal:condition="Ztal_Tales_Form.isPassword:element" />
+	 * <input tal:condition="Ztal\Tales\Form.isPassword:element" />
 	 *
 	 * @param string $src     The original template string.
 	 * @param bool   $nothrow Whether to throw an exception on error.
@@ -451,7 +451,7 @@ final class Form implements \PHPTAL_Tales
 			$src = substr($src, 0, $break);
 		}
 
-		return 'in_array(Ztal_Tales_Form::calculateType('
+		return 'in_array(Ztal\Tales\Form::calculateType('
 			   . phptal_tale($src, $nothrow) . "->getType()), "
 			   . "array('password'))";
 
