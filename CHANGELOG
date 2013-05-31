@@ -1,3 +1,8 @@
+1.5.3 - 31/05/2013
+	Fix forward-ported code from v1.4 in Ztal\Tales\Form to use namespaces.
+	Fix incorrect 'Exception' in place of '\Exception'.
+
+----------------
 1.5.2 - 20/05/2013
 Form additions:
 	Password input fields now always have the autocomplete attribute set to "off" (foward port from 1.4.1).
