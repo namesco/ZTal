@@ -190,13 +190,14 @@ class View extends \Zend_View
 
 
 	/**
-	 * Handle cloning of the view by cloning the PHPTAL object correctly.
+	 * Handle cloning of the view by cloning the PHPTAL and layout objects correctly.
 	 *
 	 * @return void
 	 */
 	public function __clone()
 	{
 		$this->_engine = clone $this->_engine;
+		$this->_helper['layout'] = clone $this->layout();
 	}
 
 
