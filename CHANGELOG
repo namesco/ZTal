@@ -1,5 +1,5 @@
 1.5.4 - 04/06/2013
-	Clone the layout when the View is cloned, allowing changes to be made to a single view without affecting others.
+	Revert layout's enabled state after changing it in Ztal\Mail, avoiding view rendering problems.
 
 ----------------
 1.5.3 - 31/05/2013
