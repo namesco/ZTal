@@ -197,7 +197,6 @@ class View extends \Zend_View
 	public function __clone()
 	{
 		$this->_engine = clone $this->_engine;
-		$this->_helper['layout'] = clone $this->layout();
 	}
 
 
