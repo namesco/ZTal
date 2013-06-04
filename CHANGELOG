@@ -1,10 +1,12 @@
 1.4.2 - 04/06/2012
 	Clone the layout when the View is cloned, allowing changes to be made to a single view without affecting others.
 
+----------------
 1.4.1 - 17/05/2013
 Form additions:
 	Password input fields now always have the autocomplete attribute set to "off".
 
+----------------
 1.4 - 21/09/2012
 Form additions:
 	Required and Placeholder attributes are supported on form elements (html5).
