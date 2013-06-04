@@ -1,3 +1,7 @@
+1.5.4 - 04/06/2013
+	Clone the layout when the View is cloned, allowing changes to be made to a single view without affecting others.
+
+----------------
 1.5.3 - 31/05/2013
 	Fix forward-ported code from v1.4 in Ztal\Tales\Form to use namespaces.
 	Fix incorrect 'Exception' in place of '\Exception'.
