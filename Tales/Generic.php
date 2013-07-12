@@ -333,6 +333,50 @@ final class Generic implements \PHPTAL_Tales
 
 
 	/**
+	 * Tal extension to return true when all parameters are true.
+	 *
+	 * Example use within template:
+	 *	<span tal:content="Ztal\Tales\Generic.allTrue:a,b" />.
+	 *
+	 * Note that this tale will accept an unlimited number of parameters.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	static public function allTrue($src, $nothrow)
+	{
+		$pipePos = strpos($src, '|');
+		if ($pipePos !== false) {
+			$rest = substr($src, $pipePos);
+			$src = substr($src, 0, $pipePos - 1);
+		} else {
+			$rest = null;
+		}
+
+		$parameters = explode(',', $src);
+
+		if ($rest) {
+			$output = '(';
+		} else {
+			$output = '';
+		}
+
+		$output .= '(' . phptal_tale(array_pop($parameters), $nothrow);
+		foreach ($parameters as $currentParameter) {
+			$output .= ' && ' . phptal_tale($currentParameter, $nothrow);
+		}
+		$output .= ')';
+
+		if ($rest) {
+			$output .= '?:' . phptal_tale($rest, $nothrow) . ')';
+		}
+		return $output;
+	}
+
+
+	/**
 	 * Tal extension to return the supplied string when the value is true.
 	 *
 	 * Example use within template: <span tal:content="Ztal\Tales\Generic.isTrue:variable,string" />.
