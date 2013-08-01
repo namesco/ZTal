@@ -295,6 +295,7 @@
 		<select tal:condition="Ztal\Tales\Form.isSelect:element"
 				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
+								class Ztal\Tales\Form.getAttrib:element,string:class;
 								disabled Ztal\Tales\Form.isDisabled:element">
 				<tal:block tal:define="sort Ztal\Tales\Form.getAttrib:element,string:sort | string:none;">
 				<option tal:repeat="option Ztal\Tales\ArrayUtils.sort:sort,Ztal\Tales\Translation.translateArrayValues:element/getMultiOptions"
