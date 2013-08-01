@@ -36,8 +36,8 @@
 	 *                                       for displaying errors after each
 	 *                                       element (inline).
 	 * @param string    singleElementMacro Optional. The path to a macro to use
-	 *                                       for outputting a single form 
-	 *                                       element (i.e. not a group or a 
+	 *                                       for outputting a single form
+	 *                                       element (i.e. not a group or a
 	 *                                       hidden element)
 	 * @param string    displayGroupMacro  Optional. The path to a macro to use
 	 *                                        for outputting a display group.
@@ -60,10 +60,10 @@
 					Ztal_Tales_Generic.equal:errorMode,string:header
 					| Ztal_Tales_Generic.equal:errorMode,string:both"
 			>
-				<tal:block metal:use-macro="${headerErrorMacro | string:headerErrors}" />				
+				<tal:block metal:use-macro="${headerErrorMacro | string:headerErrors}" />
 			</tal:block>
 
-			
+
 			<tal:block
 				tal:define="elements form;
 					simpleElementNames useSimpleNames | Ztal_Tales_Form.getAttrib:form,string:useSimpleNames | string:0;"
@@ -78,7 +78,7 @@
 		<!-- If any errors exist, create a div for them -->
 		<div tal:condition="form/isErrors" class="errors">
 			<h3 i18n:translate="string:error" />
-			
+
 			<!-- loop through all the global error messages -->
 			<ul tal:condition="globalErrors" tal:define="globalErrors form/getErrorMessages">
 				<li tal:repeat="error globalErrors" i18n:translate="error" />
@@ -113,7 +113,7 @@
 			 except hidden elements appropriately -->
 		<ul>
 			<tal:block tal:repeat="element elements">
-				
+
 				<!-- Is this element a display group? -->
 				<li tal:condition="Ztal_Tales_Form.isDisplayGroup:element"
 					tal:define="displayGroupElement element">
@@ -131,7 +131,7 @@
 				>
 					<!-- display the element -->
 					<tal:block metal:use-macro="${singleElementMacro | Ztal_Tales_Form.getAttrib:element,string:macro | string:singleElement}" />
-					
+
 					<!-- is there an error to display? -->
 					<tal:block tal:condition="
 							Ztal_Tales_Generic.equal:errorMode,string:inline
@@ -145,7 +145,7 @@
 				</li>
 			</tal:block>
 		</ul>
-		
+
 		<!-- Iterate over the hidden elements, if any -->
 		<tal:block tal:repeat="element elements">
 			<tal:block tal:condition="Ztal_Tales_Form.isHiddenElement:element">
@@ -245,7 +245,7 @@
 				   metal:use-macro="inputElement" />
 		</tal:block>
 
-		<!-- If it is a textarea, render it using the textareaElement 
+		<!-- If it is a textarea, render it using the textareaElement
 			fragment -->
 		<tal:block tal:condition="Ztal_Tales_Form.isTextarea:element"
 				   tal:define="value element/getValue"
@@ -267,11 +267,11 @@
 			 different options and render each one as an input element. -->
 		<tal:block tal:condition="Ztal_Tales_Form.isMultiCheckbox:element"
 				   tal:repeat="option element/getMultiOptions">
-			<label class="checkboxOption"> 
+			<label class="checkboxOption">
 				<tal:block tal:define="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 									   value repeat/option/key;
 									   checked Ztal_Tales_Form.isChecked:element,repeat/option/key"
-						   metal:use-macro="inputElement" 
+						   metal:use-macro="inputElement"
 			    />
 				<tal:block i18n:translate="option" />
 			</label>
@@ -282,6 +282,7 @@
 		<select tal:condition="Ztal_Tales_Form.isSelect:element"
 				tal:attributes="name Ztal_Tales_Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
+								class Ztal_Tales_Form.getAttrib:element,string:class;
 								disabled Ztal_Tales_Form.isDisabled:element">
 				<tal:block tal:define="sort Ztal_Tales_Form.getAttrib:element,string:sort | string:none;">
 				<option tal:repeat="option Ztal_Tales_Array.sort:sort,Ztal_Tales_Translation.translateArrayValues:element/getMultiOptions"
@@ -290,7 +291,7 @@
 				/>
 			</tal:block>
 		</select>
-		
+
 		<!-- If it is a multiple select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal_Tales_Form.isMultiSelect:element"
