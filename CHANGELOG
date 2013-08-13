@@ -1,3 +1,7 @@
+1.5.5
+	Introduced ztal namespace and ztal:data-attributes attribute.
+
+----------------
 1.5.4 - 04/06/2013
 	Revert layout's enabled state after changing it in Ztal\Mail, avoiding view rendering problems.
 
