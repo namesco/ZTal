@@ -98,4 +98,20 @@ class Ztal extends \Zend_Controller_Plugin_Abstract
 		$viewRenderer->setView($view);
 		\Zend_Registry::set('Ztal_View', $view);
 	}
+
+	/**
+	 * Called after an action is dispatched by Zend_Controller_Dispatcher.
+	 *
+	 * @param Zend_Controller_Request_Abstract $request The request object.
+	 *
+	 * @return void
+	 */
+	public function preDispatch(\Zend_Controller_Request_Abstract $request)
+	{
+		parent::preDispatch($request);
+
+		// register the ztal namespace
+		\PHPTAL_Dom_Defs::getInstance()->registerNamespace(
+			new \Ztal\Tal\Ns\ZTAL());
+	}
 }

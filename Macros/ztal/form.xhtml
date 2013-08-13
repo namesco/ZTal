@@ -4,6 +4,7 @@
 	xmlns:metal="http://xml.zope.org/namespaces/metal"
 	xmlns:i18n="http://xml.zope.org/namespaces/i18n"
 	xmlns:phptal="http://phptal.org/ns/phptal"
+	xmlns:ztal="http://names.co.uk/namespaces/ztal"
 >
 	<!--
 	/**
@@ -203,7 +204,8 @@
 
 	<!-- Will display an <input> element -->
 	<input metal:define-macro="inputElement"
-		   tal:attributes="type Ztal\Tales\Form.inputType:element;
+		ztal:data-attributes="element"
+		tal:attributes="type Ztal\Tales\Form.inputType:element;
 						   name name | Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 						   id element/getId;
 						   class Ztal\Tales\Form.getAttrib:element,string:class;
@@ -219,13 +221,14 @@
 
 	<!-- Will display a <textarea> element -->
 	<textarea metal:define-macro="textareaElement"
-		      tal:attributes="name name | Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
+			ztal:data-attributes="element"
+		    tal:attributes="name name | Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 							  id element/getId;
 							  class Ztal\Tales\Form.getAttrib:element,string:class;
 							  rows Ztal\Tales\Form.getAttrib:element,string:rows;
 							  cols Ztal\Tales\Form.getAttrib:element,string:cols;
 							  disabled Ztal\Tales\Form.isDisabled:element;"
-			  tal:content="value"
+			tal:content="value"
 	/>
 
 	<label metal:define-macro="labelForElement"
@@ -293,6 +296,7 @@
 		<!-- If it is a select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal\Tales\Form.isSelect:element"
+				ztal:data-attributes="element"
 				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
 								class Ztal\Tales\Form.getAttrib:element,string:class;
@@ -308,6 +312,7 @@
 		<!-- If it is a multiple select, then create a <select> and then populate it with
 			 options based on the multiOptions in the element -->
 		<select tal:condition="Ztal\Tales\Form.isMultiSelect:element"
+				ztal:data-attributes="element"
 				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id element/getId;
 								disabled Ztal\Tales\Form.isDisabled:element;
@@ -326,6 +331,7 @@
 
 		<!-- If it is a button, then render it out -->
 		<button tal:condition="Ztal\Tales\Form.isButton:element"
+				ztal:data-attributes="element"
 				tal:attributes="name Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
 								id Ztal\Tales\Form.getAttrib:element,string:id;
 								class Ztal\Tales\Form.getAttrib:element,string:class;
