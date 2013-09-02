@@ -1,6 +1,7 @@
-1.5.5
+1.5.5 - 02/09/2013
 	Introduced ztal namespace and ztal:data-attributes attribute.
-Tal extension to return true when all parameters are true.
+	New tale to return true when all parameters are true. Analagous to using an "and" statement.
+	Added supported for the target attribute on forms.
 
 ----------------
 1.5.4 - 04/06/2013
