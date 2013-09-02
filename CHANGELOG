@@ -1,5 +1,6 @@
 1.5.5
 	Introduced ztal namespace and ztal:data-attributes attribute.
+Tal extension to return true when all parameters are true.
 
 ----------------
 1.5.4 - 04/06/2013
