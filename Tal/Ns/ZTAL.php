@@ -45,7 +45,7 @@ class ZTAL extends \PHPTAL_Namespace
 
 		// change define-macro to "define macro" and capitalize words
 		$name = str_replace(' ', '', ucwords(strtr($name, '-', ' ')));
-		$class = 'Ztal_Tal_Php_Attribute_' . strtoupper($this->getPrefix()) . '_' . $name;
+		$class = '\\Ztal\\Tal\\Php\\Attribute\\' . strtoupper($this->getPrefix()) . '\\' . $name;
 		$result = new $class($tag, $expression);
 		return $result;
 	}
