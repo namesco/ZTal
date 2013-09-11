@@ -64,6 +64,7 @@ class DataAttributes extends \PHPTAL_Php_Attribute
 
 			if (isset($attributes["data"]) && is_array($attributes["data"])) {
 				foreach ($attributes["data"] as $key => $value) {
+					$value = htmlentities($value);
 					' . $dataAttributes . ' .= "data-{$key}=\"{$value}\" ";
 				}
 				' . $dataAttributes . ' = rtrim(' . $dataAttributes . ');
