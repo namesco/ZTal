@@ -16,11 +16,11 @@
   <email>amace@names.co.uk</email>
   <active>yes</active>
  </lead>
- <date>2013-09-02</date>
- <time>16:42:07</time>
+ <date>2013-09-13</date>
+ <time>11:34:44</time>
  <version>
-  <release>1.5.5</release>
-  <api>1.5.5</api>
+  <release>1.5.6</release>
+  <api>1.5.6</api>
  </version>
  <stability>
   <release>stable</release>
@@ -57,10 +57,6 @@ None
    <file baseinstalldir="Ztal" md5sum="2d1e26417495d005d23803c05fa4c306" name="example/web/index.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="80dacb892364133d4cb19b500bc6c411" name="Macros/ztal/form.xhtml" role="php" />
    <file baseinstalldir="Ztal" md5sum="909f8fd9c2c2f6f7b6372aa7a3029e21" name="Macros/ztal/table.xhtml" role="php" />
-   <file baseinstalldir="Ztal" md5sum="fd2dc7874fbe4d8fc70d6e1fab5c2ba8" name="nbproject/project.properties" role="data" />
-   <file baseinstalldir="Ztal" md5sum="908860262dd4d19aa83aece7f46ef821" name="nbproject/project.xml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="f4d786fdb50af82005c5e008a60fe734" name="nbproject/private/private.properties" role="data" />
-   <file baseinstalldir="Ztal" md5sum="e9dd3c44e95ebab58b8a28c33239bd46" name="nbproject/private/private.xml" role="data" />
    <file baseinstalldir="Ztal" md5sum="cac3ae37197d4117e7f0ecbbdf408ca2" name="Table/Base.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="2b7c03114e4f4a6b15fac05b10a3e02e" name="Table/Row.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="00bd6eed023fd0ddb0a604329566cd99" name="Table/Column/ArraySource.php" role="php" />
@@ -73,8 +69,8 @@ None
    <file baseinstalldir="Ztal" md5sum="aeb078c26a5cc425e347bf94164ec175" name="Tal/PharResolver.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="d683e7abf67ea9e9e58518704565b9c2" name="Tal/View.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="3d63180dbbc8d57fe5e74e03db3eb9c5" name="Tal/ZendTranslateTranslator.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="aaaf690c701c85d9f40730daf903ca91" name="Tal/Ns/ZTAL.php" role="php" />
-   <file baseinstalldir="Ztal" md5sum="386c5243e4532864eac4ca2c544e0472" name="Tal/Php/Attribute/ZTAL/DataAttributes.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="022680694b4af3d96bb424ceea1948df" name="Tal/Ns/ZTAL.php" role="php" />
+   <file baseinstalldir="Ztal" md5sum="13f2e33d5b2c2447ce3a1c31ceab21b4" name="Tal/Php/Attribute/ZTAL/DataAttributes.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="e2a8fb80715df0c0fd38af380a452aaf" name="Tales/ArrayUtils.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="e9af29751d8338fa2e855282f26621b9" name="Tales/Form.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="2c80b9c61bdac90dd94080b59b16c87f" name="Tales/Generic.php" role="php" />
@@ -85,7 +81,7 @@ None
    <file baseinstalldir="Ztal" md5sum="5b08dfbdb6b561ab68774219010811df" name="Translate/Adaptor/Gettext.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="6bb5481523baaad1570a21e73d8e1f2f" name="Autoloader.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="18841abb4c344352576fbd7dcfbc578d" name="build.xml" role="data" />
-   <file baseinstalldir="Ztal" md5sum="a373d0352f369fa2911140d31ed1fb9d" name="CHANGELOG" role="data" />
+   <file baseinstalldir="Ztal" md5sum="0a75450da405cd04b93221f29e07e9cb" name="CHANGELOG" role="data" />
    <file baseinstalldir="Ztal" md5sum="3f503e81c966d4d23be81d3b45d1ccb7" name="composer.json" role="data" />
    <file baseinstalldir="Ztal" md5sum="0e9e9c1d8472a8f6217762bcb32c54e4" name="Form.php" role="php" />
    <file baseinstalldir="Ztal" md5sum="da27ef050e61662df9807f9da3e8c172" name="LICENSE" role="data" />
@@ -295,6 +291,21 @@ None
     <api>stable</api>
    </stability>
    <date>2013-09-02</date>
+   <license uri="http://www.apache.org/licenses/">Apache</license>
+   <notes>
+None
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.5.6</release>
+    <api>1.5.6</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2013-09-13</date>
    <license uri="http://www.apache.org/licenses/">Apache</license>
    <notes>
 None
