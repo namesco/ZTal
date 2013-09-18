@@ -49,6 +49,13 @@ class DataAttributes extends \PHPTAL_Php_Attribute
 		$dataAttributes = $codewriter->createTempVariable();
 		$tmp = $codewriter->createTempVariable();
 
+		// PHPTAL changed the method signature for phptal_escape in v1.2.3.
+		if (defined('PHPTAL_VERSION') && version_compare(PHPTAL_VERSION, '1.2.3', '>=')) {
+			$escapeFunctionCall = 'phptal_escape($value, \'UTF-8\')';
+		} else {
+			$escapeFunctionCall = 'phptal_escape($value)';
+		}
+
 		/**
 		 * Compiled code will loop through a Zend_Form_Element attributes
 		 * looking for the 'data' key, and assign it to a known temporary
@@ -64,7 +71,7 @@ class DataAttributes extends \PHPTAL_Php_Attribute
 
 			if (isset($attributes["data"]) && is_array($attributes["data"])) {
 				foreach ($attributes["data"] as $key => $value) {
-					' . $dataAttributes . ' .= "data-{$key}=\"" . phptal_escape($value) . "\" ";
+					' . $dataAttributes . ' .= "data-{$key}=\"" . ' . $escapeFunctionCall . ' . "\" ";
 				}
 				' . $dataAttributes . ' = rtrim(' . $dataAttributes . ');
 			}
