@@ -82,6 +82,10 @@ class Mail extends \Zend_Mail
 	public function __construct($charset = 'iso-8859-1')
 	{
 		parent::__construct($charset);
+
+		// We need the view ivar immediately, since users of this class may need
+		// to set view variables on it before calling the setBody* methods.
+		$this->_createView();
 	}
 
 	/**
@@ -124,23 +128,29 @@ class Mail extends \Zend_Mail
 	}
 
 	/**
+	 * Create the view, and store its layout state.
+	 *
+	 * @return void
+	 */
+	protected function _createView()
+	{
+		if (! \Zend_Registry::isRegistered('Ztal_View')) {
+			throw new \Exception('No available Ztal View');
+		}
+
+		$this->view = clone \Zend_Registry::get('Ztal_View');
+
+		// Remember the state of layout so we can reinstate it after rendering.
+		$this->_layoutWasEnabled = $this->view->layout()->isEnabled();
+	}
+
+	/**
 	 * Set up the layout and view ready for rendering.
 	 *
 	 * @return void
 	 */
 	protected function _setUpLayout()
 	{
-		if (! $this->view) {
-			if (! \Zend_Registry::isRegistered('Ztal_View')) {
-				throw new \Exception('No available Ztal View');
-			}
-
-			$this->view = clone \Zend_Registry::get('Ztal_View');
-
-			// Remember the state of layout so we can reinstate it after rendering.
-			$this->_layoutWasEnabled = $this->view->layout()->isEnabled();
-		}
-
 		$this->view->layout()->disableLayout();
 		$this->view->setCompressWhitespace(true);
 	}

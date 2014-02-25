@@ -1,7 +1,12 @@
-1.5.6 - 13/09/2013
-   Fixed the non-namespaced data attribute support to allow it to work with namespaces.
-   Fixed non-escaping of data attribute content.
+1.5.7 - 19/09/2013
+	Fix Ztal\Mail's constructor to create the view, allowing view vars to be set prior to calling setBody*.
 
+----------------
+1.5.6 - 13/09/2013
+	Fixed the non-namespaced data attribute support to allow it to work with namespaces.
+	Fixed non-escaping of data attribute content.
+
+----------------
 1.5.5 - 02/09/2013
 	Introduced ztal namespace and ztal:data-attributes attribute.
 	New tale to return true when all parameters are true. Analagous to using an "and" statement.
