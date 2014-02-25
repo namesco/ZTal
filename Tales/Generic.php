@@ -198,14 +198,7 @@ final class Generic implements \PHPTAL_Tales
 	 */
 	static public function fromJsonString($src, $nothrow)
 	{
-		$break = strpos($src, '|');
-		if ($break === false) {
-			$jsonString = $src;
-		} else {
-			$jsonString = substr($src, 0, $break);
-		}
-
-		$jsonString = str_replace(array("'", '""'), array('"',"\'"), $jsonString);
+		$jsonString = str_replace(array("'", '""'), array('"',"\'"), $src);
 		return 'json_decode(' . phptal_tale($jsonString, $nothrow) . ', true)';
 	}
 
