@@ -326,6 +326,39 @@ final class Generic implements \PHPTAL_Tales
 
 
 	/**
+	 * Tal extension to return whether a regex pattern matches a string.
+	 *
+	 * Example use within template: <span tal:content="Ztal\Tales\Generic.regexMatch:pattern,subject" />.
+	 *
+	 * Note that, per PHPTal convention, if you want to use $ you need to use $$
+	 * within the pattern string or PHPTal will attempt to convert a var.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	public static function regexMatch($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$pattern = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+		$break = strpos($src, '|');
+		if ($break === false) {
+			$subject = $src;
+			$rest = 'NULL';
+		} else {
+			$subject = substr($src, 0, $break);
+			$rest = substr($src, $break + 1);
+		}
+
+		return '(preg_match("#" . str_replace("#", "##", ' . phptal_tale($pattern, $nothrow) . ') . "#", '
+			. phptal_tale($subject, $nothrow) . ') ?: '
+			. phptal_tale($rest, $nothrow) . ')';
+	}
+
+
+	/**
 	 * Tal extension to return true when all parameters are true.
 	 *
 	 * Example use within template:
