@@ -1,3 +1,8 @@
+1.5.8 - 11/03/2014
+	Added Ztal\Tales\Generic.regexMatch tale for regular expression matching on a string.
+	Changed the behaviour of Ztal\Tales\Generic.fromJsonString so it doesn't stop processing on a '|' char (so now you can use a regex inside a json structure).
+
+----------------
 1.5.7 - 19/09/2013
 	Fix Ztal\Mail's constructor to create the view, allowing view vars to be set prior to calling setBody*.
 
