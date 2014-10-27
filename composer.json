@@ -23,5 +23,5 @@
 	"target-dir" : "Ztal",
     "include-path": [
         "Ztal/"
-    ],
+    ]
 }
