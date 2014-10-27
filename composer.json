@@ -20,5 +20,8 @@
 			"Ztal_" : ""
 		}
 	},
-	"target-dir" : "Ztal"
+	"target-dir" : "Ztal",
+    "include-path": [
+        "Ztal/"
+    ],
 }
