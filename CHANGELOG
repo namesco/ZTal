@@ -1,3 +1,7 @@
+1.6.1
+	Updated the composer.json file to define PSR-4 autoloading for Ztal.
+
+----------------
 1.6.0 - 27/10/2014
 	As of this version, we are no longer updating pear.names.co.uk. Use composer
 	(see http://getcomposer.org) to install ZTal instead.
