@@ -1,3 +1,9 @@
+1.6.0 - 27/10/2014
+	As of this version, we are no longer updating pear.names.co.uk. Use composer
+	(see http://getcomposer.org) to install ZTal instead.
+	Updated dependency in composer.json for PHPTAL from dev-master to 1.3.0	
+
+----------------
 1.5.8 - 11/03/2014
 	Added Ztal\Tales\Generic.regexMatch tale for regular expression matching on a string.
 	Changed the behaviour of Ztal\Tales\Generic.fromJsonString so it doesn't stop processing on a '|' char (so now you can use a regex inside a json structure).
