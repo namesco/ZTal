@@ -51,6 +51,13 @@ class Base implements \Countable, \Iterator
 	protected $_columnKeyIndex;
 
 	/**
+	 * Non-routing page parameters.
+	 *
+	 * @var array
+	 */
+	protected $_parameters;
+
+	/**
 	 * The shared Row Object.
 	 *
 	 * @var Ztal_Table_Row
@@ -99,6 +106,7 @@ class Base implements \Countable, \Iterator
 		$this->_currentRowIndex = 0;
 		$this->_columns = array();
 		$this->_columnKeyIndex = array();
+		$this->_parameters = array();
 		$this->_id = 'table';
 		$this->_sortColumnKey = '';
 		$this->_baseUri = '/';
@@ -130,12 +138,55 @@ class Base implements \Countable, \Iterator
 			$this->_columns[$this->_sortColumnKey]->setSortDirection($sortDirection);
 		}
 
+		if (isset($parameters['module'])
+			&& isset($parameters['controller'])
+			&& isset($parameters['action'])
+		) {
+			// Build the base URI
+			$this->_baseUri = '/' . $parameters['module'] . '/'
+				. $parameters['controller'] . '/' . $parameters['action'];
+		}
+
+		// Save the parameters
+		$this->setParameters($parameters);
+
+		// Init paginator
 		$paginator = $this->getPaginator();
 		if ($paginator != null) {
 			$paginator->initWithParameters($parameters, $this->_id . '-');
 		}
 	}
 
+	/**
+	 * Set HTTP parameters, overwriting those set in the constructor.
+	 * 
+	 * @param array $parameters Associative array of parameters.
+	 */
+	public function setParameters($parameters) {
+		$this->_parameters = array();
+		
+		// Save page parameters
+		foreach ($parameters as $name => $value) {
+			// Save param name & value if not a special-purpose parameter
+			if (!in_array($name, array('module', 'controller', 'action',
+				$this->_id . '-page',
+				$this->_id . '-direction',
+				$this->_id . '-sort'))
+			) {
+				$this->_parameters[$name] = $value;
+			}
+		}		
+	}
+
+	/**
+	 * Add a single parameter to the internal collection.
+	 * 
+	 * @param string $paramName  The parameter name.
+	 * @param string $paramValue The value of the parameter.
+	 */
+	public function addParameter($paramName, $paramValue) {
+		$this->_parameters[$paramName] = $paramValue;
+	}
 
 	/**
 	 * Append a column to the column list.
@@ -262,6 +313,22 @@ class Base implements \Countable, \Iterator
 	// ** Getters and Setters **
 	//********************************************
 
+
+	/**
+	 * Return a url-encoded string of page parameters.
+	 *
+	 * @return string
+	 */
+	public function getUrlParams()
+	{
+		$params = '';
+
+		foreach ($this->_parameters as $name => $value) {
+			$params .= '/' . urlencode($name) . '/' . urlencode($value);
+		}
+
+		return $params;
+	}
 
 	/**
 	 * Return the base uri.

@@ -154,14 +154,14 @@
 		<div class="inner">
 			<a
 				tal:condition="not:Ztal\Tales\Generic.equal:paginator/previousPage,string:-1"
-				tal:attributes="href string:${table/getBaseUri}${sortPart}/${prefix}-page/${paginator/previousPage}"
+				tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${paginator/previousPage}"
 				class="paginatorPreviousPage"
 			>
 				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:previousPage | string:" />
 			</a>
 			<a
 				tal:condition="not:Ztal\Tales\Generic.equal:paginator/nextPage,string:-1"
-				tal:attributes="href string:${table/getBaseUri}${sortPart}/${prefix}-page/${paginator/nextPage}"
+				tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${paginator/nextPage}"
 				class="paginatorNextPage"
 			>
 				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:nextPage | string:" />
@@ -172,7 +172,7 @@
 					tal:content="currentPage/label"
 					tal:attributes="
 						class Ztal\Tales\Generic.isTrue:currentPage/currentPage,string:paginatorCurrentPage;
-						href string:${table/getBaseUri}${sortPart}/${prefix}-page/${currentPage/index}"
+						href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${currentPage/index}"
 				/>
 			</div>
 		</div>
