@@ -1,3 +1,7 @@
+1.6.2
+	Updated Ztal\Table to save HTTP parameters so they are available to the paginator macro
+
+----------------
 1.6.1
 	Updated the composer.json file to define PSR-4 autoloading for Ztal.
 
