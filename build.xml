@@ -110,16 +110,11 @@
 		
 	</target>
 
-	<target name="document" depends="php-documentor" />
-
-	<target name="php-documentor">
-		<exec command="docblox run --title '${phing.project.name}'
-							  --target ${project.basedir}/build/docs
-							  --directory ."
-			  dir="${project.basedir}/source" checkreturn="true" />
-		<exec command="docblox transform --source ${project.basedir}/build/docs/structure.xml
-										 --target ${project.basedir}/build/docs"
-			  dir="${project.basedir}/source" checkreturn="true" />
+	<target name="document">
+		<echo>command="phpdoc run --title '${phing.project.name}' --target ${buildDir}/docs --directory ."</echo>
+		<echo>dir="${sourceDir}"</echo>
+		<exec command="phpdoc run --title '${phing.project.name}'
+			--target ${buildDir}/docs --directory ." dir="${sourceDir}" />
 	</target>
 
 	<target name="analysis" depends="sonar:configure, sonar:run" />
