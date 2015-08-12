@@ -108,8 +108,13 @@ final class Translation implements \PHPTAL_Tales
 
 		$results = array();
 		foreach ($array as $key => $value) {
-			$results[$key] = $translator->translate($value, false);
+			if (is_array($value)) {
+				$results[$translator->translate($key, false)] = self::arrayTranslationHelper($value, $translator);
+			} else {
+				$results[$key] = $translator->translate($value, false);
+			}
 		}
+
 		return $results;
 	}
 }
