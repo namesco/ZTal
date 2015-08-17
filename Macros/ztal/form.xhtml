@@ -308,12 +308,15 @@
 							<optgroup i18n:attributes="label ${repeat/option/key}">
 								<option tal:repeat="groupedOption option"
 									tal:attributes="value repeat/groupedOption/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/groupedOption/key"
+									ztal:data-attributes="element,repeat/groupedOption/key"
 									i18n:translate="groupedOption" />
 							</optgroup>
 						</tal:block>
 
 						<tal:block tal:condition="not:Ztal\Tales\Form.isOptGroup:option">
-							<option tal:attributes="value repeat/option/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
+							<option
+								tal:attributes="value repeat/option/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
+								ztal:data-attributes="element,repeat/option/key"
 								i18n:translate="option" />
 						</tal:block>
 					</tal:block>
@@ -334,6 +337,7 @@
 					<option
 						tal:define="keyName repeat/option/key"
 						tal:attributes="value repeat/option/key; selected Ztal\Tales\ArrayUtils.in:repeat/option/key,element/getValue"
+						ztal:data-attributes="element,repeat/option/key"
 						tal:content="option"
 					/>
 				</tal:block>

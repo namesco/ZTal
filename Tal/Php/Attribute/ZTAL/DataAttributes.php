@@ -45,9 +45,22 @@ class DataAttributes extends \PHPTAL_Php_Attribute
 	 */
 	public function before(\PHPTAL_Php_CodeWriter $codewriter)
 	{
-		$zendFormElement = $codewriter->evaluateExpression($this->expression);
+		$args = explode(',', $this->expression);
+
+		$zendFormElement = $codewriter->evaluateExpression(trim($args[0]));
 		$dataAttributes = $codewriter->createTempVariable();
 		$tmp = $codewriter->createTempVariable();
+
+		$assignment = $tmp . ' = ' . $zendFormElement . ';' . PHP_EOL;
+		$attributes = '$attributes = ' . $tmp . '->getAttribs();';
+
+		if (count($args) > 1) {
+			$option = $codewriter->evaluateExpression(trim($args[1]));
+			$optionVar = $codewriter->createTempVariable();
+
+			$assignment .= $optionVar . ' = ' . $option . ';' . PHP_EOL;
+			$attributes = '$attributes = ' . $tmp . '->getAttribsForOption(' . $optionVar . ');';
+		}
 
 		// PHPTAL changed the method signature for phptal_escape in v1.2.3.
 		if (defined('PHPTAL_VERSION') && version_compare(PHPTAL_VERSION, '1.2.3', '>=')) {
@@ -62,11 +75,11 @@ class DataAttributes extends \PHPTAL_Php_Attribute
 		 * variable.
 		 */
 		$source = '
-		' . $tmp . ' = ' . $zendFormElement . ';
-		if (is_object(' . $tmp . ')
-			&& ' . $tmp . ' instanceof Zend_Form_Element
+		' . $assignment . '
+		if ((is_object(' . $tmp . ')
+			&& ' . $tmp . ' instanceof Zend_Form_Element)
 		) {
-			$attributes = ' . $tmp . '->getAttribs();
+			' . $attributes . PHP_EOL . '
 			' . $dataAttributes . ' = " ";
 
 			if (isset($attributes["data"]) && is_array($attributes["data"])) {
