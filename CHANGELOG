@@ -1,3 +1,7 @@
+1.6.4
+	It's now possible to add 'data' attributes on select options.
+
+----------------
 1.6.3
 	Single select elements understand the concept of optgroups.
 	Pass a nested array to multioptions.
