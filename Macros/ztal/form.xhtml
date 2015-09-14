@@ -303,11 +303,24 @@
 								class Ztal\Tales\Form.getAttrib:element,string:class;
 								disabled Ztal\Tales\Form.isDisabled:element">
 				<tal:block tal:define="sort Ztal\Tales\Form.getAttrib:element,string:sort | string:none;">
-				<option tal:repeat="option Ztal\Tales\ArrayUtils.sort:sort,Ztal\Tales\Translation.translateArrayValues:element/getMultiOptions"
-						tal:attributes="value repeat/option/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
-						tal:content="option"
-				/>
-			</tal:block>
+					<tal:block tal:repeat="option element/getMultiOptions">
+						<tal:block tal:condition="Ztal\Tales\Form.isOptGroup:option">
+							<optgroup i18n:attributes="label ${repeat/option/key}">
+								<option tal:repeat="groupedOption option"
+									tal:attributes="value repeat/groupedOption/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/groupedOption/key"
+									ztal:data-attributes="element,repeat/groupedOption/key"
+									i18n:translate="groupedOption" />
+							</optgroup>
+						</tal:block>
+
+						<tal:block tal:condition="not:Ztal\Tales\Form.isOptGroup:option">
+							<option
+								tal:attributes="value repeat/option/key; selected Ztal\Tales\Generic.equal:element/getValue,repeat/option/key"
+								ztal:data-attributes="element,repeat/option/key"
+								i18n:translate="option" />
+						</tal:block>
+					</tal:block>
+				</tal:block>
 		</select>
 
 		<!-- If it is a multiple select, then create a <select> and then populate it with
@@ -324,6 +337,7 @@
 					<option
 						tal:define="keyName repeat/option/key"
 						tal:attributes="value repeat/option/key; selected Ztal\Tales\ArrayUtils.in:repeat/option/key,element/getValue"
+						ztal:data-attributes="element,repeat/option/key"
 						tal:content="option"
 					/>
 				</tal:block>

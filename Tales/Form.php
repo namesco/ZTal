@@ -306,6 +306,22 @@ final class Form implements \PHPTAL_Tales
 				. phptal_tale($src, $nothrow) . ', "getImgUrl"))';
 	}
 
+	/**
+	 * When used in conjunction with a known select option, detect if element should be represented as optgroup.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return string
+	 */
+	static public function isOptGroup($src, $nothrow)
+	{
+		$break = strpos($src, '|');
+		if ($break !== false) {
+			$src = substr($src, 0, $break);
+		}
+		return '(true === is_array(' . phptal_tale($src, $nothrow) . '))';
+	}
 
 	/**
 	 * Should the current option in a multi check box be checked or not.

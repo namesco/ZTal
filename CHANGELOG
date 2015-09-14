@@ -1,3 +1,12 @@
+1.6.4
+	It's now possible to add 'data' attributes on select options.
+
+----------------
+1.6.3
+	Single select elements understand the concept of optgroups.
+	Pass a nested array to multioptions.
+
+----------------
 1.6.2
 	Updated Ztal\Table to save HTTP parameters so they are available to the paginator macro
 
@@ -9,7 +18,7 @@
 1.6.0 - 27/10/2014
 	As of this version, we are no longer updating pear.names.co.uk. Use composer
 	(see http://getcomposer.org) to install ZTal instead.
-	Updated dependency in composer.json for PHPTAL from dev-master to 1.3.0	
+	Updated dependency in composer.json for PHPTAL from dev-master to 1.3.0
 
 ----------------
 1.5.8 - 11/03/2014
