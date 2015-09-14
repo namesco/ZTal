@@ -137,11 +137,13 @@ final class Form implements \PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '(count(' . phptal_tale($a, $nothrow) . '->getErrors('
-			. phptal_tale($b, $nothrow) . ')) > 0 ? '
-			. phptal_tale($a, $nothrow) . '->getErrors('
-			. phptal_tale($b, $nothrow) . ') : '
-			. phptal_tale($rest, $nothrow) . ')';
+		return '((count(' . phptal_tale($a, $nothrow) . '->getErrors(' . phptal_tale($b, $nothrow) . ')) > 0'
+			. ' || count(' . phptal_tale($a, $nothrow) . '->getElement(' . phptal_tale($b, $nothrow) . ')->getErrorMessages()) > 0)'
+			. ' ? array_merge('
+			. phptal_tale($a, $nothrow) . '->getErrors(' . phptal_tale($b, $nothrow) . '), '
+			. phptal_tale($a, $nothrow) . '->getElement(' . phptal_tale($b, $nothrow) . ')->getErrorMessages()'
+			. ')'
+			. ' : ' . phptal_tale($rest, $nothrow) . ')';
 	}
 
 
