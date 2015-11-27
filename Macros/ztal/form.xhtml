@@ -217,7 +217,8 @@
 						   placeholder Ztal\Tales\Form.getAttrib:element,string:placeholder;
 						   checked checked | nothing;
 						   autocomplete Ztal\Tales\Generic.isTrue:string:${Ztal\Tales\Form.isPassword:element},string:off | Ztal\Tales\Form.getAttrib:element,string:autocomplete;
-						   disabled Ztal\Tales\Form.isDisabled:element"
+						   disabled Ztal\Tales\Form.isDisabled:element;
+						   tabindex Ztal\Tales\Form.getAttrib:element,string:tabindex;"
 	/>
 
 	<!-- Will display a <textarea> element -->
@@ -351,7 +352,8 @@
 								id Ztal\Tales\Form.getAttrib:element,string:id;
 								class Ztal\Tales\Form.getAttrib:element,string:class;
 								type Ztal\Tales\Form.getAttrib:element,string:type;
-								value element/getValue"
+								value element/getValue;
+								tabindex Ztal\Tales\Form.getAttrib:element,string:tabindex;"
 				i18n:translate="element/getLabel" />
 
 		<!-- If it is an image captcha, display the image along with the instructions

@@ -1,3 +1,7 @@
+1.6.5
+	Input and button form elements can now make use of the tabindex attribute.
+
+----------------
 1.6.4
 	It's now possible to add 'data' attributes on select options.
 
