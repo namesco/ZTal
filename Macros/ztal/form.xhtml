@@ -210,7 +210,7 @@
 		ztal:data-attributes="element"
 		tal:attributes="type Ztal\Tales\Form.inputType:element;
 						   name name | Ztal\Tales\Generic.isTrue:simpleElementNames,element/getName | element/getFullyQualifiedName;
-						   id element/getId;
+						   id id | element/getId;
 						   class Ztal\Tales\Form.getAttrib:element,string:class;
 						   value value | nothing;
 						   maxlength Ztal\Tales\Form.getAttrib:element,string:maxlength;
