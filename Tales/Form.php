@@ -137,15 +137,36 @@ final class Form implements \PHPTAL_Tales
 			$b = substr($src, 0, $break);
 			$rest = substr($src, $break + 1);
 		}
-		return '((count(' . phptal_tale($a, $nothrow) . '->getErrors(' . phptal_tale($b, $nothrow) . ')) > 0'
-			. ' || count(' . phptal_tale($a, $nothrow) . '->getElement(' . phptal_tale($b, $nothrow) . ')->getErrorMessages()) > 0)'
-			. ' ? array_merge('
-			. phptal_tale($a, $nothrow) . '->getErrors(' . phptal_tale($b, $nothrow) . '), '
-			. phptal_tale($a, $nothrow) . '->getElement(' . phptal_tale($b, $nothrow) . ')->getErrorMessages()'
-			. ')'
-			. ' : ' . phptal_tale($rest, $nothrow) . ')';
+
+		return '((count(\Ztal\Tales\Form::mergeErrors(' . phptal_tale($a, $nothrow) . ', '
+			. phptal_tale($b, $nothrow) . ')) > 0) ? \Ztal\Tales\Form::mergeErrors('
+			. phptal_tale($a, $nothrow) . ', ' . phptal_tale($b, $nothrow) . ') : '
+			. phptal_tale($rest, $nothrow) . ' )';
 	}
 
+	/**
+	 * Helper function to merge different types of error.
+	 *
+	 * @param \Zend_Form $form    The form.
+	 * @param string     $element The name of the element.
+	 *
+	 * @return array
+	 */
+	static public function mergeErrors($form, $elementName)
+	{
+		$elementErrors = $form->getErrors($elementName);
+		$element = $form->getElement($elementName);
+		if ($element && method_exists($element, 'getErrorMessages')) {
+			$elementCustomErrors = $element->getErrorMessages();
+		}
+		if (!is_array($elementErrors)) {
+			$elementErrors = array();
+		}
+		if (!is_array($elementCustomErrors)) {
+			$elementCustomErrors = array();
+		}
+		return array_merge($elementErrors, $elementCustomErrors);
+	}
 
 	/**
 	 * Tal extension to determine the input field type of a variable.
