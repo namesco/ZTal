@@ -1,3 +1,7 @@
+1.6.10
+	Button form macro now accepts a disabled parameter.
+
+----------------
 1.6.9
 	Custom element errors are now included in the error output by default. This was in 1.6.8 but had a bug which is fixed in 1.6.9.
 
