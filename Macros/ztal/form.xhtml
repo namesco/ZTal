@@ -122,6 +122,7 @@
 
 				<!-- Is this element a display group? -->
 				<li tal:condition="Ztal\Tales\Form.isDisplayGroup:element"
+					tal:attributes="class Ztal\Tales\Form.getAttrib:element,string:contextClass;"
 					tal:define="displayGroupElement element">
 					<tal:block metal:use-macro="${displayGroupMacro | Ztal\Tales\Form.getAttrib:element,string:macro | string:displayGroup}" />
 				</li>
