@@ -429,6 +429,35 @@ final class Generic implements \PHPTAL_Tales
 			. phptal_tale($string, $nothrow) . ':' . $notTrue . ')';
 	}
 
+	/**
+	 * Check if a value is empty.
+	 *
+	 * Example use: <tal:block tal:content="Ztal\Tales\Generic.isEmpty:variable,string" />.
+	 *
+	 * @param string $src     The original template string.
+	 * @param bool   $nothrow Whether to throw an exception on error.
+	 *
+	 * @return boolean
+	 */
+	static public function isEmpty($src, $nothrow)
+	{
+		$break = strpos($src, ',');
+		$data = substr($src, 0, $break);
+		$src = substr($src, $break + 1);
+
+		$break = strpos($src, '|');
+		if (false === $break) {
+			$string = $src;
+			$notEmpty = 'NULL';
+		} else {
+			$string = substr($src, 0, $break);
+			$notEmpty = phptal_tale(substr($src, $break + 1), $nothrow);
+		}
+
+		return '(empty(trim(' . phptal_tale($data, $nothrow) . ')) ? '
+			. phptal_tale($string, $nothrow) . ' : ' . $notEmpty . ')';
+	}
+
 
 	/**
 	 * Tal extension to handle Zend_Date objects.

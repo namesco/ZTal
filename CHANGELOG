@@ -1,3 +1,7 @@
+1.6.11
+	Added an isEmpty tale for checking values that result to empty.
+
+----------------
 1.6.10
 	Button form macro now accepts a disabled parameter.
 
