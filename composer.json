@@ -16,6 +16,10 @@
 		"zendframework/zendframework1": "~1.12",
 		"phptal/phptal": "1.3.0"
 	},
+	"require-dev": {
+		"phing/phing": "@stable",
+		"phpunit/phpunit": "@stable"
+	},
 	"autoload": {
 		"psr-4": {
 			"Ztal\\": ""
