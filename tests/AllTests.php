@@ -24,18 +24,18 @@ require_once __DIR__ . '/Tests/AutoloaderTests.php';
  */
 class AllTests
 {
-	/**
-	 * Sets up the contents of this suite of tests.
-	 *
-	 * @return PHPUnit_Framework_TestSuite
-	 */
-	static public function suite()
-	{
-		// Create an instance of a test suite
-		$suite = new PHPUnit_Framework_TestSuite('Ztal');
+    /**
+     * Sets up the contents of this suite of tests.
+     *
+     * @return PHPUnit_Framework_TestSuite
+     */
+    static public function suite()
+    {
+        // Create an instance of a test suite
+        $suite = new PHPUnit_Framework_TestSuite('Ztal');
 
-		$suite->addTestSuite('Ztal\Tests\AutoloaderTests');
+        $suite->addTestSuite('Ztal\Tests\AutoloaderTests');
 
-		return $suite;
-	}
+        return $suite;
+    }
 }

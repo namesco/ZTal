@@ -20,17 +20,17 @@ namespace Ztal\Table\Paginator;
  */
 class ArraySource extends BaseSource
 {
-	/**
-	 * Perform a slice on the data source.
-	 *
-	 * @param mixed &$dataSource The data source.
-	 * @param int   $start       The first item's index in the slice.
-	 * @param int   $count       The number of items in the slice.
-	 *
-	 * @return void
-	 */
-	protected function _sliceDataSource(&$dataSource, $start, $count)
-	{
-		$dataSource = array_slice($dataSource, $start, $count);
-	}
+    /**
+     * Perform a slice on the data source.
+     *
+     * @param mixed &$dataSource The data source.
+     * @param int   $start       The first item's index in the slice.
+     * @param int   $count       The number of items in the slice.
+     *
+     * @return void
+     */
+    protected function _sliceDataSource(&$dataSource, $start, $count)
+    {
+        $dataSource = array_slice($dataSource, $start, $count);
+    }
 }

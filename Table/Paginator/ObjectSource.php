@@ -20,21 +20,21 @@ namespace Ztal\Table\Paginator;
  */
 class ObjectSource extends BaseSource
 {
-	/**
-	 * Perform a slice on the data source.
-	 *
-	 * @param mixed &$dataSource The data source.
-	 * @param int   $start       The first item's index in the slice.
-	 * @param int   $count       The number of items in the slice.
-	 *
-	 * @return void
-	 */
-	protected function _sliceDataSource(&$dataSource, $start, $count)
-	{
-		if (method_exists($dataSource, 'slice')) {
-			$dataSource = $dataSource->slice($start, $count);
-		} else {
-			throw new \Exception('Unable to paginate object: no slice method');
-		}
-	}
+    /**
+     * Perform a slice on the data source.
+     *
+     * @param mixed &$dataSource The data source.
+     * @param int   $start       The first item's index in the slice.
+     * @param int   $count       The number of items in the slice.
+     *
+     * @return void
+     */
+    protected function _sliceDataSource(&$dataSource, $start, $count)
+    {
+        if (method_exists($dataSource, 'slice')) {
+            $dataSource = $dataSource->slice($start, $count);
+        } else {
+            throw new \Exception('Unable to paginate object: no slice method');
+        }
+    }
 }
