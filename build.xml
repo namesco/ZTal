@@ -11,10 +11,11 @@
 	<fileset dir="${sourceDir}" id="sources">
 		<include name="**/*.php" />
 		<exclude name="vendor/**"/>
+		<exclude name="build/**"/>
 	</fileset>
 
 	<!-- build -->
-	<target name="build" depends="initialise, unitTesting, codeSniffer, analysis" />
+	<target name="build" depends="initialise, unitTesting, codeSniffer" />
 
 	<target name="initialise" depends="clean, prepare" />
 
@@ -70,28 +71,6 @@
 		</phpcodesniffer>
 	</target>
 
-	<target name="analysis" depends="sonar:configure, sonar:run" />
 
-	<target name="sonar:configure">
-		<echo file="${buildDir}/pom.xml" append="false"><![CDATA[<?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsichemaLocation="http://maven.apache.org/POM/4.0.0">
-<modelVersion>4.0.0</modelVersion>
-<groupId>uk.co.namesco</groupId>
-<artifactId>ztal</artifactId>
-<name>ZTal</name>
-<version>1.0</version>
-<packaging>pom</packaging>
-<build>
-    <directory>${buildDir}</directory>
-    <sourceDirectory>${sourceDir}</sourceDirectory>
-    <testSourceDirectory>${sourceDir}/tests</testSourceDirectory>
-</build>
-</project>]]></echo>
-	</target>
-
-	<target name="sonar:run">
-		<exec command="mvn -f ${buildDir}/pom.xml sonar:sonar"
-			  dir="${project.basedir}" checkreturn="false" />
-	</target>
 
 </project>
