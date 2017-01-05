@@ -7,3 +7,5 @@ ZTal-*.tgz
 .DS_Store
 /.settings/
 nbproject
+vendor
+composer.lock
