@@ -63,7 +63,7 @@
 	<target name="codeSniffer" depends="php-codesniffer" />
 
 	<target name="php-codesniffer">
-		<phpcodesniffer standard="Namesco">
+		<phpcodesniffer standard="PSR2">
 			<fileset refid="sources" />
 			<formatter type="checkstyle" outfile="${buildDir}/logs/codesniffer.xml"/>
 		</phpcodesniffer>
