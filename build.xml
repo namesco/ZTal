@@ -10,6 +10,7 @@
 		 ignored by the various tasks -->
 	<fileset dir="${sourceDir}" id="sources">
 		<include name="**/*.php" />
+		<exclude name="vendor/**"/>
 	</fileset>
 
 	<!-- build -->
