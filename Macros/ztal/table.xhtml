@@ -41,7 +41,8 @@
 				sortDirection sortColumn/getSortDirection | string:0;
 				sortUri string:/${prefix}-sort/${sortKey}/${prefix}-direction/${sortDirection};
 				paginator table/getPaginator | null;
-				paginatorDisplayLoc paginatorLocation | string:top;"
+				paginatorDisplayLoc paginatorLocation | string:top;
+				zendPaginator table/getZendPaginator | null;"
 		>
 			<col tal:repeat="column table/getColumnDetails" tal:attributes="id string:${table/getId}_column_${column/key}" />
 			<thead>
@@ -56,6 +57,16 @@
 						metal:use-macro="${paginatorMacroName}" />
 				</tal:block>
 
+				<!-- Show Zend paginator at the top of the table if requested -->
+				<tal:block tal:condition="zendPaginator">
+					<tal:block
+						tal:condition="
+							Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:top
+							| Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:both"
+						tal:define="zendPaginatorMacroName zendPaginatorMacroName | string:zendPaginatorControls"
+						metal:use-macro="${zendPaginatorMacroName}" />
+				</tal:block>
+					
 				<!-- Display the column headers and sort selectors -->
 				<tr tal:condition="showHeaders">
 					<tal:block tal:repeat="columnDetails table/getColumnDetails">
@@ -111,14 +122,23 @@
 				<tal:block tal:define="rowMacroName rowMacroName | string:tableRow" tal:repeat="row table" metal:use-macro="${rowMacroName}" />
 			</tbody>
 
-			<!-- Show the paginator at the bottom of the table if requested -->
 			<tfoot>
+				<!-- Show the paginator at the bottom of the table if requested -->
 				<tal:block tal:condition="paginator">
 					<tal:block tal:condition="
 						Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:bottom
 						| Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:both"
 						tal:define="paginatorMacroName paginatorMacroName | string:paginatorControls"
 						metal:use-macro="${paginatorMacroName}" />
+				</tal:block>
+					
+				<!-- Show Zend paginator at the bottom of the table if requested -->
+				<tal:block tal:condition="zendPaginator">
+					<tal:block tal:condition="
+						Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:bottom
+						| Ztal\Tales\Generic.equal:paginatorDisplayLoc,string:both"
+						tal:define="zendPaginatorMacroName zendPaginatorMacroName | string:zendPaginatorControls"
+						metal:use-macro="${zendPaginatorMacroName}" />
 				</tal:block>
 			</tfoot>
 		</table>
@@ -159,13 +179,6 @@
 			>
 				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:previousPage | string:" />
 			</a>
-			<a
-				tal:condition="not:Ztal\Tales\Generic.equal:paginator/nextPage,string:-1"
-				tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${paginator/nextPage}"
-				class="paginatorNextPage"
-			>
-				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:nextPage | string:" />
-			</a>
 			<div class="paginatorPageSelector">
 				<a
 					tal:repeat="currentPage paginator/pages"
@@ -174,6 +187,72 @@
 						class Ztal\Tales\Generic.isTrue:currentPage/currentPage,string:paginatorCurrentPage;
 						href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${currentPage/index}"
 				/>
+			</div>
+			<a
+				tal:condition="not:Ztal\Tales\Generic.equal:paginator/nextPage,string:-1"
+				tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${paginator/nextPage}"
+				class="paginatorNextPage"
+			>
+				<span tal:replace="structure Ztal\Tales\Form.getSlotContent:string:nextPage | string:" />
+			</a>
+		</div>
+	</td>
+</tr>
+
+<!-- zend paginator controls macro -->
+<tr metal:define-macro="zendPaginatorControls">
+	<td
+		tal:define="sortPart Ztal\Tales\Generic.isTrue:sortColumn,sortUri | string:;pages zendPaginator/getPages"
+		tal:attributes="colspan table/columnCount"
+		class="paginator"
+	>
+		<div class="inner">
+			<div class="paginatorDescription">
+				<tal:block tal:replace="structure Ztal\Tales\Form.getSlotContent:string:description | string:" />
+			</div>
+			<div class="paginatorPageSelector" tal:condition="not:Ztal\Tales\Generic.equal:pages/pageCount,string:1">
+				<tal:block tal:condition="not:Ztal\Tales\Generic.equal:pages/firstPageInRange,string:1">
+					<a
+						tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/1"
+						class="paginatorFirstPage"
+					>
+						<tal:block tal:replace="structure Ztal\Tales\Form.getSlotContent:string:firstPage | string:" />
+					</a>
+					<a
+						tal:define="lastPageInPreviousRange php:pages.firstPageInRange - 1"
+						tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${lastPageInPreviousRange}"
+						class="paginatorPreviousPage"
+					>
+						<tal:block tal:replace="structure Ztal\Tales\Form.getSlotContent:string:previousPage | string:" />
+					</a>
+				</tal:block>
+				<tal:block tal:repeat="currentPage pages/pagesInRange">
+					<a
+						tal:content="currentPage"
+						tal:condition="Ztal\Tales\Generic.equal:pages/current,currentPage"
+						tal:attributes="class string:paginatorCurrentPage; href string:#"
+					/>
+					<a
+						tal:content="currentPage"
+						tal:condition="not:Ztal\Tales\Generic.equal:pages/current,currentPage"
+						tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${currentPage}"
+					/>
+				</tal:block>
+				<tal:block tal:condition="not:Ztal\Tales\Generic.equal:pages/lastPageInRange,pages/last">
+					<a
+						tal:define="firstPageInNextRange php:pages.lastPageInRange + 1"
+						tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${firstPageInNextRange}"
+						class="paginatorNextPage"
+					>
+						<tal:block tal:replace="structure Ztal\Tales\Form.getSlotContent:string:nextPage | string:" />
+					</a>
+					<a
+						tal:attributes="href string:${table/getBaseUri}${table/getUrlParams}${sortPart}/${prefix}-page/${pages/last}"
+						class="paginatorLastPage"
+					>
+						<tal:block tal:replace="structure Ztal\Tales\Form.getSlotContent:string:lastPage | string:" />
+					</a>
+				</tal:block>
 			</div>
 		</div>
 	</td>

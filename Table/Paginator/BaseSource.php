@@ -51,7 +51,7 @@ class BaseSource
     {
         $this->_totalRowCount = 0;
         $this->_rowsPerPage = 1;
-        $this->_currentPage = 0;
+        $this->_currentPage = 1;
 
         if (isset($options['rowsPerPage'])) {
             $this->setRowsPerPage($options['rowsPerPage']);
@@ -94,10 +94,10 @@ class BaseSource
     public function paginate(&$source)
     {
         $this->_totalRowCount = count($source);
-        $startingRow = $this->_rowsPerPage * $this->_currentPage;
-        if ($startingRow > $this->_totalRowCount) {
+        $startingRow = $this->_rowsPerPage * ($this->_currentPage - 1);
+        if ($startingRow < 0 || $startingRow > $this->_totalRowCount - 1) {
             $startingRow = 0;
-            $this->_currentPage = 0;
+            $this->_currentPage = 1;
         }
 
         $this->_sliceDataSource($source, $startingRow, $this->_rowsPerPage);
@@ -124,10 +124,10 @@ class BaseSource
     {
         $pageCount = ceil($this->_totalRowCount / $this->_rowsPerPage);
         $results = array();
-        for ($i = 0; $i < $pageCount; $i++) {
+        for ($i = 1; $i <= $pageCount; $i++) {
             $results[] = array(
              'index' => $i,
-             'label' => $i + 1,
+             'label' => $i,
              'currentPage' => $i == $this->_currentPage,
             );
         }
@@ -153,7 +153,7 @@ class BaseSource
      */
     public function nextPage()
     {
-        $lastPage = (ceil($this->_totalRowCount / $this->_rowsPerPage) - 1);
+        $lastPage = (ceil($this->_totalRowCount / $this->_rowsPerPage));
         if ($this->_currentPage == $lastPage) {
             return -1;
         }
@@ -207,7 +207,7 @@ class BaseSource
      */
     public function setCurrentPage($page)
     {
-        if ($page >= 0 && $page * $this->_rowsPerPage < $this->_totalRowCount) {
+        if ($page >= 1 && $page * $this->_rowsPerPage < $this->_totalRowCount) {
             $this->_currentPage = $page;
         }
     }
