@@ -25,21 +25,29 @@ class BaseSource
      *
      * @var int
      */
-    protected $_totalRowCount;
+    protected $_totalRowCount = 0;
 
     /**
      * The number of rows to display per page.
      *
      * @var int
      */
-    protected $_rowsPerPage;
+    protected $_rowsPerPage = 1;
+
+    /**
+     * The first page number.
+     *
+     * @var int
+     */
+    protected $_firstPage = 0;
 
     /**
      * The page to be displayed.
      *
      * @var int
      */
-    protected $_currentPage;
+    protected $_currentPage = 0;
+
 
 
     /**
@@ -49,12 +57,12 @@ class BaseSource
      */
     public function __construct(array $options = array())
     {
-        $this->_totalRowCount = 0;
-        $this->_rowsPerPage = 1;
-        $this->_currentPage = 1;
-
         if (isset($options['rowsPerPage'])) {
             $this->setRowsPerPage($options['rowsPerPage']);
+        }
+
+        if (isset($options['firstPage'])) {
+            $this->setFirstPage($options['firstPage']);
         }
 
         if (isset($options['currentPage'])) {
@@ -74,7 +82,7 @@ class BaseSource
     public function initWithParameters(array $parameters, $prefix = '')
     {
         if (isset($parameters[$prefix . 'page'])) {
-            $this->_currentPage = $parameters[$prefix . 'page'];
+            $this->_currentPage = (int)$parameters[$prefix . 'page'];
         }
     }
 
@@ -94,10 +102,10 @@ class BaseSource
     public function paginate(&$source)
     {
         $this->_totalRowCount = count($source);
-        $startingRow = $this->_rowsPerPage * ($this->_currentPage - 1);
-        if ($startingRow < 0 || $startingRow > $this->_totalRowCount - 1) {
+        $startingRow = $this->_rowsPerPage * ($this->_currentPage - $this->_firstPage);
+        if ($startingRow < 0 || $startingRow > $this->_totalRowCount - $this->_firstPage) {
             $startingRow = 0;
-            $this->_currentPage = 1;
+            $this->_currentPage = (int)$this->_firstPage;
         }
 
         $this->_sliceDataSource($source, $startingRow, $this->_rowsPerPage);
@@ -124,11 +132,11 @@ class BaseSource
     {
         $pageCount = ceil($this->_totalRowCount / $this->_rowsPerPage);
         $results = array();
-        for ($i = 1; $i <= $pageCount; $i++) {
+        for ($i = 0; $i < $pageCount; $i++) {
             $results[] = array(
-             'index' => $i,
-             'label' => $i,
-             'currentPage' => $i == $this->_currentPage,
+             'index' => $i + $this->_firstPage,
+             'label' => $i + 1,
+             'currentPage' => $i + $this->_firstPage == $this->_currentPage,
             );
         }
         return $results;
@@ -142,6 +150,9 @@ class BaseSource
      */
     public function previousPage()
     {
+        if ($this->_currentPage == $this->_firstPage) {
+            return -1;
+        }
         return $this->_currentPage - 1;
     }
 
@@ -153,8 +164,7 @@ class BaseSource
      */
     public function nextPage()
     {
-        $lastPage = (ceil($this->_totalRowCount / $this->_rowsPerPage));
-        if ($this->_currentPage == $lastPage) {
+        if ($this->_currentPage == $this->getLastPage()) {
             return -1;
         }
         return $this->_currentPage + 1;
@@ -184,9 +194,37 @@ class BaseSource
         if ($count < 0) {
             $count = 0;
         }
-        $this->_totalRowCount = $count;
+        $this->_totalRowCount = (int)$count;
     }
 
+
+    /**
+     * Return the first page number.
+     *
+     * @return int
+     */
+    public function getFirstPage()
+    {
+        return $this->_firstPage;
+    }
+
+    /**
+     * Set the first page number.
+     *
+     * @param int $page The page number.
+     *
+     * @return void
+     */
+    public function setFirstPage($page)
+    {
+        $this->_firstPage = (int)$page;
+        $this->setCurrentPage($this->_firstPage);
+    }
+
+    public function getLastPage()
+    {
+        return $this->_firstPage + ceil($this->_totalRowCount / $this->_rowsPerPage) - 1;
+    }
 
     /**
      * Return the current page number.
@@ -207,8 +245,8 @@ class BaseSource
      */
     public function setCurrentPage($page)
     {
-        if ($page >= 1 && $page * $this->_rowsPerPage < $this->_totalRowCount) {
-            $this->_currentPage = $page;
+        if ($page >= $this->_firstPage && $page <= $this->getLastPage()) {
+            $this->_currentPage = (int)$page;
         }
     }
 
@@ -236,7 +274,7 @@ class BaseSource
         if ($rowsPerPage < 1) {
             $rowsPerPage = 1;
         }
-        $this->_rowsPerPage = $rowsPerPage;
+        $this->_rowsPerPage = (int)$rowsPerPage;
     }
 
 

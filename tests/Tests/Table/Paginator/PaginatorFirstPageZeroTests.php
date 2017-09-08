@@ -1,6 +1,6 @@
 <?php
 /**
- * Table paginator unit tests.
+ * Table paginator unit tests with page numbers starting at zero.
  *
  * @category  Namesco
  * @package   UnitTesting
@@ -15,13 +15,13 @@ namespace Ztal\Tests\Table\Paginator;
 require_once __DIR__ . '/../../../sharedTestSetup.php';
 
 /**
- * Table paginator unit tests.
+ * Table paginator unit tests with page numbers starting at zero.
  *
  * @category Namesco
  * @package  UnitTesting
  * @author   Marcus Don <mdon@names.co.uk>
  */
-class PaginatorTests extends \PHPUnit_Framework_TestCase
+class PaginatorFirstPageZeroTests extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * Test pages method for with one page of data.
@@ -51,7 +51,7 @@ class PaginatorTests extends \PHPUnit_Framework_TestCase
 	{
 		$numRows = 53;
 		$rowsPerPage = 20;
-		$currentPage = 1; // Page numbers start at 0
+		$currentPage = 1;
 
 		$expected = array(
 			array('index' => 0, 'label' => 1, 'currentPage' => false),
@@ -73,7 +73,7 @@ class PaginatorTests extends \PHPUnit_Framework_TestCase
 	{
 		$numRows = 20;
 		$rowsPerPage = 20;
-		$currentPage = 0; // Page numbers start at 0
+		$currentPage = 0;
 
 		$paginator = $this->_getPaginator($numRows, $rowsPerPage, $currentPage);
 
@@ -94,7 +94,7 @@ class PaginatorTests extends \PHPUnit_Framework_TestCase
 	{
 		$numRows = 100;
 		$rowsPerPage = 20;
-		$currentPage = 0; // Page numbers start at 0
+		$currentPage = 0;
 
 		$paginator = $this->_getPaginator($numRows, $rowsPerPage, $currentPage);
 
@@ -115,7 +115,7 @@ class PaginatorTests extends \PHPUnit_Framework_TestCase
 	{
 		$numRows = 100;
 		$rowsPerPage = 20;
-		$currentPage = 1; // Page numbers start at 0
+		$currentPage = 1;
 
 		$paginator = $this->_getPaginator($numRows, $rowsPerPage, $currentPage);
 
@@ -136,7 +136,7 @@ class PaginatorTests extends \PHPUnit_Framework_TestCase
 	{
 		$numRows = 100;
 		$rowsPerPage = 20;
-		$currentPage = 4; // Page numbers start at 0
+		$currentPage = 4;
 
 		$paginator = $this->_getPaginator($numRows, $rowsPerPage, $currentPage);
 
