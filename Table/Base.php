@@ -159,13 +159,13 @@ class Base implements \Countable, \Iterator
 
     /**
      * Set HTTP parameters, overwriting those set in the constructor.
-     * 
+     *
      * @param array $parameters Associative array of parameters.
      */
-    public function setParameters($parameters) 
+    public function setParameters($parameters)
     {
         $this->_parameters = array();
-        
+
         // Save page parameters
         foreach ($parameters as $name => $value) {
             // Save param name & value if not a special-purpose parameter
@@ -178,16 +178,16 @@ class Base implements \Countable, \Iterator
             ) {
                 $this->_parameters[$name] = $value;
             }
-        }        
+        }
     }
 
     /**
      * Add a single parameter to the internal collection.
-     * 
+     *
      * @param string $paramName  The parameter name.
      * @param string $paramValue The value of the parameter.
      */
-    public function addParameter($paramName, $paramValue) 
+    public function addParameter($paramName, $paramValue)
     {
         $this->_parameters[$paramName] = $paramValue;
     }
@@ -432,6 +432,28 @@ class Base implements \Countable, \Iterator
     public function setPaginator(Paginator\BaseSource $paginator)
     {
         $this->_paginator = $paginator;
+    }
+
+    /**
+     * Return the table's Zend paginator.
+     *
+     * @return string
+     */
+    public function getZendPaginator()
+    {
+        return $this->_zendPaginator;
+    }
+
+    /**
+     * Set the table's Zend paginator.
+     *
+     * @param \Zend\Paginator\Paginator $paginator Zend paginator instance.
+     *
+     * @return void
+     */
+    public function setZendPaginator(\Zend\Paginator\Paginator $zendPaginator)
+    {
+        $this->_zendPaginator = $zendPaginator;
     }
 
 
