@@ -25,7 +25,7 @@ class Base implements \Countable, \Iterator
      *
      * @var string
      */
-    protected $_id;
+    protected $_id = 'table';
 
     /**
      * The data source for the table.
@@ -41,21 +41,21 @@ class Base implements \Countable, \Iterator
      *
      * @var array
      */
-    protected $_columns;
+    protected $_columns = array();
 
     /**
      * An array of column indexes specifying the ordering of the columns.
      *
      * @var array
      */
-    protected $_columnKeyIndex;
+    protected $_columnKeyIndex = array();
 
     /**
      * Non-routing page parameters.
      *
      * @var array
      */
-    protected $_parameters;
+    protected $_parameters = array();
 
     /**
      * The shared Row Object.
@@ -69,21 +69,21 @@ class Base implements \Countable, \Iterator
      *
      * @var string
      */
-    protected $_sortColumnKey;
+    protected $_sortColumnKey = '';
 
     /**
      * Track the current row used in the iterator.
      *
      * @var int
      */
-    protected $_currentRowIndex;
+    protected $_currentRowIndex = 0;
 
     /**
      * The URI for the action that handles the table.
      *
      * @var string
      */
-    protected $_baseUri;
+    protected $_baseUri= '/';
 
     /**
      * The table's pagination delegate, if any.
@@ -110,15 +110,6 @@ class Base implements \Countable, \Iterator
      */
     public function __construct(array $parameters = array())
     {
-        $this->_dataSource = null;
-        $this->_currentRowIndex = 0;
-        $this->_columns = array();
-        $this->_columnKeyIndex = array();
-        $this->_parameters = array();
-        $this->_id = 'table';
-        $this->_sortColumnKey = '';
-        $this->_baseUri = '/';
-        $this->_paginator = null;
         $this->_rowObject = new Row($this->_columns, $this->_columnKeyIndex);
 
         // Overrideable function to configure the columns etc.
@@ -172,8 +163,6 @@ class Base implements \Countable, \Iterator
      */
     public function setParameters($parameters)
     {
-        $this->_parameters = array();
-
         // Save page parameters
         foreach ($parameters as $name => $value) {
             // Save param name & value if not a special-purpose parameter

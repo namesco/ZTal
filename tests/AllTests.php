@@ -14,7 +14,8 @@ require_once __DIR__ . '/sharedTestSetup.php';
 
 // Test classes.
 require_once __DIR__ . '/Tests/AutoloaderTests.php';
-require_once __DIR__ . '/Tests/Table/Paginator/PaginatorTests.php';
+require_once __DIR__ . '/Tests/Table/Paginator/PaginatorFirstPageOneTests.php';
+require_once __DIR__ . '/Tests/Table/Paginator/PaginatorFirstPageZeroTests.php';
 
 /**
  * Top level config for all Ztal Unit Tests.
@@ -36,7 +37,8 @@ class AllTests
         $suite = new PHPUnit_Framework_TestSuite('Ztal');
 
         $suite->addTestSuite('Ztal\Tests\AutoloaderTests');
-        $suite->addTestSuite('Ztal\Tests\Table\Paginator\PaginatorTests');
+        $suite->addTestSuite('Ztal\Tests\Table\Paginator\PaginatorFirstPageOneTests');
+        $suite->addTestSuite('Ztal\Tests\Table\Paginator\PaginatorFirstPageZeroTests');
 
         return $suite;
     }

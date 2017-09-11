@@ -136,7 +136,7 @@ class BaseSource
             $results[] = array(
              'index' => $i + $this->_firstPage,
              'label' => $i + 1,
-             'currentPage' => $i + $this->_firstPage == $this->_currentPage,
+             'currentPage' => ($i + $this->_firstPage == $this->_currentPage),
             );
         }
         return $results;
