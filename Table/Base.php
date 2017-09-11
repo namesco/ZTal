@@ -92,6 +92,14 @@ class Base implements \Countable, \Iterator
      */
     protected $_paginator;
 
+    /**
+     * Zend paginator instance.
+     *
+     * Alternative to Ztal_Table_Paginator_Abstract.
+     *
+     * @var \Zend\Paginator\Paginator|\Zend_Paginator
+     */
+    protected $_zendPaginator;
 
     /**
      * The constructor.
@@ -437,7 +445,7 @@ class Base implements \Countable, \Iterator
     /**
      * Return the table's Zend paginator.
      *
-     * @return string
+     * @return \Zend\Paginator\Paginator|\Zend_Paginator
      */
     public function getZendPaginator()
     {
@@ -447,12 +455,17 @@ class Base implements \Countable, \Iterator
     /**
      * Set the table's Zend paginator.
      *
-     * @param \Zend\Paginator\Paginator $paginator Zend paginator instance.
+     * @param \Zend\Paginator\Paginator|\Zend_Paginator $paginator Zend paginator instance.
      *
      * @return void
      */
-    public function setZendPaginator(\Zend\Paginator\Paginator $zendPaginator)
+    public function setZendPaginator($zendPaginator)
     {
+		if (false === $zendPaginator instanceOf \Zend\Paginator\Paginator
+			&& false === $zendPaginator instanceOf \Zend_Paginator
+		) {
+			throw new \InvalidArgumentException('Instance of Zend\\Paginator\\Paginator or Zend_Paginator expected');
+		}
         $this->_zendPaginator = $zendPaginator;
     }
 
