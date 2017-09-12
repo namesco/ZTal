@@ -25,7 +25,7 @@ class Base implements \Countable, \Iterator
      *
      * @var string
      */
-    protected $_id;
+    protected $_id = 'table';
 
     /**
      * The data source for the table.
@@ -41,21 +41,21 @@ class Base implements \Countable, \Iterator
      *
      * @var array
      */
-    protected $_columns;
+    protected $_columns = array();
 
     /**
      * An array of column indexes specifying the ordering of the columns.
      *
      * @var array
      */
-    protected $_columnKeyIndex;
+    protected $_columnKeyIndex = array();
 
     /**
      * Non-routing page parameters.
      *
      * @var array
      */
-    protected $_parameters;
+    protected $_parameters = array();
 
     /**
      * The shared Row Object.
@@ -69,21 +69,21 @@ class Base implements \Countable, \Iterator
      *
      * @var string
      */
-    protected $_sortColumnKey;
+    protected $_sortColumnKey = '';
 
     /**
      * Track the current row used in the iterator.
      *
      * @var int
      */
-    protected $_currentRowIndex;
+    protected $_currentRowIndex = 0;
 
     /**
      * The URI for the action that handles the table.
      *
      * @var string
      */
-    protected $_baseUri;
+    protected $_baseUri= '/';
 
     /**
      * The table's pagination delegate, if any.
@@ -92,6 +92,14 @@ class Base implements \Countable, \Iterator
      */
     protected $_paginator;
 
+    /**
+     * Zend paginator instance.
+     *
+     * Alternative to Ztal_Table_Paginator_Abstract.
+     *
+     * @var \Zend\Paginator\Paginator|\Zend_Paginator
+     */
+    protected $_zendPaginator;
 
     /**
      * The constructor.
@@ -102,15 +110,6 @@ class Base implements \Countable, \Iterator
      */
     public function __construct(array $parameters = array())
     {
-        $this->_dataSource = null;
-        $this->_currentRowIndex = 0;
-        $this->_columns = array();
-        $this->_columnKeyIndex = array();
-        $this->_parameters = array();
-        $this->_id = 'table';
-        $this->_sortColumnKey = '';
-        $this->_baseUri = '/';
-        $this->_paginator = null;
         $this->_rowObject = new Row($this->_columns, $this->_columnKeyIndex);
 
         // Overrideable function to configure the columns etc.
@@ -159,13 +158,11 @@ class Base implements \Countable, \Iterator
 
     /**
      * Set HTTP parameters, overwriting those set in the constructor.
-     * 
+     *
      * @param array $parameters Associative array of parameters.
      */
-    public function setParameters($parameters) 
+    public function setParameters($parameters)
     {
-        $this->_parameters = array();
-        
         // Save page parameters
         foreach ($parameters as $name => $value) {
             // Save param name & value if not a special-purpose parameter
@@ -178,16 +175,16 @@ class Base implements \Countable, \Iterator
             ) {
                 $this->_parameters[$name] = $value;
             }
-        }        
+        }
     }
 
     /**
      * Add a single parameter to the internal collection.
-     * 
+     *
      * @param string $paramName  The parameter name.
      * @param string $paramValue The value of the parameter.
      */
-    public function addParameter($paramName, $paramValue) 
+    public function addParameter($paramName, $paramValue)
     {
         $this->_parameters[$paramName] = $paramValue;
     }
@@ -432,6 +429,33 @@ class Base implements \Countable, \Iterator
     public function setPaginator(Paginator\BaseSource $paginator)
     {
         $this->_paginator = $paginator;
+    }
+
+    /**
+     * Return the table's Zend paginator.
+     *
+     * @return \Zend\Paginator\Paginator|\Zend_Paginator
+     */
+    public function getZendPaginator()
+    {
+        return $this->_zendPaginator;
+    }
+
+    /**
+     * Set the table's Zend paginator.
+     *
+     * @param \Zend\Paginator\Paginator|\Zend_Paginator $paginator Zend paginator instance.
+     *
+     * @return void
+     */
+    public function setZendPaginator($zendPaginator)
+    {
+		if (false === $zendPaginator instanceOf \Zend\Paginator\Paginator
+			&& false === $zendPaginator instanceOf \Zend_Paginator
+		) {
+			throw new \InvalidArgumentException('Instance of Zend\\Paginator\\Paginator or Zend_Paginator expected');
+		}
+        $this->_zendPaginator = $zendPaginator;
     }
 
 
