@@ -21,7 +21,7 @@ require_once __DIR__ . '/../../../sharedTestSetup.php';
  * @package  UnitTesting
  * @author   Marcus Don <mdon@names.co.uk>
  */
-class PaginatorFirstPageZeroTests extends \PHPUnit_Framework_TestCase
+class PaginatorFirstPageZeroTests extends \PHPUnit\Framework\TestCase
 {
 	/**
 	 * Test pages method for with one page of data.
