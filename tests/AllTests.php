@@ -34,7 +34,7 @@ class AllTests
     static public function suite()
     {
         // Create an instance of a test suite
-        $suite = new PHPUnit_Framework_TestSuite('Ztal');
+        $suite = new \PHPUnit\Framework\TestSuite('Ztal');
 
         $suite->addTestSuite('Ztal\Tests\AutoloaderTests');
         $suite->addTestSuite('Ztal\Tests\Table\Paginator\PaginatorFirstPageOneTests');

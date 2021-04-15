@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../Autoloader.php';
  * @package  UnitTesting
  * @author   Mat Gadd <mgadd@names.co.uk>
  */
-class AutoloaderTests extends \PHPUnit_Framework_TestCase
+class AutoloaderTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test the compatibility layer (class aliasing) works for non-renamed classes.
