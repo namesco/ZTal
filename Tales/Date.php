@@ -24,12 +24,11 @@ final class Date implements \PHPTAL_Tales
 	/**
 	 * Tal extension to handle a "between" date comparison (fromDate <-> now <-> toDate).
 	 *
-	 * Note that the exact time for a given date is midnight (the very start of the day), so the date 2022-02-25 is
-	 * actually 2022-02-25 00:00:00. Date ranges should take this into account
+	 * Note that the dates are inclusive, e.g. the range 2022-01-01 -> 2022-01-02 includes both full days (1st and 2nd).
 	 *
 	 * Example use within template:
 	 *
-	 * <div tal:condition="Ztal\Tales\Date.between:string:yyyy-mm-dd,string:yyyy-mm-dd">
+	 * <div tal:condition="Ztal\Tales\Date.between:string:2022-01-01,string:2022-01-30">
 	 * 	   date-conditional-content
 	 * </div>
 	 *
@@ -38,7 +37,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function between(string $src, bool $nothrow): string
+	public static function between($src, $nothrow)
 	{
 		$break = strpos($src, ',');
 		$from = substr($src, 0, $break);
@@ -48,7 +47,9 @@ final class Date implements \PHPTAL_Tales
 			return phptal_tale('NULL', $nothrow);
 		}
 
-		return  '(\Ztal\Tales\Date::betweenHelper('. phptal_tale($from, $nothrow) . ', ' . phptal_tale($to, $nothrow) . ')'
+		return  '(\Ztal\Tales\Date::betweenHelper('
+			. phptal_tale($from, $nothrow) . ', '
+			. phptal_tale($to, $nothrow) . ')'
 			. ' ? '
 			. ' : ' . phptal_tale('NULL', $nothrow)
 			. ')';
@@ -62,7 +63,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return bool
 	 */
-	public static function betweenHelper(string $from, string $to): bool
+	public static function betweenHelper($from, $to)
 	{
 		try {
 			$from = new \DateTime($from);
@@ -76,6 +77,8 @@ final class Date implements \PHPTAL_Tales
 			throw new \Exception('Could not parse "to" date, please use a yyyy-mm-dd format string');
 		}
 
+		$to->add(new \DateInterval('P1D')); // So comparison behaves like the SQL BETWEEN operator
+
 		return self::_getCurrentTs() >= $from->getTimestamp() && self::_getCurrentTs() < $to->getTimestamp();
 	}
 
@@ -86,7 +89,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * Example use within template:
 	 *
-	 * <div tal:condition="Ztal\Tales\Date.before:string:yyyy-mm-dd">
+	 * <div tal:condition="Ztal\Tales\Date.before:string:2022-01-30">
 	 * 	   date-conditional-content
 	 * </div>
 	 *
@@ -95,7 +98,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function before(string $src, bool $nothrow): string
+	public static function before($src, $nothrow)
 	{
 		if (empty($src)) {
 			return phptal_tale('NULL', $nothrow);
@@ -114,7 +117,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return bool
 	 */
-	public static function beforeHelper(string $date): bool
+	public static function beforeHelper($date)
 	{
 		try {
 			$date = new \DateTime($date);
@@ -132,7 +135,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * Example use within template:
 	 *
-	 * <div tal:condition="Ztal\Tales\Date.after:string:yyyy-mm-dd">
+	 * <div tal:condition="Ztal\Tales\Date.after:string:2022-01-01">
 	 * 	   date-conditional-content
 	 * </div>
 	 *
@@ -141,7 +144,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return string
 	 */
-	public static function after(string $src, bool $nothrow): string
+	public static function after($src, $nothrow)
 	{
 		if (empty($src)) {
 			return phptal_tale('NULL', $nothrow);
@@ -160,7 +163,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return bool
 	 */
-	public static function afterHelper(string $date): bool
+	public static function afterHelper($date)
 	{
 		try {
 			$date = new \DateTime($date);
@@ -176,7 +179,7 @@ final class Date implements \PHPTAL_Tales
 	 *
 	 * @return integer
 	 */
-	protected static function _getCurrentTs(): int
+	protected static function _getCurrentTs()
 	{
 		if (empty(self::$_currentTs)) {
 			self::$_currentTs = time();
