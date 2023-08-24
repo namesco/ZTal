@@ -36,10 +36,13 @@ final class Form implements \PHPTAL_Tales
      */
     static public function calculateType($type)
     {
-        // This is done in two steps using the $nameParts intermediate variable
-        // because it causes a strict error if something other than a defined
-        // variable reference is passed to array_pop.
-        $nameParts = explode('_', $type);
+        if (strpos($type, '\\') !== false) {
+            $nameParts = explode('\\', $type);
+        } else {
+            // This is for legacy PSR-0 namespaced classes
+            $nameParts = explode('_', $type);
+        }
+
         $type = strtolower(array_pop($nameParts));
 
         // Switch multicheckbox to be just "checkbox".
