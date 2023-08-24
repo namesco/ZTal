@@ -114,7 +114,7 @@ class Autoloader
         $className = ltrim($className, '\\');
 
         if (substr($className, 0, 5) != 'Ztal\\') {
-            // Don't boether attempting to load any classes but ours.
+            // Don't bother attempting to load any classes but ours.
             return false;
         } else {
             // Remove the leading 'Ztal\' now, since we're *in* that directory.
